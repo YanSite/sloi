@@ -275,12 +275,14 @@ scale in [visual-dna.md](./visual-dna.md#mapping-to-the-visualdna-type).
 None of the "video is a strong upgrade" notes in
 [experience-map.md](./experience-map.md) (Cinematic Hero, Product Reveal,
 Story Section, Final CTA) clears the bar for v1: each scene already has a
-still-image plan that fully executes its purpose. Spending the video
-allowance now, before the page exists to judge against, would be spending
-it on a guess. **Default for v1 is zero video generations** — both the
-demo tier's 1-video allowance and (later, if relevant) production's
-2-video allowance stay unused unless a specific scene is visibly flat
-after launch. See [§4](#4-higgsfield-budget) for the exact tier numbers.
+still-image plan that fully executes its purpose. Spending a video
+generation now, before the page exists to judge against, would be
+spending it on a guess. **Default for v1 is zero video generations** —
+the demo tier has no video allowance to spend in the first place (see
+[generation-policy.md](./generation-policy.md#demo-mode-limit)), and
+production's 2-video allowance (not active for this project) stays
+unused regardless. See [§4](#4-higgsfield-budget) for the exact tier
+numbers.
 
 ## 4. Higgsfield budget
 
@@ -293,7 +295,7 @@ to plan against, so this reports **counts only**, per
 
 **Against demo mode** (current tier — see
 [generation-policy.md](./generation-policy.md#demo-mode-limit), cap: 4
-images / 1 video / 1 retry per asset):
+images / 0 videos / 1 retry per asset):
 
 | | Count |
 |---|---|
@@ -301,7 +303,7 @@ images / 1 video / 1 retry per asset):
 | Uses the full demo image cap | Yes — 4 of 4 |
 | Possible retries (1 per asset, only if a generation fails review) | up to 4 |
 | **Maximum generation calls this phase, if all 4 are approved** | **4 initial + up to 4 retries = up to 8 image API calls; 0 video calls** |
-| Video allowance used | 0 of 1 (held, unused) |
+| Video allowance used | 0 of 0 (demo mode has no video allowance) |
 | Reserve candidate (`closing-visual`) | **Not counted — not authorized.** Generating it would be a 5th image, which exceeds the demo cap and needs explicit approval to go over the limit, independent of this plan. |
 
 **Against production mode** (future tier, not active — see

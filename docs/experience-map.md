@@ -417,7 +417,7 @@ raises the bar every future vertical has to clear.
 
 - **4 Higgsfield assets, total, for the whole florist site — exactly the
   demo cap.** [generation-policy.md](./generation-policy.md)'s demo cap is
-  4 image generations / 1 video *for the whole demo*, not per vertical —
+  4 image generations / 0 videos *for the whole demo*, not per vertical —
   florist v1 uses all 4, so this is a hard ceiling, not a starting
   budget. A 5th candidate (`closing-visual`, a Final CTA reserve) is
   proposed but explicitly not authorized — see

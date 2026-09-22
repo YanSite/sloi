@@ -10,7 +10,7 @@ treat it as a hard gate on any work involving Higgsfield.
 While this project is in demo mode:
 
 - **Maximum 4 image generations**
-- **Maximum 1 video generation**
+- **Maximum 0 video generations**
 - **Maximum 1 retry per asset**
 
 These are totals for the whole demo, not per-session or per-vertical
@@ -33,7 +33,7 @@ automatically unlocked by finishing a demo.
 
 ## Both tiers are hard limits
 
-Demo mode's 4/1 and production mode's 6/2 are hard limits **unless the
+Demo mode's 4/0 and production mode's 6/2 are hard limits **unless the
 user explicitly approves an increase** for that specific asset or batch.
 An asset plan proposing more candidates than a tier allows (see
 [asset-manifest.md](./asset-manifest.md) for the florist demo, which
