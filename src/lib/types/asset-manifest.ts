@@ -20,6 +20,19 @@ export type AssetStatus =
   | "generated"
   | "rejected";
 
+/** Where the subject sits in frame, for CSS `object-position`-driven crops. Both axes run 0 (left/top) to 1 (right/bottom); omitted means center. */
+export interface AssetFocalPoint {
+  x: number;
+  y: number;
+}
+
+/** One concrete, renderable file — a single responsive width variant of an asset. */
+export interface AssetFile {
+  url: string;
+  width: number;
+  height?: number;
+}
+
 export interface AssetManifestEntry {
   asset_id: string;
   purpose: string;
@@ -36,6 +49,13 @@ export interface AssetManifestEntry {
    */
   section: SectionId | SectionId[];
   status: AssetStatus;
+  focalPoint?: AssetFocalPoint;
+  /**
+   * The real file variant(s) — populated once `status` reaches
+   * "generated". A section resolves this via `resolveAsset` (see
+   * src/lib/assets) and falls back to a placeholder while it's empty.
+   */
+  files?: AssetFile[];
 }
 
 export type AssetManifest = AssetManifestEntry[];

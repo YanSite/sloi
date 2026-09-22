@@ -1,4 +1,4 @@
-import type { ExperienceContent } from "@/lib/types";
+import { defineContent } from "../section-content";
 
 /**
  * NOT approved florist copy — every string is a bracket placeholder, same
@@ -6,9 +6,10 @@ import type { ExperienceContent } from "@/lib/types";
  * only so `demo-site-config.ts` has valid content for every section's
  * required fields, to prove PageRenderer assembles all 10. No real
  * copywriting decision is made here — see /docs/experience-map.md's "Out
- * of scope" note on copy.
+ * of scope" note on copy. Wrapped in `defineContent` so every section's
+ * fields are checked against its real props (see section-content.ts).
  */
-export const demoContent: ExperienceContent = {
+export const demoContent = defineContent({
   "cinematic-hero": {
     headline: "[DEMO_HEADLINE]",
     media: { assetId: "hero-atmosphere", alt: "[DEMO_ALT]" },
@@ -56,4 +57,4 @@ export const demoContent: ExperienceContent = {
     headline: "[DEMO_CLOSING_HEADLINE]",
     cta: { label: "[DEMO_CTA_LABEL]", href: "#" },
   },
-};
+});

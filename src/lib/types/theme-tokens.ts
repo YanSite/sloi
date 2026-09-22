@@ -23,8 +23,49 @@ export interface ThemeFontTokens {
   body: string;
 }
 
+export interface ThemeSpacingTokens {
+  xs: string;
+  sm: string;
+  md: string;
+  lg: string;
+  xl: string;
+  "2xl": string;
+}
+
+export interface ThemeRadiusTokens {
+  none: string;
+  sm: string;
+  md: string;
+  lg: string;
+  full: string;
+}
+
+export interface ThemeShadowTokens {
+  sm: string;
+  md: string;
+  lg: string;
+}
+
+export interface ThemeTransitionTokens {
+  fast: string;
+  base: string;
+  slow: string;
+}
+
+export interface ThemeBreakpointTokens {
+  sm: string;
+  md: string;
+  lg: string;
+  xl: string;
+}
+
 export interface ThemeTokens {
   vertical: Vertical;
   colors: ThemeColorTokens;
   fonts: ThemeFontTokens;
+  spacing: ThemeSpacingTokens;
+  radius: ThemeRadiusTokens;
+  shadows: ThemeShadowTokens;
+  transitions: ThemeTransitionTokens;
+  breakpoints: ThemeBreakpointTokens;
 }

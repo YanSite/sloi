@@ -36,13 +36,25 @@ export function FinalCTA({ headline, subheadline, cta, theme, motion }: FinalCTA
         duration={0.8}
         className="max-w-xl text-center"
       >
-        <h2 className="text-4xl font-semibold">{headline}</h2>
-        {subheadline ? <p className="mt-4 opacity-80">{subheadline}</p> : null}
+        <h2 className="text-4xl font-semibold" style={{ fontFamily: theme?.fonts.display }}>
+          {headline}
+        </h2>
+        {subheadline ? (
+          <p className="mt-4 opacity-80" style={{ fontFamily: theme?.fonts.body }}>
+            {subheadline}
+          </p>
+        ) : null}
         {cta ? (
           <a
             href={cta.href}
-            className="mt-8 inline-block rounded-full px-8 py-3 font-medium"
-            style={{ backgroundColor: accent, color: background }}
+            className="mt-8 inline-block px-8 py-3 font-medium transition-opacity hover:opacity-90"
+            style={{
+              backgroundColor: accent,
+              color: background,
+              borderRadius: theme?.radius.full ?? "9999px",
+              boxShadow: theme?.shadows.md,
+              transitionDuration: theme?.transitions.base,
+            }}
           >
             {cta.label}
           </a>
