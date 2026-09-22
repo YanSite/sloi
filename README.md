@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Local WOW Engine v1
 
-## Getting Started
+Переиспользуемая production-система для создания премиальных WOW-лендингов
+для локального бизнеса. Не одноразовый сайт, а движок: один набор
+компонентов и шаблонов обслуживает много вертикалей.
 
-First, run the development server:
+Первая вертикаль в разработке — **florist** (цветочный магазин).
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Статус
+
+Сейчас реализован только архитектурный фундамент: типы, интерфейсы
+компонентов, структура каталогов и документация. Финальный дизайн,
+копирайтинг и генерация изображений/видео ещё не выполнялись — подробности
+в [docs/engine-architecture.md](docs/engine-architecture.md).
+
+## Архитектура
+
+Бизнес в движке представлен как:
+
+```
+business = BusinessProfile + VisualDNA + Template + AssetManifest (+ ExperienceContent)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Эти слои строго разделены и не пересекаются:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Слой | За что отвечает | Где живёт |
+|---|---|---|
+| Бизнес-данные | Факты о бизнесе (имя, контакты, часы работы) | `src/config/verticals/<vertical>/business-profile.ts` |
+| Visual DNA | Внешний вид: палитра, типографика, настроение | `src/config/verticals/<vertical>/visual-dna.ts` |
+| Структура опыта | Какие секции и в каком порядке | `src/templates/<vertical>.template.ts` |
+| Ассеты | Манифест изображений/видео и их статус генерации | `src/config/verticals/<vertical>/asset-manifest.ts` |
+| Контент | Тексты внутри секций | `src/config/verticals/<vertical>/content.ts` |
+| Motion | Анимационные пресеты (общие для всех вертикалей) | `src/components/wow/motion` |
+| WOW-секции | Переиспользуемые компоненты (Hero, CTA и т.д.) | `src/components/wow/sections` |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Полное описание — в [docs/engine-architecture.md](docs/engine-architecture.md).
+Остальные документы по каждому слою — в [docs/](docs).
 
-## Learn More
+Добавление новой вертикали (restaurant, barber, beauty, dental, fitness,
+automotive, local-services) не требует изменений в переиспользуемых
+компонентах — только новый набор конфигов и шаблон.
 
-To learn more about Next.js, take a look at the following resources:
+## Higgsfield и генерация ассетов
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Higgsfield — платный и лимитированный ресурс. Любая генерация проходит
+только по схеме:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+PLAN → ПОКАЗАТЬ ПЛАН АССЕТОВ → ПОКАЗАТЬ БЮДЖЕТ → ЖДАТЬ ОДОБРЕНИЯ → GENERATE
+```
 
-## Deploy on Vercel
+Лимиты demo-режима и полная политика — в
+[docs/generation-policy.md](docs/generation-policy.md).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Разработка
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm install
+npm run dev
+```
+
+Открыть [http://localhost:3000](http://localhost:3000).
+
+Стек: Next.js (App Router, каталог `app/` в корне), React, TypeScript,
+Tailwind CSS.
