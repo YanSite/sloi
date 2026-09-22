@@ -44,6 +44,48 @@ What this explicitly is **not**:
 | Specs and SKUs | Occasions and moments |
 | Flat, uniform pacing | Directed pacing — beats of tension (hero, reveal) and rest (statement, story) |
 
+## Signature WOW moments
+
+This blueprint's structure answers "is this well organized?" It doesn't
+yet answer the commercial question that actually sells the engine: in the
+first 10 seconds, why does a business owner say *"I want this on my
+site"* — not just *"this is nicely laid out"*? Structure alone doesn't do
+that; a small number of unmistakable moments do. Exactly **three**, not
+one per scene — concentrating art-direction and engineering effort here
+is what makes v1 feel expensive while costing three photographs (see
+[§6](#6-lean-production-strategy-v1)). Three strong moments beat fifteen
+small effects.
+
+**WOW Moment #1 — Hero cinematic reveal** (Scene 1, Cinematic Hero,
+0–8%). The first-second shift from "typical local business site" to "a
+considered, art-directed thing": layered WebGL parallax pulling a bloom
+out of near-total darkness. This is the one moment that has to be
+flawless on load — most first impressions are made in this scene alone.
+
+**WOW Moment #2 — Product reveal** (Scene 3, Product Reveal, 20–35%).
+Deliberately *not* a full transformation sequence (rotating bouquet,
+unfolding wrap, unfurling petals) — that reads as impressive on a
+mockup but is a production-grade-3D-sequence build for a factory of
+local-business sites. v1's version is camera language, not
+transformation: a scroll-linked zoom on one photograph plus a two-layer
+parallax simulating depth. Cheap to build, still reads as "this site has
+depth" — that's the wow, not literal motion complexity. A full
+transformation sequence is an explicit v2 candidate, built only if v1
+data shows it's worth the cost.
+
+**WOW Moment #3 — Final transition into CTA** (Scene 10, Final CTA,
+96–100%). The cross-fade-through-black bookend from
+[visual-dna.md](./visual-dna.md#transition-language) — the page visibly
+returns to the exact dark tone it opened on, then resolves into the ask.
+No WebGL required, just a well-timed, well-graded CSS transition; the wow
+here is narrative payoff, not rendering complexity.
+
+Every other scene — Editorial Statement, Editorial Grid, Collection
+Showcase, Story Section, Service Section, Social Proof, Location Section
+— is deliberately **not** trying to wow. It has to be clean, well-typeset,
+and consistent with [visual-dna.md](./visual-dna.md); spending "wow"
+effort there would dilute these three rather than add to them.
+
 ## 2. The scroll journey (0% → 100%)
 
 Ten scenes, an emotional arc from **attention → meaning → desire → breadth
@@ -81,7 +123,7 @@ types.
 
 ## 3. Scene-by-scene specification
 
-### Scene 1 — Cinematic Hero
+### Scene 1 — Cinematic Hero *(Signature WOW Moment #1)*
 **Scroll position:** 0–8%
 **Purpose:** Establish the premium/cinematic register before a single
 word is read. Signals "not a template site" in the first second.
@@ -123,31 +165,36 @@ a crop of the `detail-texture` asset (see
 Motion/GSAP ScrollTrigger). No WebGL.
 **Conversion role:** None. Positioning and trust only.
 
-### Scene 3 — Product Reveal
+### Scene 3 — Product Reveal *(Signature WOW Moment #2)*
 **Scroll position:** 20–35%
 **Purpose:** Introduce the flagship arrangement as the emotional payoff of
 the two preceding beats — first proof of what the visitor can actually
 get.
-**Visual:** A single hero product — one photograph, not a photographed
-sequence — with a theatrical scroll-driven reveal: WebGL mask,
-displacement, or parallax animates that one texture (a bloom sharpening
-into focus, a wrap-paper mask peeling back) as the visitor scrolls,
-pinned in place while the beat plays out.
+**Visual:** A single hero product — one photograph — presented through
+camera movement, not transformation: a scroll-linked zoom/dolly on that
+one image, with a soft two-layer parallax (a sharp foreground bloom
+drifting at a different rate than a softly blurred background layer cut
+from the same photo) to suggest depth. No rotating bouquet, no unfolding
+wrap, no unfurling petals — that's a full product-transformation
+sequence, cut from v1 as a cost/complexity risk for a multi-vertical
+factory. See [WOW Moment #2](#signature-wow-moments).
 **Content:** Product name (e.g. `[Signature Arrangement Name]`), a short
 sensory description (material, mood, occasion), optional soft price
 framing (`from [price]`).
-**Motion:** Scroll-linked scrub animation on a pinned/sticky section;
-supporting text reveals only after the visual beat completes.
+**Motion:** Scroll-linked zoom and parallax on a pinned/sticky section —
+camera movement, not frame-by-frame animation; supporting text reveals
+only after the beat completes.
 **Asset requirement:** One photograph (working id `flagship-bouquet`).
-The scrub *motion* comes from WebGL acting on a single texture, not from
+The motion comes from WebGL acting on a single texture, not from
 photographing multiple frames or building a 3D asset — that's what keeps
 this scene's cost down to one shoot. This same asset is reused, recropped,
 in Collection Showcase and one Editorial Grid tile — see
 [§6](#6-lean-production-strategy-v1).
-**Technology:** WebGL/Three.js — single-texture shader reveal
-(mask/displacement/parallax), not an image-sequence player. Degrades to
-the same static photo + CSS parallax on low-power devices, no separate
-fallback asset needed.
+**Technology:** WebGL/Three.js — scroll-linked scale/translate ("camera")
+plus two-layer parallax on the single texture. No custom mask authoring,
+no displacement shader, no image-sequence player — a v1-cheap build, not
+a production-grade 3D sequence. Degrades to the same static photo + CSS
+parallax on low-power devices, no separate fallback asset needed.
 **Conversion role:** **First conversion CTA** — soft and low-friction
 (`"Explore the Collection"`, `"See how it's made"`), never `"Buy Now"`.
 Invites deeper engagement, doesn't demand commitment.
@@ -158,17 +205,18 @@ Invites deeper engagement, doesn't demand commitment.
 visitor intents self-select, while keeping the editorial (not catalog)
 framing.
 **Visual:** Asymmetric magazine-style grid, five occasion tiles (weddings,
-everyday, sympathy, corporate/events, seasonal gifting). Two tiles carry
-imagery — reused, recropped, duotone-graded crops of `flagship-bouquet`
-and `detail-texture`, graded differently per occasion so they read as
-distinct. The other three are pure typographic color-block cards on
-Visual DNA background tones — a real editorial technique (a magazine
-index page), not a placeholder-quality downgrade.
+everyday, sympathy, corporate/events, seasonal gifting). Three tiles carry
+imagery — reused, recropped, duotone-graded crops of `flagship-bouquet`,
+`detail-texture`, and `atmospheric-editorial`, each a different source
+photo so the tiles read as distinct rather than repeated crops. The other
+two are pure typographic color-block cards on Visual DNA background
+tones — a real editorial technique (a magazine index page), not a
+placeholder-quality downgrade.
 **Content:** Occasion label + one evocative line each, e.g. `"Weddings —
 flowers that hold a room's attention without asking for it."`
 **Motion:** Staggered fade/scale-in per tile on scroll entry; subtle
 hover-tilt/parallax on desktop.
-**Asset requirement:** None dedicated. Zero new photography — the two
+**Asset requirement:** None dedicated. Zero new photography — the three
 image tiles reuse existing assets; see
 [§6](#6-lean-production-strategy-v1).
 **Technology:** Plain HTML/CSS Grid + scroll-triggered stagger. No WebGL —
@@ -274,7 +322,7 @@ control, or a static styled map image). No custom WebGL scene needed here.
 **Conversion role:** Functional CTA (`"Get Directions"` / `"Call Now"`) —
 supports but doesn't replace the Final CTA.
 
-### Scene 10 — Final CTA
+### Scene 10 — Final CTA *(Signature WOW Moment #3)*
 **Scroll position:** 96–100%
 **Purpose:** The narrative's resolution and the primary conversion
 moment. Everything before this built desire, meaning, breadth, trust, and
@@ -327,8 +375,8 @@ quick reference, reflecting the lean v1 production strategy in
 |---|---|---|---|---|
 | Cinematic Hero | 1 new (Higgsfield, reused at Final CTA) | Deferred to v2 | **Yes** — core to the scene | CSS fallback (Ken Burns) |
 | Editorial Statement | None (optional reused accent) | No | No | Plain HTML/CSS |
-| Product Reveal | 1 new (Higgsfield, reused elsewhere) | Deferred to v2 | **Yes** — single-texture shader reveal | Static photo + CSS parallax fallback |
-| Editorial Grid | None new (2 tiles reuse existing assets, 3 typographic) | No | No | Plain HTML/CSS Grid |
+| Product Reveal | 1 new (Higgsfield, reused elsewhere) | Deferred to v2 | **Yes** — camera zoom + 2-layer parallax, not a transformation sequence | Static photo + CSS parallax fallback |
+| Editorial Grid | None new (3 tiles reuse existing assets, 2 typographic) | No | No | Plain HTML/CSS Grid |
 | Collection Showcase | None new (reuses Product Reveal asset for 1 card) | No | No | Scroll-snap + drag JS |
 | Story Section | Required — real, client-provided | Deferred to v2 | No | Plain HTML/CSS |
 | Service Section | None (icons only) | No | No | Plain HTML/CSS |
@@ -336,17 +384,20 @@ quick reference, reflecting the lean v1 production strategy in
 | Location Section | Required — real, client-provided | No | No | Plain HTML/CSS + styled map |
 | Final CTA | None new (reuses Hero asset) | Deferred to v2 | No | Plain HTML/CSS |
 
-**New assets required for v1:** just three — one each for Cinematic Hero
-(`hero-atmosphere`), Product Reveal (`flagship-bouquet`), and a shared
-detail/texture shot (`detail-texture`), all reused across the other eight
-scenes. Full budget in [§6](#6-lean-production-strategy-v1).
+**New assets required for v1:** just four — Cinematic Hero
+(`hero-atmosphere`), Product Reveal (`flagship-bouquet`), a shared
+detail/texture shot (`detail-texture`), and a wider editorial/environment
+shot (`atmospheric-editorial`), all reused across the other eight scenes.
+Full budget in [§6](#6-lean-production-strategy-v1).
 **Scenes requiring real, client-provided (non-Higgsfield) photography:**
 Story Section and Location Section — the two places a generated image
 would undermine the "real local business" claim.
 **Video in v1:** none. Every video mention above is a named v2 candidate,
 not a v1 requirement.
 **Scenes that justify WebGL/Three.js:** only Cinematic Hero and Product
-Reveal — the two highest-emotion beats.
+Reveal — the two highest-emotion beats, and the two of three
+[Signature WOW moments](#signature-wow-moments) that need it (the third,
+Final CTA, doesn't).
 **Scenes that remain plain HTML/CSS:** all eight others — Editorial
 Statement, Editorial Grid, Collection Showcase, Story Section, Service
 Section, Social Proof, Location Section, Final CTA.
@@ -364,16 +415,23 @@ raises the bar every future vertical has to clear.
 
 **Constraints for v1:**
 
-- **3–4 Higgsfield assets, total, for the whole florist site.**
-  [generation-policy.md](./generation-policy.md)'s demo cap is 4 image
-  generations / 1 video *for the whole demo*, not per vertical — spending
-  3–4 on florist alone uses nearly all of it, so this is a hard ceiling,
-  not a starting budget.
+- **4 Higgsfield assets, total, for the whole florist site — exactly the
+  demo cap.** [generation-policy.md](./generation-policy.md)'s demo cap is
+  4 image generations / 1 video *for the whole demo*, not per vertical —
+  florist v1 uses all 4, so this is a hard ceiling, not a starting
+  budget. A 5th candidate (`closing-visual`, a Final CTA reserve) is
+  proposed but explicitly not authorized — see
+  [asset-manifest.md](./asset-manifest.md#4-higgsfield-budget).
 - **Video: zero by default in v1.** Every "video is a strong upgrade"
   note in [§3](#3-scene-by-scene-specification) is a named v2 candidate,
   not a v1 plan.
-- **WebGL/Three.js: only Cinematic Hero and Product Reveal.** Collection
-  Showcase and Final CTA ship plain HTML/CSS — no optional WebGL upgrade.
+- **WebGL/Three.js: only Cinematic Hero and Product Reveal**, and even
+  there kept to camera zoom + layered parallax on a single image — no
+  custom mask/displacement authoring, no image-sequence or 3D asset.
+  Collection Showcase and Final CTA ship plain HTML/CSS — no optional
+  WebGL upgrade. See [Signature WOW moments](#signature-wow-moments) for
+  why effort concentrates on just these two builds plus one CSS
+  transition, rather than spreading across all 10 scenes.
 - **No dedicated photoshoot for Editorial Grid or Collection Showcase.**
   Both are designed above to work off reused/recropped assets and
   typography instead of new photography.
@@ -393,21 +451,22 @@ actually generated:
 | `hero-atmosphere` | Higgsfield | Atmospheric flagship shot, sets the palette | Cinematic Hero (primary); Final CTA (re-graded, bookend) |
 | `flagship-bouquet` | Higgsfield | The signature arrangement, clean product shot | Product Reveal (primary); Collection Showcase (recropped, featured card); Editorial Grid (recropped, 1 tile) |
 | `detail-texture` | Higgsfield | Abstract macro detail (petal/texture) | Editorial Statement (optional accent); Service Section (optional accent); Editorial Grid (recropped, 1 tile) |
-| *(reserve — 4th slot)* | Higgsfield, **not pre-approved** | Only generated if the v1 review below shows real repetition | TBD, decided after launch |
+| `atmospheric-editorial` | Higgsfield | Wider editorial frame, arrangement + suggested environment | Editorial Grid (recropped, 1 tile); Collection Showcase (optional 2nd card) |
+| *(reserve — 5th slot: `closing-visual`)* | Higgsfield, **not pre-approved** | Only generated if the v1 review below shows real repetition at Final CTA | TBD, decided after launch |
 | Storefront/workshop photo | Client-provided | Real place, real people | Story Section; Location Section |
 
-Three Higgsfield assets, reused nine times across eight scenes, cover the
-whole page. Editorial Grid and Collection Showcase — the two scenes that
-previously implied the most new photography — now ship on zero dedicated
-assets of their own.
+Four Higgsfield assets, reused across nine placements in eight scenes,
+cover the whole page. Editorial Grid and Collection Showcase — the two
+scenes that previously implied the most new photography — now ship on
+zero dedicated assets of their own.
 
 **Sequencing:** build v1 on this minimal set, ship it, and only then
-evaluate — with a real page in front of us — whether Editorial Grid or
-Collection Showcase actually feel thin without more photography. Spending
-the reserve 4th asset, or requesting a larger budget, is a decision for
-after that review, not before it. The goal is the *feeling* of a
-sophisticated, content-rich site without a production pipeline that can't
-scale to the next seven verticals.
+evaluate — with a real page in front of us — whether Final CTA's reused
+hero asset feels repetitive. Spending the reserve 5th asset, or
+requesting a larger budget, is a decision for after that review, not
+before it. The goal is the *feeling* of a sophisticated, content-rich
+site without a production pipeline that can't scale to the next seven
+verticals.
 
 ## 7. Cross-vertical reusability
 

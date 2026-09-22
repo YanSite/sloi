@@ -16,6 +16,31 @@ While this project is in demo mode:
 These are totals for the whole demo, not per-session or per-vertical
 allowances.
 
+## Production mode limit
+
+A separate, higher tier for a real (non-demo) client engagement, once one
+exists. **Nothing in this project has moved to production mode — the
+florist vertical is demo mode, and stays demo mode until a human says
+otherwise.**
+
+- **Maximum 6 image generations**
+- **Maximum 2 video generations**
+- **Maximum 1 retry per asset**
+
+Like the demo limit, these are hard ceilings, not starting budgets, and
+apply per engagement once production mode is explicitly entered — not
+automatically unlocked by finishing a demo.
+
+## Both tiers are hard limits
+
+Demo mode's 4/1 and production mode's 6/2 are hard limits **unless the
+user explicitly approves an increase** for that specific asset or batch.
+An asset plan proposing more candidates than a tier allows (see
+[asset-manifest.md](./asset-manifest.md) for the florist demo, which
+proposes 5 image candidates against a 4-image demo cap) is not itself a
+request to exceed the limit — anything above the cap stays unapproved and
+ungenerated until asked for by name.
+
 ## Non-negotiable rules
 
 - Never generate assets automatically during planning.
