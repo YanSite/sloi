@@ -3,6 +3,7 @@
 import type { CtaLink, MediaRef } from "./types";
 import type { ThemeTokens, MotionConfig } from "@/lib/types";
 import { PinnedScroll, Parallax, Reveal } from "@/components/wow/motion";
+import { WebGLImageLayer } from "@/components/wow/webgl";
 
 export interface ProductRevealProps {
   title: string;
@@ -15,9 +16,10 @@ export interface ProductRevealProps {
 
 /**
  * Single hero product/offering moment — Signature WOW Moment #2. Camera
- * language (scroll-linked zoom via `Parallax`'s `scaleRange`), not a
- * transformation sequence — see /docs/experience-map.md Scene 3. Motion
- * proof of concept only: a graded color block stands in for `media`.
+ * language (scroll-linked zoom, via `WebGLImageLayer`'s `scaleRange`
+ * when WebGL is available, or CSS-only `Parallax` otherwise), not a
+ * transformation sequence — see /docs/experience-map.md Scene 3. A
+ * graded color block stands in for `media`'s real photograph either way.
  */
 export function ProductReveal({ title, description, media, cta, theme, motion }: ProductRevealProps) {
   const background = theme?.colors.background ?? "#15110D";
@@ -28,18 +30,27 @@ export function ProductReveal({ title, description, media, cta, theme, motion }:
     <section style={{ backgroundColor: background, color: foreground }}>
       <PinnedScroll scrollLengthVh={220}>
         {media ? (
-          <Parallax
-            speed={0.15}
+          <WebGLImageLayer
+            from={accent}
+            to={background}
+            depth={0.15}
             scaleRange={[0.92, 1.08]}
             className="flex h-full items-center justify-center"
-          >
-            <div
-              aria-hidden
-              data-placeholder-for={media.assetId}
-              className="aspect-[4/5] w-[min(70vw,28rem)]"
-              style={{ background: `linear-gradient(160deg, ${accent}, ${background})` }}
-            />
-          </Parallax>
+            fallback={
+              <Parallax
+                speed={0.15}
+                scaleRange={[0.92, 1.08]}
+                className="flex h-full items-center justify-center"
+              >
+                <div
+                  aria-hidden
+                  data-placeholder-for={media.assetId}
+                  className="aspect-[4/5] w-[min(70vw,28rem)]"
+                  style={{ background: `linear-gradient(160deg, ${accent}, ${background})` }}
+                />
+              </Parallax>
+            }
+          />
         ) : null}
 
         <Reveal

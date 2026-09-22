@@ -3,6 +3,7 @@
 import type { CtaLink, MediaRef } from "./types";
 import type { ThemeTokens, MotionConfig } from "@/lib/types";
 import { Reveal, Parallax } from "@/components/wow/motion";
+import { WebGLImageLayer } from "@/components/wow/webgl";
 
 export interface CinematicHeroProps {
   eyebrow?: string;
@@ -17,10 +18,12 @@ export interface CinematicHeroProps {
 
 /**
  * Full-bleed opening statement — Signature WOW Moment #1 (see
- * /docs/visual-dna.md). Motion proof of concept only: a graded color
- * block stands in for `media`'s real photograph (nothing generated yet,
- * see /docs/asset-manifest.md), wrapped in `Parallax` for the layered
- * drift, with the headline entering via `Reveal` on mount.
+ * /docs/visual-dna.md). WebGL proof of concept: `WebGLImageLayer` drives
+ * the layered drift when available, falling back to CSS-only `Parallax`
+ * (unsupported WebGL, reduced-motion, mobile, or a runtime failure). A
+ * graded color block stands in for `media`'s real photograph either way
+ * — nothing generated yet, see /docs/asset-manifest.md. Headline enters
+ * via `Reveal` on mount, independent of which visual layer renders.
  */
 export function CinematicHero({
   eyebrow,
@@ -42,14 +45,24 @@ export function CinematicHero({
       style={{ backgroundColor: background, color: foreground }}
     >
       {media ? (
-        <Parallax speed={0.25} className="absolute inset-0">
-          <div
-            aria-hidden
-            data-placeholder-for={media.assetId}
-            className="h-full w-full"
-            style={{ background: `radial-gradient(circle at 50% 60%, ${accent}55, ${background} 70%)` }}
-          />
-        </Parallax>
+        <WebGLImageLayer
+          from={`${accent}55`}
+          to={background}
+          depth={0.25}
+          className="absolute inset-0"
+          fallback={
+            <Parallax speed={0.25} className="h-full w-full">
+              <div
+                aria-hidden
+                data-placeholder-for={media.assetId}
+                className="h-full w-full"
+                style={{
+                  background: `radial-gradient(circle at 50% 60%, ${accent}55, ${background} 70%)`,
+                }}
+              />
+            </Parallax>
+          }
+        />
       ) : null}
 
       <Reveal
