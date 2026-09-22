@@ -1,13 +1,10 @@
 import { PageRenderer } from "@/lib/render";
-import { demoSiteConfig } from "@/lib/render/__fixtures__/demo-site-config";
+import { floristSiteConfig } from "@/config/verticals/florist";
 
-// Renders via demoSiteConfig (placeholder copy) rather than the real
-// floristSiteConfig: floristContent is still intentionally empty — no
-// copywriting has been approved (see /docs/experience-map.md's "Out of
-// scope"). Now that CinematicHero/ProductReveal/FinalCTA render real
-// (if placeholder-visual) markup instead of stubs, they need content to
-// render meaningfully. Swap back to floristSiteConfig once real copy
-// exists.
+// The florist vertical's own SiteConfig — real (if placeholder-copy)
+// content since Stage 8, no longer the demoSiteConfig stand-in Stage 3
+// used while floristContent was still empty. See /preview for every
+// registered SiteConfig, including this same one at /preview/florist.
 export default function Home() {
-  return <PageRenderer config={demoSiteConfig} />;
+  return <PageRenderer config={floristSiteConfig} />;
 }

@@ -16,7 +16,7 @@ export function validateSiteConfig(config: SiteConfig): ValidationResult {
 
 /**
  * Fails fast on config mistakes at module-load time — the `site-config.ts`
- * files under `src/config/verticals/*` and `src/lib/render/__fixtures__`
+ * files under `src/config/verticals/*` and `src/config/__fixtures__`
  * wrap their export with this, so a broken config throws once, at import
  * time (effectively free: ESM modules only evaluate once), rather than
  * failing confusingly mid-render or not at all. Mirrors

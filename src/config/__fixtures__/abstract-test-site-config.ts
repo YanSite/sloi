@@ -1,7 +1,7 @@
 import type { AssetManifest, BusinessProfile, SiteConfig, Template, VisualDNA } from "@/lib/types";
 import { resolveTheme } from "@/lib/theme";
 import { assertValidSiteConfig } from "@/lib/validation";
-import { defineContent } from "../section-content";
+import { defineContent } from "@/lib/render";
 
 /**
  * Stage 5's "critical test," fixture #2: a deliberately plain,

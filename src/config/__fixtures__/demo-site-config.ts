@@ -10,14 +10,13 @@ import { floristTemplate } from "@/templates/florist.template";
 import { demoContent } from "./demo-content";
 
 /**
- * Minimal fixture for verifying the renderer only — not a real site.
- * Reuses the real, approved florist business/visual/theme/asset layers
- * (Stage 1) and pairs them with `demoContent`'s placeholder copy, since
- * the real `floristContent` is still intentionally empty. Proves
- * `resolveSections`/`PageRenderer` can assemble all 10 enabled sections
- * from `floristTemplate.experienceMap`, in order. Validated once at
- * module load via `assertValidSiteConfig` — this fixture is meant to be
- * fully valid and render-ready, unlike `floristSiteConfig`.
+ * Renderer proof-of-concept fixture from Stage 2, kept for regression
+ * coverage now that `floristSiteConfig` (src/config/verticals/florist)
+ * also has real placeholder content (Stage 8) — the two now largely
+ * overlap; this one is pinned to its own `demoContent` rather than
+ * merged into the vertical, so a future edit to florist's real content
+ * can't silently break the original "all 10 sections assemble in order"
+ * proof. Validated once at module load via `assertValidSiteConfig`.
  */
 export const demoSiteConfig: SiteConfig = assertValidSiteConfig({
   business: floristBusinessProfile,

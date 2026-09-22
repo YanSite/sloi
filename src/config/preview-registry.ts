@@ -1,8 +1,8 @@
 import type { SiteConfig } from "@/lib/types";
 import { floristSiteConfig } from "@/config/verticals/florist";
 import { barberSiteConfig } from "@/config/verticals/barber";
-import { demoSiteConfig } from "@/lib/render/__fixtures__/demo-site-config";
-import { abstractTestSiteConfig } from "@/lib/render/__fixtures__/abstract-test-site-config";
+import { demoSiteConfig } from "./__fixtures__/demo-site-config";
+import { abstractTestSiteConfig } from "./__fixtures__/abstract-test-site-config";
 
 export interface PreviewEntry {
   slug: string;
@@ -23,11 +23,11 @@ export interface PreviewEntry {
  * (`lib/render`/`components/wow`/etc.) are never allowed to do. A
  * registry that lists real vertical configs is inherently
  * vertical-*aware*, so it belongs in the same layer as
- * `config/verticals/*`, not inside the reusable core. See Stage 8's
- * Portability Report for the two `lib/render/__fixtures__` files that
- * still import a vertical directly and haven't been moved (pre-existing
- * since Stage 2, flagged there as a pre-Lock cleanup item, not fixed
- * here to avoid an unrequested refactor).
+ * `config/verticals/*`, not inside the reusable core. `./__fixtures__`
+ * (demo/abstract-test configs) moved here alongside it for the same
+ * reason at the Engine v1 Lock audit — they used to live under
+ * `src/lib/render/__fixtures__` and import `@/config/verticals/florist`
+ * directly, the same core-purity violation this registry once had.
  */
 export const previewRegistry: PreviewEntry[] = [
   { slug: "florist", label: "Florist — Botanical Noir", config: floristSiteConfig },

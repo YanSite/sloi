@@ -1,4 +1,4 @@
-import { defineContent } from "../section-content";
+import { defineContent } from "@/lib/render";
 
 /**
  * NOT approved florist copy — every string is a bracket placeholder, same
