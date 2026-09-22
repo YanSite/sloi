@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { PageRenderer } from "@/lib/render";
-import { getPreviewEntry, previewRegistry } from "@/lib/render/preview-registry";
+import { getPreviewEntry, previewRegistry } from "@/config/preview-registry";
 
 export function generateStaticParams() {
   return previewRegistry.map((entry) => ({ slug: entry.slug }));

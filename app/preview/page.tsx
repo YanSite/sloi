@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { previewRegistry } from "@/lib/render";
+import { previewRegistry } from "@/config/preview-registry";
 
 // Preview index — the last step of the production workflow (Business
 // Profile → Visual DNA → Experience → Content → Assets → SiteConfig →
