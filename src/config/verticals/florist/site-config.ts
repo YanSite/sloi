@@ -7,10 +7,15 @@ import { floristAssetManifest } from "./asset-manifest";
 import { floristThemeTokens } from "./theme-tokens";
 
 /**
- * Composes every florist config layer into one SiteConfig. This exists to
- * prove the type checks end to end, not to render anything — there is no
- * renderer yet (see /docs/engine-architecture.md's "Rendering (not yet
- * built)" section), and this file must not become one.
+ * Composes every florist config layer into one SiteConfig. Deliberately
+ * NOT run through `assertValidSiteConfig` (see
+ * src/lib/validation/validate-site-config.ts) — `floristContent` is still
+ * intentionally empty (no copy approved yet, see demo-content.ts), so
+ * this fixture would fail the "required asset exists" check by design,
+ * not by mistake. It exists to prove the type layers compile end to end,
+ * not to render or to pass full validation — see `demoSiteConfig` and
+ * `abstractTestSiteConfig` (both wrapped in `assertValidSiteConfig`) for
+ * configs meant to be complete and render-ready.
  */
 export const floristSiteConfig: SiteConfig = {
   business: floristBusinessProfile,

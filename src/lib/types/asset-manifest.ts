@@ -5,20 +5,14 @@ import type { SectionId } from "./section";
  * Tracks every image/video a business needs, its generation status, and
  * where it belongs — never the asset binary or generation credentials.
  */
-export type AssetType = "image" | "video";
+export const ASSET_TYPES = ["image", "video"] as const;
+export type AssetType = (typeof ASSET_TYPES)[number];
 
-export type AssetSource =
-  | "higgsfield"
-  | "stock"
-  | "client-provided"
-  | "placeholder";
+export const ASSET_SOURCES = ["higgsfield", "stock", "client-provided", "placeholder"] as const;
+export type AssetSource = (typeof ASSET_SOURCES)[number];
 
-export type AssetStatus =
-  | "planned"
-  | "approved"
-  | "generating"
-  | "generated"
-  | "rejected";
+export const ASSET_STATUSES = ["planned", "approved", "generating", "generated", "rejected"] as const;
+export type AssetStatus = (typeof ASSET_STATUSES)[number];
 
 /** Where the subject sits in frame, for CSS `object-position`-driven crops. Both axes run 0 (left/top) to 1 (right/bottom); omitted means center. */
 export interface AssetFocalPoint {

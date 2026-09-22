@@ -42,11 +42,16 @@ export function CinematicHero({
   const background = theme?.colors.background ?? "#15110D";
   const foreground = theme?.colors.foreground ?? "#F3ECDF";
   const accent = theme?.colors.primary ?? "#6E2B34";
+  // `theme.colors.accent`, not `primary` — the focus ring needs to read
+  // clearly against a dark background, which `accent` (a lighter pop
+  // color by design) does more reliably than the brand `primary`.
+  const focusRingColor = theme?.colors.accent ?? "#B08D57";
   const resolvedMedia = resolveAsset(media, assets);
   const hasRealSource = resolvedMedia.sources.length > 0;
 
   return (
     <section
+      aria-labelledby="cinematic-hero-headline"
       className="relative flex h-screen items-center justify-center overflow-hidden"
       style={{ backgroundColor: background, color: foreground }}
     >
@@ -61,7 +66,13 @@ export function CinematicHero({
               <img
                 src={resolvedMedia.sources[0].url}
                 srcSet={toSrcSet(resolvedMedia.sources)}
+                sizes="100vw"
                 alt={resolvedMedia.alt}
+                // Above-the-fold, full-bleed — the page's LCP candidate,
+                // so it loads eagerly and at high priority rather than
+                // deferring like a below-the-fold image would.
+                loading="eager"
+                fetchPriority="high"
                 className="h-full w-full object-cover"
                 style={{ objectPosition: toObjectPosition(resolvedMedia.focalPoint) }}
               />
@@ -94,7 +105,11 @@ export function CinematicHero({
             {eyebrow}
           </p>
         ) : null}
-        <h1 className="text-4xl font-semibold sm:text-6xl" style={{ fontFamily: theme?.fonts.display }}>
+        <h1
+          id="cinematic-hero-headline"
+          className="text-4xl font-semibold sm:text-6xl"
+          style={{ fontFamily: theme?.fonts.display }}
+        >
           {headline}
         </h1>
         {subheadline ? (
@@ -104,14 +119,14 @@ export function CinematicHero({
         ) : null}
         {primaryCta || secondaryCta ? (
           <div
-            className="mt-8 flex items-center justify-center"
+            className="mt-8 flex flex-col items-center justify-center sm:flex-row"
             style={{ gap: theme?.spacing.lg }}
           >
             {primaryCta ? (
               <a
                 href={primaryCta.href}
-                className="underline underline-offset-4 transition-opacity hover:opacity-70"
-                style={{ transitionDuration: theme?.transitions.base }}
+                className="underline underline-offset-4 transition-opacity hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+                style={{ transitionDuration: theme?.transitions.base, outlineColor: focusRingColor }}
               >
                 {primaryCta.label}
               </a>
@@ -119,8 +134,8 @@ export function CinematicHero({
             {secondaryCta ? (
               <a
                 href={secondaryCta.href}
-                className="opacity-70 underline underline-offset-4 transition-opacity hover:opacity-100"
-                style={{ transitionDuration: theme?.transitions.base }}
+                className="opacity-70 underline underline-offset-4 transition-opacity hover:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
+                style={{ transitionDuration: theme?.transitions.base, outlineColor: focusRingColor }}
               >
                 {secondaryCta.label}
               </a>

@@ -6,15 +6,24 @@
  * `@/components/wow/motion` for import-path convenience; this file is the
  * canonical definition.
  */
-export type MotionPreset =
-  | "fade-up"
-  | "fade-in"
-  | "stagger-children"
-  | "scale-in"
-  /** Scroll-linked scale/translate on one or two image layers — the two named Signature WOW builds only, see /docs/visual-dna.md#webgl-language. */
-  | "camera-parallax"
-  /** Timed opacity/color transition through a scene's background color — the Final CTA bookend, see /docs/visual-dna.md#transition-language. */
-  | "cross-fade";
+export const MOTION_PRESETS = [
+  "fade-up",
+  "fade-in",
+  "stagger-children",
+  "scale-in",
+  "camera-parallax",
+  "cross-fade",
+] as const;
+
+/**
+ * - "camera-parallax": scroll-linked scale/translate on one or two image
+ *   layers — the two named Signature WOW builds only, see
+ *   /docs/visual-dna.md#webgl-language.
+ * - "cross-fade": timed opacity/color transition through a scene's
+ *   background color — the Final CTA bookend, see
+ *   /docs/visual-dna.md#transition-language.
+ */
+export type MotionPreset = (typeof MOTION_PRESETS)[number];
 
 export interface MotionConfig {
   preset: MotionPreset;

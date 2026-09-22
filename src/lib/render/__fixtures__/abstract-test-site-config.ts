@@ -1,5 +1,6 @@
 import type { AssetManifest, BusinessProfile, SiteConfig, Template, VisualDNA } from "@/lib/types";
 import { resolveTheme } from "@/lib/theme";
+import { assertValidSiteConfig } from "@/lib/validation";
 import { defineContent } from "../section-content";
 
 /**
@@ -114,7 +115,7 @@ const abstractContent = defineContent({
   },
 });
 
-export const abstractTestSiteConfig: SiteConfig = {
+export const abstractTestSiteConfig: SiteConfig = assertValidSiteConfig({
   business: abstractBusiness,
   visualDNA: abstractVisualDNA,
   experience: abstractTemplate,
@@ -122,4 +123,4 @@ export const abstractTestSiteConfig: SiteConfig = {
   assets: abstractAssets,
   theme: abstractTheme,
   motion: { preset: "fade-in", duration: 0.4 },
-};
+});
