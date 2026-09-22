@@ -28,7 +28,13 @@ export interface AssetManifestEntry {
   /** Required when source is "higgsfield"; the exact generation prompt. */
   prompt?: string;
   aspect_ratio: string;
-  section: SectionId;
+  /**
+   * One generated/sourced file commonly backs more than one section (a
+   * hero shot re-graded for the closing CTA, a product shot recropped
+   * into a grid tile) — an array records every section it's reused in,
+   * without duplicating the entry per placement.
+   */
+  section: SectionId | SectionId[];
   status: AssetStatus;
 }
 
