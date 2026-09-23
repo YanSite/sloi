@@ -1,14 +1,15 @@
 import { defineContent } from "@/lib/render";
 
 /**
- * Section copy for the approved florist configuration — bracket
- * placeholders throughout, same convention as business-profile.ts. No
- * real copywriting decision is made here (see /docs/experience-map.md's
- * "Out of scope" note); this exists to prove the approved 10-scene
- * Experience renders end to end with real business/visual/asset/theme
- * layers (Stage 8's portability test), not to ship real marketing copy.
- * Wrapped in `defineContent` so every section's fields are checked
- * against its real props (see src/lib/render/section-content.ts).
+ * Текст секций для утверждённой конфигурации florist — везде
+ * bracket-плейсхолдеры, та же конвенция, что и в business-profile.ts.
+ * Никакого реального копирайтинг-решения здесь не принято (см. пометку
+ * «Out of scope» в /docs/experience-map.md); файл существует, чтобы
+ * доказать, что утверждённый 10-сценовый Experience рендерится целиком с
+ * реальными слоями business/visual/asset/theme (portability-тест Stage
+ * 8), а не чтобы поставить реальный маркетинговый текст. Обёрнут в
+ * `defineContent`, чтобы поля каждой секции проверялись по её реальным
+ * пропсам (см. src/lib/render/section-content.ts).
  */
 export const floristContent = defineContent({
   "cinematic-hero": {
@@ -39,7 +40,11 @@ export const floristContent = defineContent({
     title: "[FLORIST_COLLECTION_TITLE]",
     items: [
       { id: "arrangement-1", name: "[FLORIST_ITEM_1]", media: { assetId: "flagship-bouquet" } },
-      { id: "arrangement-2", name: "[FLORIST_ITEM_2]", media: { assetId: "atmospheric-editorial" } },
+      {
+        id: "arrangement-2",
+        name: "[FLORIST_ITEM_2]",
+        media: { assetId: "atmospheric-editorial" },
+      },
     ],
   },
   "story-section": {

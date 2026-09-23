@@ -1,10 +1,10 @@
 /**
- * MOTION layer.
- * Vertical-agnostic animation vocabulary — a `VisualDNA.motionPersonality`
- * slug (e.g. "gravity-drift") selects among these presets, it never
- * defines new ones per business. Re-exported from
- * `@/components/wow/motion` for import-path convenience; this file is the
- * canonical definition.
+ * Слой MOTION.
+ * Вертикально-нейтральный словарь анимаций — слаг
+ * `VisualDNA.motionPersonality` (например "gravity-drift") выбирает
+ * среди этих presets, а не определяет новые под конкретный бизнес.
+ * Реэкспортируется из `@/components/wow/motion` для удобства импорта;
+ * канонически определён здесь.
  */
 export const MOTION_PRESETS = [
   "fade-up",
@@ -16,12 +16,11 @@ export const MOTION_PRESETS = [
 ] as const;
 
 /**
- * - "camera-parallax": scroll-linked scale/translate on one or two image
- *   layers — the two named Signature WOW builds only, see
+ * - "camera-parallax": scroll-linked scale/translate одного-двух image-слоёв
+ *   — только для двух именованных Signature WOW builds, см.
  *   /docs/visual-dna.md#webgl-language.
- * - "cross-fade": timed opacity/color transition through a scene's
- *   background color — the Final CTA bookend, see
- *   /docs/visual-dna.md#transition-language.
+ * - "cross-fade": таймированный переход opacity/цвета фона сцены —
+ *   bookend Final CTA, см. /docs/visual-dna.md#transition-language.
  */
 export type MotionPreset = (typeof MOTION_PRESETS)[number];
 

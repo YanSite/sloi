@@ -4,15 +4,15 @@ import { assertValidSiteConfig } from "@/lib/validation";
 import { defineContent } from "@/lib/render";
 
 /**
- * Stage 5's "critical test," fixture #2: a deliberately plain,
- * non-botanical config — flat blue/gray palette, sans-only type, sharp
- * corners, no shadows — sharing NOTHING with the florist vertical except
- * the section components and the renderer. It proves the same
- * `CinematicHero` / `ProductReveal` / `FinalCTA` render correctly under a
- * wholly different VisualDNA/theme/content/assets with no component code
- * changed. If this fixture needed a section edit to work, that would be
- * an architecture bug to fix, not a fixture to special-case — see the
- * Stage 5 instruction this file exists to satisfy.
+ * Фикстура #2 «критического теста» Stage 5: сознательно плоский,
+ * не-ботанический конфиг — плоская сине-серая палитра, только sans-шрифт,
+ * острые углы, без теней — не делит с вертикалью florist НИЧЕГО, кроме
+ * компонентов секций и рендерера. Доказывает, что один и тот же
+ * `CinematicHero` / `ProductReveal` / `FinalCTA` корректно рендерятся при
+ * совершенно другой VisualDNA/theme/content/assets без единой правки
+ * компонента. Если бы этой фикстуре потребовалась правка секции, это была
+ * бы архитектурная ошибка, которую нужно исправлять, а не частный случай
+ * фикстуры — см. инструкцию Stage 5, которой этот файл соответствует.
  */
 const abstractVisualDNA: VisualDNA = {
   vertical: "local-services",
@@ -39,18 +39,18 @@ const abstractTheme = resolveTheme(
     body: "system-ui, sans-serif",
   },
   {
-    // Deliberately overrides the shared default scale — sharp corners, no
-    // elevation — to prove radius/shadow tokens actually flow from theme,
-    // not from a hardcoded class in the section component.
+    // Сознательно переопределяет общую шкалу по умолчанию — острые углы,
+    // без elevation — чтобы доказать, что токены radius/shadow реально
+    // приходят из темы, а не из захардкоженного класса в компоненте секции.
     radius: { none: "0px", sm: "0px", md: "0px", lg: "0px", full: "0px" },
     shadows: { sm: "none", md: "none", lg: "none" },
-  }
+  },
 );
 
-// A tiny inline placeholder image — not a generated or real photograph,
-// just enough of a real file to prove `resolveAsset`'s responsive-source
-// path (the `<img>` branch in CinematicHero/ProductReveal) actually
-// renders, alongside the still-unresolved fallback path.
+// Крохотное инлайновое placeholder-изображение — не сгенерированная и не
+// реальная фотография, лишь настоящий файл, достаточный, чтобы доказать
+// реальную отрисовку responsive-source пути `resolveAsset` (ветка `<img>`
+// в CinematicHero/ProductReveal), наравне с ещё не резолвящимся fallback-путём.
 const PLACEHOLDER_IMAGE =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='3'%3E%3Crect width='4' height='3' fill='%232F6FED'/%3E%3C/svg%3E";
 
@@ -71,7 +71,8 @@ const abstractAssets: AssetManifest = [
   },
   {
     asset_id: "abstract-product",
-    purpose: "Second placeholder asset, deliberately left unresolved — proves the gradient fallback still works alongside a resolved asset.",
+    purpose:
+      "Second placeholder asset, deliberately left unresolved — proves the gradient fallback still works alongside a resolved asset.",
     type: "image",
     source: "placeholder",
     aspect_ratio: "4:5",

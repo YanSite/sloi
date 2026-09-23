@@ -1,10 +1,11 @@
 import type { Template } from "@/lib/types";
 
 /**
- * Default experience structure for the florist vertical. Ordering only —
- * no copy, styling, or assets. Order matches the approved scroll journey
- * in /docs/experience-map.md §2 (attention → meaning → desire → breadth
- * → depth → trust → clarity → validation → grounding → action).
+ * Структура experience по умолчанию для вертикали florist. Только
+ * порядок — без копирайта, стилей или ассетов. Порядок совпадает с
+ * утверждённым scroll journey в /docs/experience-map.md §2 (внимание →
+ * смысл → желание → широта → глубина → доверие → ясность → валидация →
+ * заземление → действие).
  */
 export const floristTemplate: Template = {
   vertical: "florist",

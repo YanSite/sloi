@@ -1,13 +1,21 @@
 import type { SiteConfig } from "@/lib/types";
 import type { ValidationIssue } from "./types";
 
-const THEME_TOKEN_KEYS = ["colors", "fonts", "spacing", "radius", "shadows", "transitions", "breakpoints"] as const;
+const THEME_TOKEN_KEYS = [
+  "colors",
+  "fonts",
+  "spacing",
+  "radius",
+  "shadows",
+  "transitions",
+  "breakpoints",
+] as const;
 const COLOR_KEYS = ["background", "foreground", "primary"] as const;
 
 /**
- * SiteConfig-level "does the top of the tree have what it needs" checks —
- * required fields present, before anything more specific (experience
- * structure, asset references) can be meaningfully validated at all.
+ * Проверки уровня SiteConfig — «есть ли у вершины дерева всё
+ * необходимое»: обязательные поля на месте, прежде чем можно осмысленно
+ * проверять что-то более конкретное (структуру experience, ссылки на assets).
  */
 export function validateShape(config: SiteConfig): ValidationIssue[] {
   const issues: ValidationIssue[] = [];
@@ -24,7 +32,8 @@ export function validateShape(config: SiteConfig): ValidationIssue[] {
     issues.push({
       severity: "error",
       code: "config/missing-business-contact",
-      message: "business.contact is required (an object — individual fields inside it may be empty).",
+      message:
+        "business.contact is required (an object — individual fields inside it may be empty).",
       path: "business.contact",
     });
   }
@@ -60,7 +69,10 @@ export function validateShape(config: SiteConfig): ValidationIssue[] {
     }
   }
 
-  if (!Array.isArray(config.experience?.experienceMap) || config.experience.experienceMap.length === 0) {
+  if (
+    !Array.isArray(config.experience?.experienceMap) ||
+    config.experience.experienceMap.length === 0
+  ) {
     issues.push({
       severity: "error",
       code: "config/empty-experience-map",

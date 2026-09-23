@@ -8,26 +8,27 @@ import { createGradientTexture } from "./gradient-texture";
 import { ImageLayerScene, type ImageLayerConfig } from "./scene";
 
 export interface WebGLImageLayerProps {
-  /** Placeholder gradient colors — stand in for a real MediaRef photograph. */
+  /** Плейсхолдерные цвета градиента — вместо реальной фотографии из MediaRef. */
   from: string;
   to: string;
   depth?: number;
   scaleRange?: ImageLayerConfig["scaleRange"];
   className?: string;
-  /** Rendered instead of the canvas whenever WebGL isn't used — unsupported, reduced-motion, simplified/mobile, or a runtime failure. This is the CSS/image implementation, not a loading spinner. */
+  /** Рендерится вместо canvas всегда, когда WebGL не используется — не поддерживается, reduced-motion, упрощённый режим/мобильный, либо runtime-сбой. Это CSS/image-реализация, а не спиннер загрузки. */
   fallback: ReactNode;
 }
 
 /**
- * WebGL as an ENHANCEMENT: first paint, server or client, is always the
- * fallback (`useWebGL` can only become true after `hasMounted` flips
- * post-hydration), so a slow or absent WebGL layer never blocks or
- * delays real content. A canvas only mounts, and Three.js only
- * initializes, in the effect below, once every gate already holds —
- * lazy by construction, not by a separate flag.
+ * WebGL как ENHANCEMENT: первая отрисовка, серверная или клиентская,
+ * всегда fallback (`useWebGL` может стать true только после того, как
+ * `hasMounted` переключится после гидратации), поэтому медленный или
+ * отсутствующий WebGL-слой никогда не блокирует и не задерживает
+ * реальный контент. Canvas монтируется, а Three.js инициализируется,
+ * только в эффекте ниже, когда уже выполнены все условия — ленивая
+ * инициализация по конструкции, а не через отдельный флаг.
  *
- * Allowed only for Cinematic Hero and Product Reveal per
- * /docs/visual-dna.md — Final CTA does not use this component.
+ * Разрешён только для Cinematic Hero и Product Reveal согласно
+ * /docs/visual-dna.md — Final CTA этот компонент не использует.
  */
 export function WebGLImageLayer({
   from,
@@ -41,22 +42,23 @@ export function WebGLImageLayer({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { enabled, simplify } = useMotionCapability();
 
-  // "Mounted" as a subscription with a snapshot that only ever differs
-  // between server (false) and client (true) — the idiomatic way to gate
-  // client-only feature detection without a hydration mismatch, and
-  // without deriving state via setState-in-effect.
+  // "Mounted" как подписка со снэпшотом, который отличается только между
+  // сервером (false) и клиентом (true) — идиоматичный способ включить
+  // client-only feature detection без hydration mismatch и без вывода
+  // состояния через setState-in-effect.
   const hasMounted = useSyncExternalStore(
     () => () => {},
     () => true,
-    () => false
+    () => false,
   );
 
-  // Every gate (mounted, site/OS motion enabled, not a simplified/coarse-
-  // pointer device, a real WebGL context is obtainable) has to hold
-  // before a canvas ever renders. Computed during render, not via effect
-  // + setState — isWebGLAvailable() itself is SSR-safe (returns false
-  // without `window`), so this is safe to call unconditionally once
-  // `hasMounted` confirms we're past hydration.
+  // Прежде чем canvas вообще отрендерится, должны выполниться все условия
+  // (смонтирован, motion включён на сайте/в ОС, не упрощённое
+  // coarse-pointer устройство, реальный WebGL-контекст доступен).
+  // Вычисляется во время рендера, а не через effect + setState —
+  // isWebGLAvailable() сама по себе безопасна для SSR (возвращает false
+  // без `window`), поэтому её можно звать безусловно, как только
+  // `hasMounted` подтвердит, что гидратация прошла.
   const [webGLFailed, setWebGLFailed] = useState(false);
   const useWebGL = hasMounted && enabled && !simplify && !webGLFailed && isWebGLAvailable();
 
@@ -75,12 +77,13 @@ export function WebGLImageLayer({
       scene = new ImageLayerScene(renderer, texture, { depth, scaleRange });
       scene.resize(container.clientWidth, container.clientHeight);
     } catch {
-      // Context creation or setup failed for some environment-specific
-      // reason (driver issue, exhausted contexts, ...) — drop to the CSS
-      // fallback instead of leaving a broken canvas on screen. Dispose
-      // the renderer if it got far enough to exist before the failure.
+      // Создание контекста или настройка упали по какой-то
+      // environment-специфичной причине (проблема драйвера, контексты
+      // исчерпаны, ...) — уходим на CSS fallback вместо того, чтобы
+      // оставить сломанный canvas на экране. Если renderer успел
+      // создаться до сбоя, освобождаем его.
       renderer?.dispose();
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- reacting to a synchronous failure from an imperative third-party call (`new THREE.WebGLRenderer`), only knowable here via try/catch; not deriving state from props.
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- реакция на синхронный сбой императивного вызова стороннего кода (`new THREE.WebGLRenderer`), узнать о котором можно только через try/catch; это не вывод состояния из пропсов.
       setWebGLFailed(true);
       return;
     }
@@ -106,7 +109,7 @@ export function WebGLImageLayer({
 
     const onContextLost = (event: Event) => {
       event.preventDefault();
-      setWebGLFailed(true); // GPU context lost mid-session — fall back rather than render nothing.
+      setWebGLFailed(true); // GPU-контекст потерян посреди сессии — уходим на fallback, а не рендерим пустоту.
     };
     canvas.addEventListener("webglcontextlost", onContextLost);
 

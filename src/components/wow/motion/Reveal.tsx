@@ -7,15 +7,15 @@ export type RevealStyle = "fade" | "fade-up" | "scale-in";
 export interface RevealProps {
   children: ReactNode;
   revealStyle?: RevealStyle;
-  /** Seconds. */
+  /** Секунды. */
   duration?: number;
-  /** Seconds. */
+  /** Секунды. */
   delay?: number;
   /**
-   * "mount": animate immediately on mount, via a pure CSS `@keyframes`
-   * animation — no JS dependency, safe for above-the-fold content (Hero).
-   * "scroll" (default): animate the first time the element enters the
-   * viewport, via IntersectionObserver.
+   * "mount": анимируется сразу при монтировании через чистую CSS
+   * `@keyframes` анимацию — без зависимости от JS, безопасно для контента
+   * над сгибом (Hero). "scroll" (по умолчанию): анимируется при первом
+   * появлении элемента во вьюпорте, через IntersectionObserver.
    */
   trigger?: "mount" | "scroll";
   className?: string;
@@ -40,13 +40,13 @@ const revealedClass: Record<RevealStyle, string> = {
 };
 
 /**
- * `reveal` / `fade` / `scale` primitives in one component — three
- * closely related enter-transitions, not three separate primitives with
- * duplicated trigger logic. Full reduced-motion fallback: every
- * rendered path always carries `motion-reduce:opacity-100
- * motion-reduce:translate-y-0 motion-reduce:scale-100
- * motion-reduce:animate-none`, a pure CSS media query that wins
- * regardless of whether this component's JS has run yet.
+ * `reveal` / `fade` / `scale` в одном компоненте — три близких
+ * enter-перехода, а не три отдельных примитива с дублированной логикой
+ * триггера. Полный fallback на reduced-motion: любой из путей рендера
+ * всегда несёт `motion-reduce:opacity-100 motion-reduce:translate-y-0
+ * motion-reduce:scale-100 motion-reduce:animate-none` — чистый CSS
+ * media query, который побеждает независимо от того, успел ли
+ * отработать JS этого компонента.
  */
 export function Reveal({
   children,
@@ -70,7 +70,7 @@ export function Reveal({
           observer.disconnect();
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
     observer.observe(node);
     return () => observer.disconnect();

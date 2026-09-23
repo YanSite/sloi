@@ -9,7 +9,7 @@ export interface SocialProofProps {
   testimonials: Testimonial[];
 }
 
-/** Reviews/testimonials/trust signals. Interface only. */
+/** Отзывы/testimonials/сигналы доверия. Пока только интерфейс. */
 export function SocialProof(_props: SocialProofProps) {
   return null;
 }

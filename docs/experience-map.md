@@ -1,7 +1,7 @@
 # Experience Blueprint — Florist (v1)
 
 The **EXPERIENCE STRUCTURE** layer, expanded into a full creative/UX
-blueprint. This document defines the reusable *storytelling system* the
+blueprint. This document defines the reusable _storytelling system_ the
 engine is built around — not just which sections exist (that's the
 `SectionId` type, see [Engine mapping](#engine-mapping) below), but why
 each one exists, what it shows, what it says, how it moves, what it costs
@@ -13,7 +13,7 @@ in assets, and what it asks of the visitor.
   `[BRACKETED_PLACEHOLDER]` style matching
   [business-profile.ts](../src/config/verticals/florist/business-profile.ts).
 - No assets generated or sourced — any image/video referenced here is a
-  *requirement*, not a deliverable. Generation still goes through
+  _requirement_, not a deliverable. Generation still goes through
   [generation-policy.md](./generation-policy.md)'s approval gate.
 - No components built, no `content.ts` written, no `floristTemplate`
   changes committed. This is the design the implementation phase will
@@ -35,21 +35,21 @@ brand film, not a business.
 
 What this explicitly is **not**:
 
-| Generic ecommerce landing page | This experience |
-|---|---|
-| Uniform product grid up top | One flagship product, revealed cinematically, before any grid |
-| Stock hero banner + big "SHOP NOW" | Atmospheric hero, no CTA at all in the first scene |
-| CTA button repeated in every section | Exactly one soft CTA, one primary CTA — see [§4](#4-conversion-architecture) |
-| Star-rating widgets | Editorial-style pull-quotes |
-| Specs and SKUs | Occasions and moments |
-| Flat, uniform pacing | Directed pacing — beats of tension (hero, reveal) and rest (statement, story) |
+| Generic ecommerce landing page       | This experience                                                               |
+| ------------------------------------ | ----------------------------------------------------------------------------- |
+| Uniform product grid up top          | One flagship product, revealed cinematically, before any grid                 |
+| Stock hero banner + big "SHOP NOW"   | Atmospheric hero, no CTA at all in the first scene                            |
+| CTA button repeated in every section | Exactly one soft CTA, one primary CTA — see [§4](#4-conversion-architecture)  |
+| Star-rating widgets                  | Editorial-style pull-quotes                                                   |
+| Specs and SKUs                       | Occasions and moments                                                         |
+| Flat, uniform pacing                 | Directed pacing — beats of tension (hero, reveal) and rest (statement, story) |
 
 ## Signature WOW moments
 
 This blueprint's structure answers "is this well organized?" It doesn't
 yet answer the commercial question that actually sells the engine: in the
-first 10 seconds, why does a business owner say *"I want this on my
-site"* — not just *"this is nicely laid out"*? Structure alone doesn't do
+first 10 seconds, why does a business owner say _"I want this on my
+site"_ — not just _"this is nicely laid out"_? Structure alone doesn't do
 that; a small number of unmistakable moments do. Exactly **three**, not
 one per scene — concentrating art-direction and engineering effort here
 is what makes v1 feel expensive while costing three photographs (see
@@ -63,7 +63,7 @@ out of near-total darkness. This is the one moment that has to be
 flawless on load — most first impressions are made in this scene alone.
 
 **WOW Moment #2 — Product reveal** (Scene 3, Product Reveal, 20–35%).
-Deliberately *not* a full transformation sequence (rotating bouquet,
+Deliberately _not_ a full transformation sequence (rotating bouquet,
 unfolding wrap, unfurling petals) — that reads as impressive on a
 mockup but is a production-grade-3D-sequence build for a factory of
 local-business sites. v1's version is camera language, not
@@ -91,18 +91,18 @@ effort there would dilute these three rather than add to them.
 Ten scenes, an emotional arc from **attention → meaning → desire → breadth
 → depth → trust → clarity → validation → grounding → action**:
 
-| Scroll | Scene | Beat |
-|---|---|---|
-| 0–8% | Cinematic Hero | Attention — cinematic mood, no text pressure |
-| 8–20% | Editorial Statement | Meaning — the brand's philosophy, earned before any product |
-| 20–35% | Product Reveal | Desire — the single flagship object, theatrically shown |
-| 35–48% | Editorial Grid | Breadth — "flowers for every story," visitor self-identifies |
-| 48–60% | Collection Showcase | Depth — curated seasonal browsing within that mood |
-| 60–72% | Story Section | Trust — who makes this, and why it's local, not a delivery app |
-| 72–82% | Service Section | Clarity — how ordering actually works, friction removed |
-| 82–90% | Social Proof | Validation — real quotes, right before the ask |
-| 90–96% | Location Section | Grounding — a real, visitable, contactable place |
-| 96–100% | Final CTA | Action — the ask, bookending the hero |
+| Scroll  | Scene               | Beat                                                           |
+| ------- | ------------------- | -------------------------------------------------------------- |
+| 0–8%    | Cinematic Hero      | Attention — cinematic mood, no text pressure                   |
+| 8–20%   | Editorial Statement | Meaning — the brand's philosophy, earned before any product    |
+| 20–35%  | Product Reveal      | Desire — the single flagship object, theatrically shown        |
+| 35–48%  | Editorial Grid      | Breadth — "flowers for every story," visitor self-identifies   |
+| 48–60%  | Collection Showcase | Depth — curated seasonal browsing within that mood             |
+| 60–72%  | Story Section       | Trust — who makes this, and why it's local, not a delivery app |
+| 72–82%  | Service Section     | Clarity — how ordering actually works, friction removed        |
+| 82–90%  | Social Proof        | Validation — real quotes, right before the ask                 |
+| 90–96%  | Location Section    | Grounding — a real, visitable, contactable place               |
+| 96–100% | Final CTA           | Action — the ask, bookending the hero                          |
 
 This is a **proposed refinement** of the placeholder order currently in
 [floristTemplate](../src/templates/florist.template.ts) (whose own comment
@@ -123,7 +123,8 @@ types.
 
 ## 3. Scene-by-scene specification
 
-### Scene 1 — Cinematic Hero *(Signature WOW Moment #1)*
+### Scene 1 — Cinematic Hero _(Signature WOW Moment #1)_
+
 **Scroll position:** 0–8%
 **Purpose:** Establish the premium/cinematic register before a single
 word is read. Signals "not a template site" in the first second.
@@ -147,6 +148,7 @@ static Ken Burns CSS animation for reduced-motion/low-power devices.
 **Conversion role:** None. A CTA here breaks the editorial register.
 
 ### Scene 2 — Editorial Statement
+
 **Scroll position:** 8–20%
 **Purpose:** Give the brand a voice — a manifesto beat that positions the
 florist philosophically before any product is shown. This is what earns
@@ -165,7 +167,8 @@ a crop of the `detail-texture` asset (see
 Motion/GSAP ScrollTrigger). No WebGL.
 **Conversion role:** None. Positioning and trust only.
 
-### Scene 3 — Product Reveal *(Signature WOW Moment #2)*
+### Scene 3 — Product Reveal _(Signature WOW Moment #2)_
+
 **Scroll position:** 20–35%
 **Purpose:** Introduce the flagship arrangement as the emotional payoff of
 the two preceding beats — first proof of what the visitor can actually
@@ -200,6 +203,7 @@ parallax on low-power devices, no separate fallback asset needed.
 Invites deeper engagement, doesn't demand commitment.
 
 ### Scene 4 — Editorial Grid
+
 **Scroll position:** 35–48%
 **Purpose:** Show the breadth of occasions served, letting different
 visitor intents self-select, while keeping the editorial (not catalog)
@@ -225,6 +229,7 @@ readability matters more than spectacle here.
 down the page. No explicit CTA button.
 
 ### Scene 5 — Collection Showcase
+
 **Scroll position:** 48–60%
 **Purpose:** Demonstrate range and seasonality — proof the business is
 active and current, and a curated (not transactional) browsing moment.
@@ -249,6 +254,7 @@ for Hero and Product Reveal only.
 item) — still browsing-oriented, not the primary ask.
 
 ### Scene 6 — Story Section
+
 **Scroll position:** 60–72%
 **Purpose:** Build local trust and emotional connection — who makes this,
 and why it isn't a national delivery app. The "local business" pillar.
@@ -269,6 +275,7 @@ if the client can supply it later, is a v2 upgrade, not required for v1.
 process/proof scenes.
 
 ### Scene 7 — Service Section
+
 **Scroll position:** 72–82%
 **Purpose:** Answer "how do I actually get this" — remove practical
 friction before asking for commitment. Bridges emotion to transaction.
@@ -287,6 +294,7 @@ WebGL.
 order"`) per step — process education, not the primary close.
 
 ### Scene 8 — Social Proof
+
 **Scroll position:** 82–90%
 **Purpose:** De-risk the decision immediately before the ask — real
 testimonials reduce last-mile hesitation.
@@ -304,6 +312,7 @@ used, are also client-provided.
 Final CTA.
 
 ### Scene 9 — Location Section
+
 **Scroll position:** 90–96%
 **Purpose:** Ground the brand physically — confirm it's a real, local,
 visitable/deliverable business, and give the practical info needed to
@@ -322,7 +331,8 @@ control, or a static styled map image). No custom WebGL scene needed here.
 **Conversion role:** Functional CTA (`"Get Directions"` / `"Call Now"`) —
 supports but doesn't replace the Final CTA.
 
-### Scene 10 — Final CTA *(Signature WOW Moment #3)*
+### Scene 10 — Final CTA _(Signature WOW Moment #3)_
+
 **Scroll position:** 96–100%
 **Purpose:** The narrative's resolution and the primary conversion
 moment. Everything before this built desire, meaning, breadth, trust, and
@@ -352,8 +362,8 @@ conversion moment on the page.
   page (`"Order Now"` / `"Book a Consultation"`).
 - **Functional (non-narrative) CTAs:** small, secondary links inside
   Collection Showcase (`"View arrangement"`), Service Section (`"Start
-  your order"`), and Location Section (`"Get Directions"` / `"Call
-  Now"`) — these support wayfinding, they are not additional "asks."
+your order"`), and Location Section (`"Get Directions"` / `"Call
+Now"`) — these support wayfinding, they are not additional "asks."
 - **Trust/proof:** primary placement is Scene 8, Social Proof (82–90%),
   positioned deliberately right before the ask. Story Section (60–72%)
   reinforces trust earlier through craft/local narrative rather than
@@ -371,18 +381,18 @@ Consolidates the per-scene Asset Requirement / Technology fields above for
 quick reference, reflecting the lean v1 production strategy in
 [§6](#6-lean-production-strategy-v1).
 
-| Scene | Photography | Video | WebGL/Three.js | Baseline tech |
-|---|---|---|---|---|
-| Cinematic Hero | 1 new (Higgsfield, reused at Final CTA) | Deferred to v2 | **Yes** — core to the scene | CSS fallback (Ken Burns) |
-| Editorial Statement | None (optional reused accent) | No | No | Plain HTML/CSS |
-| Product Reveal | 1 new (Higgsfield, reused elsewhere) | Deferred to v2 | **Yes** — camera zoom + 2-layer parallax, not a transformation sequence | Static photo + CSS parallax fallback |
-| Editorial Grid | None new (3 tiles reuse existing assets, 2 typographic) | No | No | Plain HTML/CSS Grid |
-| Collection Showcase | None new (reuses Product Reveal asset for 1 card) | No | No | Scroll-snap + drag JS |
-| Story Section | Required — real, client-provided | Deferred to v2 | No | Plain HTML/CSS |
-| Service Section | None (icons only) | No | No | Plain HTML/CSS |
-| Social Proof | Optional (client-provided customer photos) | No | No | Plain HTML/CSS + JS carousel |
-| Location Section | Required — real, client-provided | No | No | Plain HTML/CSS + styled map |
-| Final CTA | None new (reuses Hero asset) | Deferred to v2 | No | Plain HTML/CSS |
+| Scene               | Photography                                             | Video          | WebGL/Three.js                                                          | Baseline tech                        |
+| ------------------- | ------------------------------------------------------- | -------------- | ----------------------------------------------------------------------- | ------------------------------------ |
+| Cinematic Hero      | 1 new (Higgsfield, reused at Final CTA)                 | Deferred to v2 | **Yes** — core to the scene                                             | CSS fallback (Ken Burns)             |
+| Editorial Statement | None (optional reused accent)                           | No             | No                                                                      | Plain HTML/CSS                       |
+| Product Reveal      | 1 new (Higgsfield, reused elsewhere)                    | Deferred to v2 | **Yes** — camera zoom + 2-layer parallax, not a transformation sequence | Static photo + CSS parallax fallback |
+| Editorial Grid      | None new (3 tiles reuse existing assets, 2 typographic) | No             | No                                                                      | Plain HTML/CSS Grid                  |
+| Collection Showcase | None new (reuses Product Reveal asset for 1 card)       | No             | No                                                                      | Scroll-snap + drag JS                |
+| Story Section       | Required — real, client-provided                        | Deferred to v2 | No                                                                      | Plain HTML/CSS                       |
+| Service Section     | None (icons only)                                       | No             | No                                                                      | Plain HTML/CSS                       |
+| Social Proof        | Optional (client-provided customer photos)              | No             | No                                                                      | Plain HTML/CSS + JS carousel         |
+| Location Section    | Required — real, client-provided                        | No             | No                                                                      | Plain HTML/CSS + styled map          |
+| Final CTA           | None new (reuses Hero asset)                            | Deferred to v2 | No                                                                      | Plain HTML/CSS                       |
 
 **New assets required for v1:** just four — Cinematic Hero
 (`hero-atmosphere`), Product Reveal (`flagship-bouquet`), a shared
@@ -417,7 +427,7 @@ raises the bar every future vertical has to clear.
 
 - **4 Higgsfield assets, total, for the whole florist site — exactly the
   demo cap.** [generation-policy.md](./generation-policy.md)'s demo cap is
-  4 image generations / 0 videos *for the whole demo*, not per vertical —
+  4 image generations / 0 videos _for the whole demo_, not per vertical —
   florist v1 uses all 4, so this is a hard ceiling, not a starting
   budget. A 5th candidate (`closing-visual`, a Final CTA reserve) is
   proposed but explicitly not authorized — see
@@ -446,14 +456,14 @@ raises the bar every future vertical has to clear.
 [generation-policy.md](./generation-policy.md) before anything is
 actually generated:
 
-| Asset (working id) | Source | What it shows | Scenes that reuse it |
-|---|---|---|---|
-| `hero-atmosphere` | Higgsfield | Atmospheric flagship shot, sets the palette | Cinematic Hero (primary); Final CTA (re-graded, bookend) |
-| `flagship-bouquet` | Higgsfield | The signature arrangement, clean product shot | Product Reveal (primary); Collection Showcase (recropped, featured card); Editorial Grid (recropped, 1 tile) |
-| `detail-texture` | Higgsfield | Abstract macro detail (petal/texture) | Editorial Statement (optional accent); Service Section (optional accent); Editorial Grid (recropped, 1 tile) |
-| `atmospheric-editorial` | Higgsfield | Wider editorial frame, arrangement + suggested environment | Editorial Grid (recropped, 1 tile); Collection Showcase (optional 2nd card) |
-| *(reserve — 5th slot: `closing-visual`)* | Higgsfield, **not pre-approved** | Only generated if the v1 review below shows real repetition at Final CTA | TBD, decided after launch |
-| Storefront/workshop photo | Client-provided | Real place, real people | Story Section; Location Section |
+| Asset (working id)                       | Source                           | What it shows                                                            | Scenes that reuse it                                                                                         |
+| ---------------------------------------- | -------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `hero-atmosphere`                        | Higgsfield                       | Atmospheric flagship shot, sets the palette                              | Cinematic Hero (primary); Final CTA (re-graded, bookend)                                                     |
+| `flagship-bouquet`                       | Higgsfield                       | The signature arrangement, clean product shot                            | Product Reveal (primary); Collection Showcase (recropped, featured card); Editorial Grid (recropped, 1 tile) |
+| `detail-texture`                         | Higgsfield                       | Abstract macro detail (petal/texture)                                    | Editorial Statement (optional accent); Service Section (optional accent); Editorial Grid (recropped, 1 tile) |
+| `atmospheric-editorial`                  | Higgsfield                       | Wider editorial frame, arrangement + suggested environment               | Editorial Grid (recropped, 1 tile); Collection Showcase (optional 2nd card)                                  |
+| _(reserve — 5th slot: `closing-visual`)_ | Higgsfield, **not pre-approved** | Only generated if the v1 review below shows real repetition at Final CTA | TBD, decided after launch                                                                                    |
+| Storefront/workshop photo                | Client-provided                  | Real place, real people                                                  | Story Section; Location Section                                                                              |
 
 Four Higgsfield assets, reused across nine placements in eight scenes,
 cover the whole page. Editorial Grid and Collection Showcase — the two
@@ -464,7 +474,7 @@ zero dedicated assets of their own.
 evaluate — with a real page in front of us — whether Final CTA's reused
 hero asset feels repetitive. Spending the reserve 5th asset, or
 requesting a larger budget, is a decision for after that review, not
-before it. The goal is the *feeling* of a sophisticated, content-rich
+before it. The goal is the _feeling_ of a sophisticated, content-rich
 site without a production pipeline that can't scale to the next seven
 verticals.
 
@@ -483,14 +493,14 @@ This matches the engine's own architecture principle (see
 [engine-architecture.md](./engine-architecture.md#the-reusable-core)):
 components never change per vertical, only the data and content behind
 them do. No scene here is "florist-specific" at the component level —
-these three simply carry the most florist-specific *meaning* today, and
+these three simply carry the most florist-specific _meaning_ today, and
 need the most rewriting when adapting to another vertical:
 
-| Scene | Florist | Restaurant | Barber | Beauty | Dental | Fitness | Automotive | Local Services |
-|---|---|---|---|---|---|---|---|---|
-| Product Reveal | Signature seasonal bouquet | Signature dish | Signature cut/ritual | Signature treatment | Smile transformation | Flagship transformation | Flagship vehicle/detail | Flagship service outcome |
-| Editorial Grid | Occasions (weddings, everyday, sympathy, corporate) | Dining moments (breakfast, date night, private events) | Service menu by need | Treatment categories | Care categories | Program types | Service categories | Trade-specific categories |
-| Collection Showcase | Seasonal collection lookbook | Tasting menu / seasonal dishes | Style gallery/lookbook | Before/after gallery | Smile gallery | Transformation gallery | Inventory/fleet showcase | Portfolio of completed work |
+| Scene               | Florist                                             | Restaurant                                             | Barber                 | Beauty               | Dental               | Fitness                 | Automotive               | Local Services              |
+| ------------------- | --------------------------------------------------- | ------------------------------------------------------ | ---------------------- | -------------------- | -------------------- | ----------------------- | ------------------------ | --------------------------- |
+| Product Reveal      | Signature seasonal bouquet                          | Signature dish                                         | Signature cut/ritual   | Signature treatment  | Smile transformation | Flagship transformation | Flagship vehicle/detail  | Flagship service outcome    |
+| Editorial Grid      | Occasions (weddings, everyday, sympathy, corporate) | Dining moments (breakfast, date night, private events) | Service menu by need   | Treatment categories | Care categories      | Program types           | Service categories       | Trade-specific categories   |
+| Collection Showcase | Seasonal collection lookbook                        | Tasting menu / seasonal dishes                         | Style gallery/lookbook | Before/after gallery | Smile gallery        | Transformation gallery  | Inventory/fleet showcase | Portfolio of completed work |
 
 The lean production strategy in [§6](#6-lean-production-strategy-v1)
 generalizes too: the same "one hero asset + one flagship asset + one
@@ -523,7 +533,7 @@ One implementation nuance worth flagging now, to solve later:
 `AssetManifestEntry` (see
 [asset-manifest.md](./asset-manifest.md)) pairs one `asset_id` with one
 `section`. The reuse pattern in [§6](#6-lean-production-strategy-v1) —
-one generated image backing entries in *multiple* sections (`hero-
+one generated image backing entries in _multiple_ sections (`hero-
 atmosphere` in both Cinematic Hero and Final CTA, `flagship-bouquet` in
 three different scenes) — will need either multiple manifest entries that
 point at the same underlying generated file, or a small type extension.

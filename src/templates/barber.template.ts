@@ -1,18 +1,18 @@
 import type { Template } from "@/lib/types";
 
 /**
- * Default experience structure for the barber test vertical (Stage 8's
- * portability test, part 2). Same shape as florist.template.ts, two
- * deliberate differences to actually exercise mechanisms florist never
- * touched:
+ * Структура experience по умолчанию для тестовой вертикали barber (часть
+ * 2 портируемость-теста Stage 8). Та же форма, что и у
+ * florist.template.ts, с двумя сознательными отличиями, реально
+ * задействующими механизмы, которые florist ни разу не затрагивал:
  *
- * - "collection-showcase" is disabled — a barbershop sells services, not
- *   a browsable product collection, and this is a real test that
- *   `enabled: false` correctly drops a section for a second vertical.
- * - "product-reveal" uses the "image-parallax" variant, registered in
- *   src/lib/render/section-registry.ts since Stage 2 but never selected
- *   by any config until now — proves the section+variant lookup for
- *   real, not just structurally.
+ * - "collection-showcase" отключена — барбершоп продаёт услуги, а не
+ *   просматриваемую коллекцию товаров, и это реальная проверка того, что
+ *   `enabled: false` корректно убирает секцию для второй вертикали.
+ * - "product-reveal" использует вариант "image-parallax",
+ *   зарегистрированный в src/lib/render/section-registry.ts с Stage 2, но
+ *   ни разу не выбранный ни одним конфигом до этого момента — доказывает
+ *   lookup section+variant по-настоящему, а не только структурно.
  */
 export const barberTemplate: Template = {
   vertical: "barber",
@@ -22,7 +22,11 @@ export const barberTemplate: Template = {
     { section: "editorial-statement", enabled: true },
     { section: "product-reveal", enabled: true, variant: "image-parallax" },
     { section: "editorial-grid", enabled: true },
-    { section: "collection-showcase", enabled: false, notes: "Barber sells services, not a browsable collection." },
+    {
+      section: "collection-showcase",
+      enabled: false,
+      notes: "Barber sells services, not a browsable collection.",
+    },
     { section: "story-section", enabled: true },
     { section: "service-section", enabled: true },
     { section: "social-proof", enabled: true },

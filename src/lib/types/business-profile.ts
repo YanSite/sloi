@@ -1,9 +1,9 @@
 import type { Vertical } from "./vertical";
 
 /**
- * BUSINESS DATA layer.
- * Objective facts about a specific business. No visual, motion, or copy
- * decisions belong here — see VisualDNA and ExperienceContent for those.
+ * Слой BUSINESS DATA.
+ * Объективные факты о конкретном бизнесе. Визуальным, motion- и
+ * копирайтинг-решениям здесь не место — см. VisualDNA и ExperienceContent.
  */
 export interface BusinessHours {
   day: "mon" | "tue" | "wed" | "thu" | "fri" | "sat" | "sun";

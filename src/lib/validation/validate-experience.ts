@@ -4,10 +4,9 @@ import { DEFAULT_VARIANT, sectionRegistry } from "@/lib/render/section-registry"
 import type { ValidationIssue } from "./types";
 
 /**
- * The two bookend Signature WOW Moments (see /docs/visual-dna.md) —
- * load-bearing enough that leaving either out is worth flagging, though a
- * vertical is still free to do it deliberately (hence a warning, not an
- * error).
+ * Два обрамляющих Signature WOW Moment (см. /docs/visual-dna.md) —
+ * достаточно значимы, чтобы отметить их отсутствие, хотя вертикаль
+ * вправе сознательно обойтись без них (поэтому warning, а не error).
  */
 const CORE_SECTIONS: SectionId[] = ["cinematic-hero", "final-cta"];
 
@@ -25,7 +24,7 @@ function validateEntries(config: SiteConfig): ValidationIssue[] {
         message: `"${entry.section}" is not a valid section id. Must be one of: ${SECTION_IDS.join(", ")}.`,
         path: `${path}.section`,
       });
-      return; // nothing further can be checked against an unknown section
+      return; // дальше проверять нечего — секция неизвестна
     }
 
     if (entry.enabled) {
@@ -65,7 +64,7 @@ function validateEntries(config: SiteConfig): ValidationIssue[] {
 
 function validateCoreSectionsPresent(config: SiteConfig): ValidationIssue[] {
   const enabled = new Set(
-    config.experience.experienceMap.filter((entry) => entry.enabled).map((entry) => entry.section)
+    config.experience.experienceMap.filter((entry) => entry.enabled).map((entry) => entry.section),
   );
   return CORE_SECTIONS.filter((section) => !enabled.has(section)).map((section) => ({
     severity: "warning" as const,
@@ -103,7 +102,7 @@ function validateOrder(config: SiteConfig): ValidationIssue[] {
   return issues;
 }
 
-/** Experience-map structural checks: valid ids, no duplicates, registered variants, valid order, invalid cross-references (motion preset). */
+/** Структурные проверки experience-map: валидные id, отсутствие дублей, зарегистрированные варианты, корректный порядок, невалидные перекрёстные ссылки (motion preset). */
 export function validateExperience(config: SiteConfig): ValidationIssue[] {
   return [
     ...validateEntries(config),

@@ -10,13 +10,15 @@ import { floristTemplate } from "@/templates/florist.template";
 import { demoContent } from "./demo-content";
 
 /**
- * Renderer proof-of-concept fixture from Stage 2, kept for regression
- * coverage now that `floristSiteConfig` (src/config/verticals/florist)
- * also has real placeholder content (Stage 8) — the two now largely
- * overlap; this one is pinned to its own `demoContent` rather than
- * merged into the vertical, so a future edit to florist's real content
- * can't silently break the original "all 10 sections assemble in order"
- * proof. Validated once at module load via `assertValidSiteConfig`.
+ * Proof-of-concept фикстура рендерера из Stage 2, сохранена для
+ * регрессионного покрытия теперь, когда у `floristSiteConfig`
+ * (src/config/verticals/florist) тоже есть реальный placeholder-контент
+ * (Stage 8) — эти два конфига теперь во многом пересекаются; этот
+ * закреплён за своим собственным `demoContent`, а не слит с вертикалью,
+ * поэтому будущая правка реального контента florist не сможет незаметно
+ * сломать изначальное доказательство «все 10 секций собираются по
+ * порядку». Валидируется один раз при загрузке модуля через
+ * `assertValidSiteConfig`.
  */
 export const demoSiteConfig: SiteConfig = assertValidSiteConfig({
   business: floristBusinessProfile,

@@ -2,22 +2,23 @@ import type { ThemeFontTokens, ThemeTokens, VisualDNA } from "@/lib/types";
 import { defaultThemeScale, type ThemeScale } from "./default-scale";
 
 /**
- * The one place a `VisualDNA` becomes a `ThemeTokens` — VisualDNA governs
- * theme, not the other way around. Colors come directly from
- * `visualDNA.colorPalette`; there is no other way to produce a
- * `ThemeTokens`, so a vertical can't hand-author one whose colors drift
- * from its approved VisualDNA. `fonts` stays an explicit argument rather
- * than derived: VisualDNA's typography field is a descriptive reference
- * ("Didone-register serif (Canela / GT Sectra Display class)"), not a
- * real `font-family` stack — picking the actual license/fallback chain is
- * a human decision, not something to fake-automate. `scale` (spacing,
- * radius, shadows, transitions, breakpoints) defaults to the shared
- * baseline in `default-scale.ts` and can be overridden per field.
+ * Единственное место, где `VisualDNA` становится `ThemeTokens` — VisualDNA
+ * управляет темой, а не наоборот. Цвета берутся напрямую из
+ * `visualDNA.colorPalette`; другого способа получить `ThemeTokens` нет,
+ * поэтому вертикаль не может вручную создать тему с цветами, отличными от
+ * утверждённой VisualDNA. `fonts` остаётся явным аргументом, а не
+ * выводится автоматически: поле typography в VisualDNA — это описательная
+ * референсная строка ("Didone-register serif (Canela / GT Sectra Display
+ * class)"), а не реальный `font-family` stack — выбор конкретной
+ * лицензии/fallback-цепочки это решение человека, а не то, что стоит
+ * имитировать автоматикой. `scale` (spacing, radius, shadows, transitions,
+ * breakpoints) по умолчанию берётся из общей базы в `default-scale.ts` и
+ * может быть переопределён по каждому полю отдельно.
  */
 export function resolveTheme(
   visualDNA: VisualDNA,
   fonts: ThemeFontTokens,
-  scale: Partial<ThemeScale> = {}
+  scale: Partial<ThemeScale> = {},
 ): ThemeTokens {
   return {
     vertical: visualDNA.vertical,

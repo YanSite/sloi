@@ -6,10 +6,10 @@ export function generateStaticParams() {
   return previewRegistry.map((entry) => ({ slug: entry.slug }));
 }
 
-// Renders any registered SiteConfig by slug — the general-purpose
-// replacement for one-off routes like the old /abstract-test page (see
-// Stage 5): register a config in preview-registry.ts, it's previewable
-// here, no route or component changes needed per config.
+// Рендерит любой зарегистрированный SiteConfig по slug — универсальная
+// замена одноразовым роутам вроде старой страницы /abstract-test (см.
+// Stage 5): зарегистрируйте конфиг в preview-registry.ts, и его можно
+// смотреть здесь — без правок роута или компонентов под каждый конфиг.
 export default async function PreviewPage({ params }: PageProps<"/preview/[slug]">) {
   const { slug } = await params;
   const entry = getPreviewEntry(slug);

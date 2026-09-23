@@ -1,12 +1,13 @@
 import type { VisualDNA } from "@/lib/types";
 
 /**
- * "Iron & Ash" — the barber test vertical's visual direction. Chosen
- * deliberately AGAINST florist's Botanical Noir: cool charcoal instead of
- * warm bitumen-brown, a hard barber-pole red instead of a muted burgundy,
- * a condensed industrial display face instead of a Didone serif, "clip"
- * motion instead of "drift". Same VisualDNA shape as florist's — proves
- * the type is vertical-agnostic, not that the two verticals look alike.
+ * «Iron & Ash» — визуальное направление тестовой вертикали barber.
+ * Выбрано сознательно НАПРОТИВ Botanical Noir у florist: холодный
+ * антрацит вместо тёплого битумно-коричневого, жёсткий
+ * barber-pole-красный вместо приглушённого бордового, конденсированный
+ * индустриальный display-шрифт вместо Didone-засечки, "clip"-motion
+ * вместо "drift". Та же форма VisualDNA, что у florist — доказывает, что
+ * тип вертикально-нейтрален, а не то, что вертикали похожи внешне.
  */
 export const barberVisualDNA: VisualDNA = {
   vertical: "barber",

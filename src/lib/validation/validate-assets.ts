@@ -70,11 +70,11 @@ function validateManifestEntries(manifest: AssetManifest): ValidationIssue[] {
         path: `${path}.aspect_ratio`,
       });
     }
-    // A "planned" higgsfield asset may not have a drafted prompt yet (see
-    // e.g. the unauthorized NICE_TO_HAVE reserve slot in
-    // asset-manifest.md) — that's a real, legitimate lifecycle stage, not
-    // a mistake. Once it moves past "planned" (approved and onward), a
-    // prompt is required.
+    // У higgsfield-ассета со статусом "planned" промпт может быть ещё не
+    // написан (см., например, неавторизованный NICE_TO_HAVE-резерв в
+    // asset-manifest.md) — это реальная, законная стадия жизненного
+    // цикла, а не ошибка. Как только статус продвигается дальше "planned"
+    // (approved и далее), промпт уже обязателен.
     if (entry.source === "higgsfield" && entry.status !== "planned" && !entry.prompt?.trim()) {
       issues.push({
         severity: "error",
@@ -100,7 +100,7 @@ function validateManifestEntries(manifest: AssetManifest): ValidationIssue[] {
   return issues;
 }
 
-/** Recursively finds every `MediaRef`-shaped value (`{ assetId: string }`) inside a content tree — content is loosely typed (`Record<string, unknown>`), so this is a structural/duck-typed walk, not a typed lookup. */
+/** Рекурсивно находит каждое значение формы `MediaRef` (`{ assetId: string }`) внутри дерева контента — content нестрого типизирован (`Record<string, unknown>`), поэтому это структурный duck-typed обход, а не типизированный lookup. */
 function findMediaRefs(value: unknown): MediaRef[] {
   if (!value || typeof value !== "object") return [];
   if (Array.isArray(value)) return value.flatMap(findMediaRefs);
@@ -132,18 +132,18 @@ function validateAssetReferences(config: SiteConfig): ValidationIssue[] {
 }
 
 /**
- * Sections whose real component Props require at least one `MediaRef`
- * (not optional) — a small, deliberately hand-maintained mirror of
- * src/components/wow/sections. Not derivable at runtime from TypeScript
- * types, which are erased; this is the one place that fact has to be
- * restated for a runtime check.
+ * Секции, чьи реальные Props компонента требуют хотя бы один `MediaRef`
+ * (не опционально) — небольшое, сознательно поддерживаемое вручную
+ * зеркало src/components/wow/sections. В рантайме это не вывести из
+ * типов TypeScript — они стираются при компиляции; это единственное
+ * место, где факт приходится продублировать для рантайм-проверки.
  */
 const SECTIONS_REQUIRING_MEDIA: SectionId[] = ["cinematic-hero", "product-reveal"];
 
 function validateRequiredAssets(config: SiteConfig): ValidationIssue[] {
   const issues: ValidationIssue[] = [];
   const enabledSections = new Set(
-    config.experience.experienceMap.filter((entry) => entry.enabled).map((entry) => entry.section)
+    config.experience.experienceMap.filter((entry) => entry.enabled).map((entry) => entry.section),
   );
 
   for (const section of SECTIONS_REQUIRING_MEDIA) {
@@ -161,7 +161,7 @@ function validateRequiredAssets(config: SiteConfig): ValidationIssue[] {
   return issues;
 }
 
-/** Asset manifest + reference checks: supported type, basic metadata, referenced/required assets exist. */
+/** Проверки asset manifest и ссылок: поддерживаемый тип, базовые метаданные, существование referenced/required ассетов. */
 export function validateAssets(config: SiteConfig): ValidationIssue[] {
   return [
     ...validateManifestEntries(config.assets),

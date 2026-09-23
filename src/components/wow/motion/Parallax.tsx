@@ -5,25 +5,26 @@ import { useMotionCapability } from "./capability";
 
 export interface ParallaxProps {
   children: ReactNode;
-  /** Scroll-speed multiplier: 0 = fixed to viewport, 1 = moves at page speed. Lower feels "further back." Typical 0.1–0.4. */
+  /** Множитель скорости скролла: 0 = зафиксирован относительно вьюпорта, 1 = движется со скоростью страницы. Меньше значение — эффект «дальше». Обычно 0.1–0.4. */
   speed?: number;
   /**
-   * Optional camera-like zoom — interpolates scale across this range as
-   * the element crosses the viewport. This is what turns plain parallax
-   * into the "camera dolly" feel behind Signature WOW Moment #2, without
-   * a separate primitive: it's still one scroll-linked transform.
+   * Опциональный zoom в духе движения камеры — интерполирует scale по
+   * этому диапазону, пока элемент пересекает вьюпорт. Именно это
+   * превращает обычный parallax в ощущение «camera dolly» за Signature
+   * WOW Moment #2, без отдельного примитива: это по-прежнему один
+   * scroll-linked transform.
    */
   scaleRange?: [number, number];
   className?: string;
 }
 
 /**
- * `parallax` and `camera-like movement` in one primitive. Passive
- * scroll listener + rAF-throttled update, writing directly to a CSS
- * custom property on the node (not React state) so scrolling never
- * triggers a re-render. Skips attaching any listener at all when motion
- * is disabled or the device is coarse-pointer/mobile (requirement 6) —
- * the element just renders static via `motion-reduce:transform-none`.
+ * `parallax` и «движение камеры» в одном примитиве. Пассивный scroll-
+ * listener + rAF-throttled обновление, пишущее напрямую в CSS custom
+ * property на узле (а не в React state), чтобы скролл никогда не вызывал
+ * ре-рендер. Вообще не навешивает listener, если motion отключён или
+ * устройство с coarse-pointer/мобильное — элемент просто рендерится
+ * статично через `motion-reduce:transform-none`.
  */
 export function Parallax({ children, speed = 0.3, scaleRange, className = "" }: ParallaxProps) {
   const ref = useRef<HTMLDivElement>(null);

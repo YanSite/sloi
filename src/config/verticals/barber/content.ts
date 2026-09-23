@@ -1,11 +1,12 @@
 import { defineContent } from "@/lib/render";
 
 /**
- * Section copy for the barber test vertical — bracket placeholders,
- * same convention as florist's content.ts. Only covers the sections
- * `barberTemplate` actually enables (no "collection-showcase" — see
- * barber.template.ts). Wrapped in `defineContent` so every field is
- * checked against the real, shared section props.
+ * Текст секций для тестовой вертикали barber — bracket-плейсхолдеры, та
+ * же конвенция, что и в content.ts вертикали florist. Покрывает только
+ * секции, которые реально включает `barberTemplate` (без
+ * "collection-showcase" — см. barber.template.ts). Обёрнут в
+ * `defineContent`, чтобы каждое поле проверялось по реальным, общим для
+ * всех вертикалей пропсам секции.
  */
 export const barberContent = defineContent({
   "cinematic-hero": {

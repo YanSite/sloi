@@ -3,16 +3,16 @@ import { resolveTheme } from "@/lib/theme";
 import { floristVisualDNA } from "./visual-dna";
 
 /**
- * Resolves `floristVisualDNA` (Botanical Noir, see /docs/visual-dna.md)
- * into concrete, CSS-ready values via the generic `resolveTheme` — colors
- * come from the VisualDNA's palette, not hand-duplicated here, so they
- * can't drift out of sync. Where visual-dna.ts's `typography` carries a
- * reference class ("Didone-register serif..."), these `fonts` are real
- * `font-family` fallback stacks a stylesheet can use as-is; picking them
- * is a human decision `resolveTheme` deliberately leaves to the caller.
- * Botanical Noir's spacing/radius/shadow/transition/breakpoint scale is
- * the shared default (see /lib/theme/default-scale.ts) — nothing in the
- * approved docs calls for a florist-specific one.
+ * Резолвит `floristVisualDNA` (Botanical Noir, см. /docs/visual-dna.md) в
+ * конкретные, готовые к CSS значения через универсальный `resolveTheme` —
+ * цвета берутся из палитры VisualDNA, а не дублируются вручную, поэтому
+ * не могут разойтись. Там, где `typography` в visual-dna.ts несёт
+ * референсный класс ("Didone-register serif..."), эти `fonts` — реальные
+ * `font-family` fallback-цепочки, готовые к использованию в стилях; их
+ * выбор — решение человека, которое `resolveTheme` намеренно оставляет
+ * вызывающей стороне. Шкала spacing/radius/shadow/transition/breakpoint
+ * для Botanical Noir — общая по умолчанию (см. /lib/theme/default-scale.ts)
+ * — ничто в утверждённых доках не требует отдельной под florist.
  */
 export const floristThemeTokens: ThemeTokens = resolveTheme(floristVisualDNA, {
   display: '"Canela", "GT Sectra Display", Georgia, serif',

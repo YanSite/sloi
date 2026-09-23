@@ -5,27 +5,34 @@ import { useMotionCapability } from "./capability";
 
 export interface CrossfadeProps {
   children: ReactNode;
-  /** Background color the fade transitions FROM. Defaults to transparent. */
+  /** Цвет фона, ИЗ которого идёт переход. По умолчанию — прозрачный. */
   from?: string;
-  /** Background color the fade transitions TO — typically the page's `ThemeTokens.colors.background`. */
+  /** Цвет фона, К которому идёт переход — обычно `ThemeTokens.colors.background` страницы. */
   to: string;
-  /** Seconds. */
+  /** Секунды. */
   duration?: number;
   className?: string;
   style?: CSSProperties;
 }
 
 /**
- * `crossfade` primitive — the "emerge from black" bookend transition
- * behind Signature WOW Moment #3 (Final CTA). Cross-fades a wrapping
- * element's background color the first time it scrolls into view; no
- * WebGL, just a timed `background-color` transition.
+ * Примитив `crossfade` — bookend-переход «проявление из темноты» за
+ * Signature WOW Moment #3 (Final CTA). Меняет цвет фона обёртки при
+ * первом появлении в вьюпорте; без WebGL, просто таймированный переход
+ * `background-color`.
  *
- * Reduced-motion / disabled: renders directly at `to`, transition-free —
- * there is no scroll-triggered intersection state to reach in the first
- * place, so there's nothing to skip past.
+ * Reduced-motion / отключённый motion: рендерится сразу в `to`, без
+ * перехода — состояния scroll-triggered intersection в принципе не
+ * возникает, поэтому и пропускать нечего.
  */
-export function Crossfade({ children, from = "transparent", to, duration = 1.2, className = "", style }: CrossfadeProps) {
+export function Crossfade({
+  children,
+  from = "transparent",
+  to,
+  duration = 1.2,
+  className = "",
+  style,
+}: CrossfadeProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
   const { enabled } = useMotionCapability();
@@ -41,7 +48,7 @@ export function Crossfade({ children, from = "transparent", to, duration = 1.2, 
           observer.disconnect();
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.15 },
     );
     observer.observe(node);
     return () => observer.disconnect();

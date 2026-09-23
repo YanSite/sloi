@@ -1,9 +1,14 @@
 import type { AssetManifest, AssetManifestEntry } from "@/lib/types";
 import { canTransition } from "./transitions";
 import { getPolicy } from "./policy";
-import type { GenerationContext, GenerationLogEntry, GenerationMode, GenerationState } from "./types";
+import type {
+  GenerationContext,
+  GenerationLogEntry,
+  GenerationMode,
+  GenerationState,
+} from "./types";
 
-/** The most recent logged state for an asset, or "PLANNED" if it has no log history yet — every asset starts there implicitly. */
+/** Последнее залогированное состояние ассета, либо "PLANNED", если истории лога ещё нет — с этого состояния неявно начинается каждый ассет. */
 export function latestState(log: GenerationLogEntry[], assetId: string): GenerationState {
   const entries = log.filter((entry) => entry.assetId === assetId);
   return entries.length > 0 ? entries[entries.length - 1].status : "PLANNED";
@@ -20,20 +25,20 @@ export interface TransitionResult {
 }
 
 /**
- * The one function that advances an asset's generation state — no bulk
- * "generate everything planned" function exists anywhere in this module,
- * which is what enforces /docs/generation-policy.md's "no batch
- * generation without explicit approval" rule at the API surface rather
- * than as a runtime check nothing calls. Rejects the transition (without
- * mutating `log`) when it's not a legal edge in the state graph, or when
- * entering GENERATING would exceed `mode`'s retry budget.
+ * Единственная функция, продвигающая состояние генерации ассета — нигде
+ * в модуле нет массовой функции «сгенерировать всё запланированное»,
+ * именно это обеспечивает правило /docs/generation-policy.md «никакой
+ * batch-генерации без явного согласования» на уровне API, а не как
+ * рантайм-проверку, которую никто не вызывает. Отклоняет переход (не
+ * изменяя `log`), если он не является допустимым ребром графа состояний,
+ * либо если вход в GENERATING превысил бы retry-бюджет `mode`.
  */
 export function transitionAsset(
   log: GenerationLogEntry[],
   assetId: string,
   to: GenerationState,
   mode: GenerationMode,
-  context: GenerationContext
+  context: GenerationContext,
 ): TransitionResult {
   const from = latestState(log, assetId);
 
@@ -73,19 +78,28 @@ export interface GenerationBudgetCheck {
   issues: string[];
 }
 
-/** "SHOW MAXIMUM GENERATION BUDGET" from /docs/generation-policy.md's required workflow — checks a manifest's planned Higgsfield entries against the mode's hard caps before anything is approved. */
-export function checkGenerationBudget(manifest: AssetManifest, mode: GenerationMode): GenerationBudgetCheck {
+/** «SHOW MAXIMUM GENERATION BUDGET» из required workflow в /docs/generation-policy.md — проверяет запланированные Higgsfield-записи manifest против жёстких лимитов режима, прежде чем что-либо будет согласовано. */
+export function checkGenerationBudget(
+  manifest: AssetManifest,
+  mode: GenerationMode,
+): GenerationBudgetCheck {
   const policy = getPolicy(mode);
-  const pending = manifest.filter((entry) => entry.source === "higgsfield" && entry.status !== "rejected");
+  const pending = manifest.filter(
+    (entry) => entry.source === "higgsfield" && entry.status !== "rejected",
+  );
   const imagesRequested = pending.filter((entry) => entry.type === "image").length;
   const videosRequested = pending.filter((entry) => entry.type === "video").length;
 
   const issues: string[] = [];
   if (imagesRequested > policy.maxImageGenerations) {
-    issues.push(`${imagesRequested} image generations requested, exceeding the ${mode} cap of ${policy.maxImageGenerations}.`);
+    issues.push(
+      `${imagesRequested} image generations requested, exceeding the ${mode} cap of ${policy.maxImageGenerations}.`,
+    );
   }
   if (videosRequested > policy.maxVideoGenerations) {
-    issues.push(`${videosRequested} video generations requested, exceeding the ${mode} cap of ${policy.maxVideoGenerations}.`);
+    issues.push(
+      `${videosRequested} video generations requested, exceeding the ${mode} cap of ${policy.maxVideoGenerations}.`,
+    );
   }
 
   return { withinBudget: issues.length === 0, imagesRequested, videosRequested, policy, issues };
@@ -94,16 +108,21 @@ export function checkGenerationBudget(manifest: AssetManifest, mode: GenerationM
 export interface GenerationCallEstimate {
   imagesToGenerate: number;
   videosToGenerate: number;
-  /** One call per not-yet-generated asset — never a cost or credit figure, only a count (no provider/MCP here reports real pricing, see policy.ts). */
+  /** Один вызов на ещё не сгенерированный ассет — никогда не цифра стоимости или кредитов, только счётчик (ни один provider/MCP здесь не сообщает реальные цены, см. policy.ts). */
   totalCalls: number;
-  /** Worst case if every pending asset needed its full retry allowance. */
+  /** Худший случай, если бы каждому ожидающему ассету понадобился весь retry-лимит. */
   maxPossibleCallsWithRetries: number;
 }
 
-/** Call-count estimate for a batch of still-"planned" Higgsfield assets. Deliberately counts calls, never money/credits — see the Stage 7 instruction this satisfies. */
-export function estimateGenerationCalls(manifest: AssetManifest, mode: GenerationMode): GenerationCallEstimate {
+/** Оценка количества вызовов для батча ещё "planned" Higgsfield-ассетов. Намеренно считает вызовы, никогда не деньги/кредиты — см. инструкцию Stage 7, которой это соответствует. */
+export function estimateGenerationCalls(
+  manifest: AssetManifest,
+  mode: GenerationMode,
+): GenerationCallEstimate {
   const policy = getPolicy(mode);
-  const pending = manifest.filter((entry) => entry.source === "higgsfield" && entry.status === "planned");
+  const pending = manifest.filter(
+    (entry) => entry.source === "higgsfield" && entry.status === "planned",
+  );
   const imagesToGenerate = pending.filter((entry) => entry.type === "image").length;
   const videosToGenerate = pending.filter((entry) => entry.type === "video").length;
   const totalCalls = imagesToGenerate + videosToGenerate;
@@ -131,13 +150,16 @@ export interface AssetPlanSummary {
 }
 
 /**
- * "SHOW ASSET PLAN" + "SHOW MAXIMUM GENERATION BUDGET" from
- * /docs/generation-policy.md, as one function — exactly the fields that
- * section says must be shown (asset_id, purpose, type, prompt,
- * aspect_ratio, section) plus the running budget total, before anything
- * is approved.
+ * «SHOW ASSET PLAN» + «SHOW MAXIMUM GENERATION BUDGET» из
+ * /docs/generation-policy.md в одной функции — ровно те поля, которые
+ * требует показывать этот раздел (asset_id, purpose, type, prompt,
+ * aspect_ratio, section), плюс текущий итог по бюджету, прежде чем
+ * что-либо согласовано.
  */
-export function buildAssetPlanSummary(manifest: AssetManifest, mode: GenerationMode): AssetPlanSummary {
+export function buildAssetPlanSummary(
+  manifest: AssetManifest,
+  mode: GenerationMode,
+): AssetPlanSummary {
   const lines: AssetPlanLine[] = manifest
     .filter((entry) => entry.source === "higgsfield" && entry.status === "planned")
     .map((entry) => ({

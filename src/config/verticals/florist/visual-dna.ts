@@ -1,12 +1,12 @@
 import type { VisualDNA } from "@/lib/types";
 
 /**
- * Approved art direction for the florist vertical — "Botanical Noir".
- * Values here match /docs/visual-dna.md#mapping-to-the-visualdna-type
- * exactly. The full creative brief (lighting, lens, camera, WebGL and
- * negative-visual-rules language) lives only in that document — this
- * type carries just the tokens a component or a Higgsfield prompt reads
- * directly.
+ * Утверждённое художественное направление вертикали florist — «Botanical
+ * Noir». Значения здесь точно совпадают с
+ * /docs/visual-dna.md#mapping-to-the-visualdna-type. Полный творческий
+ * бриф (язык освещения, объектива, камеры, WebGL и negative-visual-rules)
+ * живёт только в этом документе — этот тип несёт лишь токены, которые
+ * напрямую читает компонент или Higgsfield-промпт.
  */
 export const floristVisualDNA: VisualDNA = {
   vertical: "florist",

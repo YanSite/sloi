@@ -9,7 +9,7 @@ export interface ServiceSectionProps {
   services: ServiceItem[];
 }
 
-/** Services/offerings listing. Interface only. */
+/** Список услуг/предложений. Пока только интерфейс. */
 export function ServiceSection(_props: ServiceSectionProps) {
   return null;
 }

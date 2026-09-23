@@ -8,12 +8,13 @@ import { barberAssetManifest } from "./asset-manifest";
 import { barberThemeTokens } from "./theme-tokens";
 
 /**
- * Composes the barber test vertical into one SiteConfig — Business
- * Profile, "Iron & Ash" Visual DNA, Experience, Content, Asset Manifest,
- * Theme, Motion. Built with the exact same layers/functions as
- * floristSiteConfig (same `SiteConfig` shape, same `resolveTheme`, same
- * `defineContent`, same `assertValidSiteConfig`) — that reuse, not any
- * visual similarity, is the point of Stage 8's portability test.
+ * Собирает тестовую вертикаль barber в один SiteConfig — Business
+ * Profile, «Iron & Ash» Visual DNA, Experience, Content, Asset Manifest,
+ * Theme, Motion. Построен на тех же слоях/функциях, что и
+ * floristSiteConfig (та же форма `SiteConfig`, тот же `resolveTheme`, тот
+ * же `defineContent`, тот же `assertValidSiteConfig`) — именно это
+ * переиспользование, а не визуальное сходство, и есть суть
+ * portability-теста Stage 8.
  */
 export const barberSiteConfig: SiteConfig = assertValidSiteConfig({
   business: barberBusinessProfile,

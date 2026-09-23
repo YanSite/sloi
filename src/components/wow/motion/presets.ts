@@ -1,19 +1,19 @@
 import type { MotionPreset } from "./types";
 
 export interface MotionTiming {
-  /** Seconds. */
+  /** Секунды. */
   duration: number;
-  /** Seconds. */
+  /** Секунды. */
   delay: number;
 }
 
 /**
- * Default timing for each named `MotionPreset` — the "intent" a section
- * receives via `MotionConfig.preset` (e.g. `"fade-up"`, `"camera-
- * parallax"`) without necessarily specifying `duration`/`delay` itself.
- * This is a lookup table, not a dispatcher: a section still chooses
- * which primitive (`Reveal`, `Parallax`, ...) to compose — this just
- * fills in sensible numbers for a preset name.
+ * Тайминг по умолчанию для каждого именованного `MotionPreset` —
+ * «намерение», которое секция получает через `MotionConfig.preset`
+ * (например `"fade-up"`, `"camera-parallax"`), не обязательно указывая
+ * `duration`/`delay` сама. Это lookup-таблица, а не диспетчер: секция
+ * по-прежнему сама выбирает, какой примитив (`Reveal`, `Parallax`, ...)
+ * использовать — здесь лишь подставляются разумные числа под имя preset.
  */
 export const motionPresetTiming: Record<MotionPreset, MotionTiming> = {
   "fade-up": { duration: 0.7, delay: 0 },
@@ -28,7 +28,7 @@ const fallbackTiming: MotionTiming = { duration: 0.7, delay: 0 };
 
 export function resolveMotionTiming(
   preset: MotionPreset | undefined,
-  overrides?: { duration?: number; delay?: number }
+  overrides?: { duration?: number; delay?: number },
 ): MotionTiming {
   const base = preset ? motionPresetTiming[preset] : fallbackTiming;
   return {

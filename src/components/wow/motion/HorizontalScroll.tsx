@@ -6,10 +6,10 @@ export interface HorizontalScrollProps {
 }
 
 /**
- * `horizontal scroll` primitive. Pure CSS scroll-snap — no JS, works
- * natively with touch, trackpad, and keyboard. Reduced-motion visitors
- * keep the snap (it's navigational, not decorative) but lose the smooth
- * scroll-behavior animation.
+ * Примитив `horizontal scroll`. Чистый CSS scroll-snap — без JS, нативно
+ * работает с touch, трекпадом и клавиатурой. У посетителей с
+ * reduced-motion snap сохраняется (это навигация, а не украшение), но
+ * пропадает плавная анимация scroll-behavior.
  */
 export function HorizontalScroll({ children, className = "" }: HorizontalScrollProps) {
   return (

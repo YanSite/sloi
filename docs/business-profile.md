@@ -10,7 +10,7 @@ see [Experience Map](./experience-map.md)).
 
 A restaurant and a florist both have a name, a phone number, and hours.
 Keeping that shape generic means the same `BusinessProfile` type — and every
-component that reads it — works for every vertical. Only the *values* change
+component that reads it — works for every vertical. Only the _values_ change
 per business.
 
 ## Type
@@ -23,8 +23,8 @@ interface BusinessProfile {
   name: string;
   tagline?: string;
   description?: string;
-  contact: BusinessContact;      // phone, email, address
-  hours?: BusinessHours[];       // per-day open/close
+  contact: BusinessContact; // phone, email, address
+  hours?: BusinessHours[]; // per-day open/close
   services?: string[];
   products?: string[];
   serviceArea?: string;

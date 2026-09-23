@@ -15,11 +15,11 @@ export interface ThemeScale {
 }
 
 /**
- * Shared baseline for every token category VisualDNA doesn't itself
- * describe — VisualDNA speaks in mood/palette/lighting/type (see
- * /docs/visual-dna.md), not a numeric spacing or shadow scale.
- * `resolveTheme` falls back to this unless a vertical explicitly
- * overrides part of it; most verticals shouldn't need to.
+ * Общая база для всех категорий токенов, которые сама VisualDNA не
+ * описывает — VisualDNA говорит на языке настроения/палитры/освещения/
+ * типографики (см. /docs/visual-dna.md), а не числовой шкалы spacing или
+ * shadow. `resolveTheme` берёт эти значения, если вертикаль явно не
+ * переопределила часть из них; большинству вертикалей это не требуется.
  */
 export const defaultThemeScale: ThemeScale = {
   spacing: { xs: "0.5rem", sm: "1rem", md: "1.5rem", lg: "2.5rem", xl: "4rem", "2xl": "6rem" },

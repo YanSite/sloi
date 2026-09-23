@@ -15,21 +15,22 @@ export interface ResolvedAsset {
   aspectRatio: string;
   focalPoint: AssetFocalPoint;
   status: AssetStatus;
-  /** Every section this asset is placed in, normalized to an array regardless of how the manifest entry declared it. */
+  /** Все секции, где используется ассет — нормализовано в массив независимо от того, как это объявлено в записи manifest. */
   sections: SectionId[];
-  /** Real, renderable file variants — empty until `status` reaches "generated". Components fall back to a placeholder when this is empty. */
+  /** Реальные, готовые к рендеру варианты файла — пусто, пока `status` не достигнет "generated". Пока пусто, компоненты используют плейсхолдер. */
   sources: AssetFile[];
 }
 
 const DEFAULT_FOCAL_POINT: AssetFocalPoint = { x: 0.5, y: 0.5 };
 
 /**
- * Generic asset resolver — the ASSET REGISTRY a `MediaRef.assetId` goes
- * through to become real render data. A section component asks for an
- * asset by id; it never reads an `AssetManifest` entry or a file path
- * directly. Throws on an unknown id, same as `resolveSectionComponent` in
- * src/lib/render/section-registry.ts — an unresolved asset reference is a
- * config mistake to surface, not something to silently degrade.
+ * Универсальный asset-резолвер — ASSET REGISTRY, через который
+ * `MediaRef.assetId` превращается в реальные данные для рендера.
+ * Компонент секции запрашивает ассет по id и никогда не читает запись
+ * `AssetManifest` или путь к файлу напрямую. Бросает ошибку на неизвестный
+ * id, как и `resolveSectionComponent` в src/lib/render/section-registry.ts
+ * — нерезолвящаяся ссылка на ассет это ошибка конфигурации, которую нужно
+ * показать, а не тихо деградировать.
  */
 export function resolveAsset(ref: MediaRef, manifest: AssetManifest): ResolvedAsset {
   const entry = manifest.find((asset) => asset.asset_id === ref.assetId);
@@ -49,13 +50,13 @@ export function resolveAsset(ref: MediaRef, manifest: AssetManifest): ResolvedAs
   };
 }
 
-/** Builds a `srcset`-ready string from resolved responsive sources. */
+/** Собирает строку, готовую для `srcset`, из резолвленных адаптивных источников. */
 export function toSrcSet(sources: AssetFile[]): string | undefined {
   if (sources.length === 0) return undefined;
   return sources.map((file) => `${file.url} ${file.width}w`).join(", ");
 }
 
-/** CSS `object-position` value from a resolved focal point. */
+/** Значение CSS `object-position` из резолвленной focal point. */
 export function toObjectPosition(focalPoint: AssetFocalPoint): string {
   return `${focalPoint.x * 100}% ${focalPoint.y * 100}%`;
 }

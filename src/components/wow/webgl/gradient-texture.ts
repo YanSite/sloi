@@ -1,13 +1,13 @@
 import * as THREE from "three";
 
 /**
- * Placeholder texture standing in for a real photographic asset (see
- * /docs/asset-manifest.md — nothing generated yet, no Higgsfield call
- * made anywhere in this module). Draws the same radial gradient the CSS
- * fallback uses onto an offscreen canvas, so the WebGL and CSS paths are
- * visually consistent. This is an image plane fed a stand-in image, not
- * procedural geometry — swapping in a real photograph later is a
- * one-line change at the call site, not an architecture change.
+ * Плейсхолдерная текстура вместо реального фотографического ассета (см.
+ * /docs/asset-manifest.md — пока ничего не сгенерировано, ни один вызов
+ * Higgsfield этим модулем не сделан). Рисует на offscreen canvas тот же
+ * радиальный градиент, что использует CSS fallback, чтобы пути WebGL и
+ * CSS визуально совпадали. Это image-плоскость с подставным изображением,
+ * а не процедурная геометрия — замена на реальную фотографию потом это
+ * правка в одну строку в месте вызова, а не изменение архитектуры.
  */
 export function createGradientTexture(from: string, to: string): THREE.CanvasTexture {
   const size = 512;
@@ -22,7 +22,7 @@ export function createGradientTexture(from: string, to: string): THREE.CanvasTex
       0,
       size / 2,
       size * 0.6,
-      size * 0.7
+      size * 0.7,
     );
     gradient.addColorStop(0, from);
     gradient.addColorStop(1, to);

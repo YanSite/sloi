@@ -1,8 +1,9 @@
 /**
- * Feature-detects real WebGL availability. SSR-safe (returns false with
- * no `window`) and never throws — a browser that refuses context
- * creation (old GPU, driver blocklist, out of contexts) just reports
- * `false` here rather than crashing the caller.
+ * Определяет реальную доступность WebGL. Безопасен для SSR (возвращает
+ * false при отсутствии `window`) и никогда не бросает исключение —
+ * браузер, отказавший в создании контекста (старый GPU, driver
+ * blocklist, контексты исчерпаны), просто вернёт здесь `false`, а не
+ * уронит вызывающий код.
  */
 export function isWebGLAvailable(): boolean {
   if (typeof window === "undefined" || typeof document === "undefined") return false;

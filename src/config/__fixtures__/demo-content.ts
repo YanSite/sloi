@@ -1,13 +1,14 @@
 import { defineContent } from "@/lib/render";
 
 /**
- * NOT approved florist copy — every string is a bracket placeholder, same
- * convention as /src/config/verticals/florist/business-profile.ts. Exists
- * only so `demo-site-config.ts` has valid content for every section's
- * required fields, to prove PageRenderer assembles all 10. No real
- * copywriting decision is made here — see /docs/experience-map.md's "Out
- * of scope" note on copy. Wrapped in `defineContent` so every section's
- * fields are checked against its real props (see section-content.ts).
+ * НЕ утверждённый текст florist — каждая строка bracket-плейсхолдер, та
+ * же конвенция, что в /src/config/verticals/florist/business-profile.ts.
+ * Существует только для того, чтобы у `demo-site-config.ts` был валидный
+ * контент для обязательных полей каждой секции, доказывающий, что
+ * PageRenderer собирает все 10. Никакого реального копирайтинг-решения
+ * здесь не принято — см. пометку «Out of scope» про текст в
+ * /docs/experience-map.md. Обёрнут в `defineContent`, чтобы поля каждой
+ * секции проверялись по её реальным пропсам (см. section-content.ts).
  */
 export const demoContent = defineContent({
   "cinematic-hero": {
@@ -49,9 +50,9 @@ export const demoContent = defineContent({
   "social-proof": {
     testimonials: [{ quote: "[DEMO_QUOTE]", author: "[DEMO_AUTHOR]" }],
   },
-  // location-section intentionally has no content here — its required
-  // `contact`/`hours` are merged in from BusinessProfile by
-  // resolveSections, not authored as per-section copy.
+  // у location-section здесь сознательно нет контента — обязательные
+  // `contact`/`hours` подмешиваются из BusinessProfile внутри
+  // resolveSections, а не авторятся как текст секции.
   "location-section": {},
   "final-cta": {
     headline: "[DEMO_CLOSING_HEADLINE]",

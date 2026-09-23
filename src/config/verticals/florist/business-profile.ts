@@ -1,9 +1,9 @@
 import type { BusinessProfile } from "@/lib/types";
 
 /**
- * Placeholder business data for the florist demo vertical. Every value
- * here is a stand-in — replace with real client facts before this goes
- * past the architecture phase.
+ * Плейсхолдерные бизнес-данные для демо-вертикали florist. Каждое
+ * значение здесь — заглушка, замените на реальные данные клиента, прежде
+ * чем это выйдет за рамки архитектурной фазы.
  */
 export const floristBusinessProfile: BusinessProfile = {
   vertical: "florist",

@@ -10,7 +10,7 @@ export interface EditorialGridProps {
   items: EditorialGridItem[];
 }
 
-/** Asymmetric editorial image grid. Interface only. */
+/** Асимметричный editorial-грид изображений. Пока только интерфейс. */
 export function EditorialGrid(_props: EditorialGridProps) {
   return null;
 }

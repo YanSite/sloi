@@ -13,10 +13,10 @@ export interface FinalCTAProps {
 }
 
 /**
- * Closing conversion moment — Signature WOW Moment #3. Bookends
- * Cinematic Hero via `Crossfade` (background transitions to the same
- * color the page opened on), not WebGL — see /docs/visual-dna.md's
- * transition language.
+ * Закрывающий конверсионный момент — Signature WOW Moment #3. Обрамляет
+ * Cinematic Hero через `Crossfade` (фон переходит в тот же цвет, с
+ * которого страница начиналась), без WebGL — см. transition language в
+ * /docs/visual-dna.md.
  */
 export function FinalCTA({ headline, subheadline, cta, theme, motion }: FinalCTAProps) {
   const background = theme?.colors.background ?? "#15110D";

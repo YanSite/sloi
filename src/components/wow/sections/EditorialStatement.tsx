@@ -4,7 +4,7 @@ export interface EditorialStatementProps {
   attribution?: string;
 }
 
-/** Large-type brand statement, magazine-style. Interface only. */
+/** Крупный типографский brand-стейтмент в духе журнальной вёрстки. Пока только интерфейс. */
 export function EditorialStatement(_props: EditorialStatementProps) {
   return null;
 }

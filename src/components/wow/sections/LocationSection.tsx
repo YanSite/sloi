@@ -8,7 +8,7 @@ export interface LocationSectionProps {
   mapMedia?: MediaRef;
 }
 
-/** Address, hours, and map moment. Interface only. */
+/** Адрес, часы работы и карта. Пока только интерфейс. */
 export function LocationSection(_props: LocationSectionProps) {
   return null;
 }

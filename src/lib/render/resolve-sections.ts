@@ -7,28 +7,28 @@ export interface ResolvedSection {
   variant: string;
   Component: ComponentType<Record<string, unknown>>;
   /**
-   * Heterogeneous by design: each section's real prop type is enforced
-   * once, at registration, via `SectionPropsMap` in section-registry.ts.
-   * Here — across ten different section shapes in one array — props stay
-   * `Record<string, unknown>`, matching `SectionContent`'s existing
-   * looseness (see /docs/experience-map.md's `ExperienceContent`, not
-   * tightened yet because the sections themselves are still
-   * "interface only" stubs).
+   * Намеренно неоднородный тип: реальный тип пропсов каждой секции
+   * фиксируется один раз, при регистрации, через `SectionPropsMap` в
+   * section-registry.ts. Здесь — в едином массиве с десятью разными
+   * формами секций — пропсы остаются `Record<string, unknown>`, потому
+   * что массив хранит их вместе; строгая проверка по реальным пропсам
+   * делается раньше, на этапе авторинга контента (см.
+   * `defineContent`/`SectionContentMap` в section-content.ts).
    */
   props: Record<string, unknown>;
 }
 
 /**
- * A few sections need real business facts (address, hours) that live in
- * `BusinessProfile`, not in the loose per-section marketing copy in
- * `ExperienceContent` — business-profile.md is explicit that those are
- * separate layers. This is keyed by `SectionId`, never by vertical: any
- * vertical's location-section needs contact/hours the same way.
+ * У нескольких секций есть потребность в реальных бизнес-фактах (адрес,
+ * часы работы), которые живут в `BusinessProfile`, а не в нестрогом
+ * маркетинговом тексте секции в `ExperienceContent` — business-profile.md
+ * явно разделяет эти слои. Ключ — `SectionId`, никогда не вертикаль: у
+ * любой вертикали location-section нуждается в contact/hours одинаково.
  */
 function withBusinessFacts(
   section: SectionId,
   content: Record<string, unknown>,
-  config: SiteConfig
+  config: SiteConfig,
 ): Record<string, unknown> {
   if (section === "location-section") {
     return {
@@ -41,12 +41,12 @@ function withBusinessFacts(
 }
 
 /**
- * `SiteConfig → PageRenderer → SectionRegistry → Section`, minus the
- * React part. Reads order and which sections are enabled from
- * `config.experience.experienceMap` (never hardcoded here), resolves
- * each enabled entry's component via the SectionRegistry, and assembles
- * its props from every SiteConfig layer: section data (id/variant),
- * content, assets, VisualDNA/theme, and motion.
+ * `SiteConfig → PageRenderer → SectionRegistry → Section`, без React-части.
+ * Читает порядок и состав включённых секций из
+ * `config.experience.experienceMap` (никогда не хардкодится здесь),
+ * резолвит компонент каждой включённой записи через SectionRegistry и
+ * собирает её пропсы из всех слоёв SiteConfig: данные секции
+ * (id/variant), контент, assets, VisualDNA/theme и motion.
  */
 export function resolveSections(config: SiteConfig): ResolvedSection[] {
   return config.experience.experienceMap
@@ -60,8 +60,8 @@ export function resolveSections(config: SiteConfig): ResolvedSection[] {
 
       const props: Record<string, unknown> = {
         ...withBusinessFacts(entry.section, content, config),
-        // Renderer-owned fields always win over any accidental collision
-        // with a same-named content key.
+        // Поля, принадлежащие рендереру, всегда побеждают при случайном
+        // совпадении с одноимённым ключом контента.
         section: entry.section,
         variant,
         assets: config.assets,

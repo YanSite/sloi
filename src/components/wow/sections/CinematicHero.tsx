@@ -19,14 +19,14 @@ export interface CinematicHeroProps {
 }
 
 /**
- * Full-bleed opening statement — Signature WOW Moment #1 (see
- * /docs/visual-dna.md). WebGL proof of concept: `WebGLImageLayer` drives
- * the layered drift when available, falling back to CSS-only `Parallax`.
- * The CSS fallback renders `media`'s real, resolved photograph (via
- * `resolveAsset`) once one exists; until then (every asset here is still
- * "planned", see /docs/asset-manifest.md) it falls back further to a
- * graded color block. Headline enters via `Reveal` on mount, independent
- * of which visual layer renders.
+ * Полноэкранное открывающее заявление — Signature WOW Moment #1 (см.
+ * /docs/visual-dna.md). `WebGLImageLayer` управляет слоистым дрейфом,
+ * когда WebGL доступен, иначе — CSS-only `Parallax`. CSS-fallback
+ * рендерит реальную, резолвленную фотографию `media` (через
+ * `resolveAsset`), как только она появляется; пока её нет (для florist
+ * все ассеты пока "planned", см. /docs/asset-manifest.md) — используется
+ * градиентный цветовой блок. Заголовок появляется через `Reveal` при
+ * монтировании, независимо от того, какой визуальный слой рендерится.
  */
 export function CinematicHero({
   eyebrow,
@@ -42,9 +42,9 @@ export function CinematicHero({
   const background = theme?.colors.background ?? "#15110D";
   const foreground = theme?.colors.foreground ?? "#F3ECDF";
   const accent = theme?.colors.primary ?? "#6E2B34";
-  // `theme.colors.accent`, not `primary` — the focus ring needs to read
-  // clearly against a dark background, which `accent` (a lighter pop
-  // color by design) does more reliably than the brand `primary`.
+  // `theme.colors.accent`, а не `primary` — focus ring должен чётко
+  // читаться на тёмном фоне, а `accent` (по замыслу более светлый
+  // акцентный цвет) справляется с этим надёжнее, чем брендовый `primary`.
   const focusRingColor = theme?.colors.accent ?? "#B08D57";
   const resolvedMedia = resolveAsset(media, assets);
   const hasRealSource = resolvedMedia.sources.length > 0;
@@ -63,14 +63,15 @@ export function CinematicHero({
         fallback={
           <Parallax speed={0.25} className="h-full w-full">
             {hasRealSource ? (
+              // eslint-disable-next-line @next/next/no-img-element -- источник может быть data-URI плейсхолдер (см. resolve-asset.ts); next/image не годится без реального хостинга изображений, см. известные риски в Engine v1 Lock Audit.
               <img
                 src={resolvedMedia.sources[0].url}
                 srcSet={toSrcSet(resolvedMedia.sources)}
                 sizes="100vw"
                 alt={resolvedMedia.alt}
-                // Above-the-fold, full-bleed — the page's LCP candidate,
-                // so it loads eagerly and at high priority rather than
-                // deferring like a below-the-fold image would.
+                // Над сгибом, во весь экран — LCP-кандидат страницы,
+                // поэтому грузится eagerly и с высоким приоритетом, а не
+                // откладывается, как изображение ниже сгиба.
                 loading="eager"
                 fetchPriority="high"
                 className="h-full w-full object-cover"
@@ -126,7 +127,10 @@ export function CinematicHero({
               <a
                 href={primaryCta.href}
                 className="underline underline-offset-4 transition-opacity hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
-                style={{ transitionDuration: theme?.transitions.base, outlineColor: focusRingColor }}
+                style={{
+                  transitionDuration: theme?.transitions.base,
+                  outlineColor: focusRingColor,
+                }}
               >
                 {primaryCta.label}
               </a>
@@ -135,7 +139,10 @@ export function CinematicHero({
               <a
                 href={secondaryCta.href}
                 className="opacity-70 underline underline-offset-4 transition-opacity hover:opacity-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
-                style={{ transitionDuration: theme?.transitions.base, outlineColor: focusRingColor }}
+                style={{
+                  transitionDuration: theme?.transitions.base,
+                  outlineColor: focusRingColor,
+                }}
               >
                 {secondaryCta.label}
               </a>

@@ -7,7 +7,7 @@ export interface StorySectionProps {
   media?: MediaRef;
 }
 
-/** Brand/founder narrative moment. Interface only. */
+/** Момент повествования о бренде/основателе. Пока только интерфейс. */
 export function StorySection(_props: StorySectionProps) {
   return null;
 }

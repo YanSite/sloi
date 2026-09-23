@@ -1,7 +1,7 @@
-/** Canonical definition moved to `@/lib/types` — a core, cross-cutting type referenced by the asset-manifest layer too. Re-exported here so existing `./types` imports across this folder keep working. */
+/** Каноническое определение перенесено в `@/lib/types` — это сквозной тип, на который ссылается и слой asset-manifest. Реэкспортируется здесь, чтобы существующие импорты `./types` по этой папке продолжали работать. */
 export type { MediaRef } from "@/lib/types";
 
-/** Shared prop primitive reused across WOW sections. */
+/** Общий примитив пропса, переиспользуемый во всех WOW-секциях. */
 export interface CtaLink {
   label: string;
   href: string;

@@ -1,13 +1,13 @@
 import type { Vertical } from "./vertical";
 
 /**
- * THEME layer.
- * Concrete, CSS-ready design tokens — resolved FROM a business's
- * VisualDNA. VisualDNA stays descriptive and creative on purpose (mood
- * words, reference classes like "Didone-register serif (Canela / GT
- * Sectra Display class)"); ThemeTokens is what a component or a
- * stylesheet actually consumes (real hex colors, a real `font-family`
- * fallback stack). No copy, no business facts, no layout.
+ * Слой THEME.
+ * Конкретные, готовые к CSS design-токены — резолвятся ИЗ VisualDNA
+ * бизнеса. VisualDNA сознательно остаётся описательной и творческой
+ * (слова настроения, референсные классы вроде "Didone-register serif
+ * (Canela / GT Sectra Display class)"); ThemeTokens — то, что реально
+ * потребляет компонент или стиль (настоящие hex-цвета, настоящий
+ * `font-family` fallback stack). Не содержит копирайта, бизнес-фактов, layout.
  */
 export interface ThemeColorTokens {
   background: string;

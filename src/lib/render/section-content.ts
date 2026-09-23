@@ -2,15 +2,15 @@ import type { ExperienceContent, SectionId } from "@/lib/types";
 import type { SectionPropsMap } from "./section-registry";
 
 /**
- * What a vertical actually AUTHORS per section — `SectionPropsMap` minus
- * the fields `resolveSections` always supplies itself (theme, motion,
- * assets, and location-section's business-sourced contact/hours; see
- * resolve-sections.ts's `withBusinessFacts`). Kept separate from
- * `SiteConfig.content`'s type, which stays the loose `ExperienceContent`
- * (see /lib/types/content.ts) — that's what lets a config author get real
- * field-level type-checking without `lib/types` importing component prop
- * shapes, which would break the layering rule in
- * /docs/engine-architecture.md.
+ * То, что вертикаль реально АВТОРИТ по каждой секции — `SectionPropsMap`
+ * без полей, которые `resolveSections` подставляет сама (theme, motion,
+ * assets, а также contact/hours для location-section из бизнес-данных —
+ * см. `withBusinessFacts` в resolve-sections.ts). Отделён от типа
+ * `SiteConfig.content` (там остаётся нестрогий `ExperienceContent`, см.
+ * /lib/types/content.ts) — именно это позволяет автору конфига получить
+ * реальную проверку типов по полям, не заставляя `lib/types`
+ * импортировать формы пропсов компонентов, что нарушило бы правило
+ * layering из /docs/engine-architecture.md.
  */
 type ContentOnly<P> = Omit<P, "theme" | "motion" | "assets" | "contact" | "hours">;
 
@@ -21,14 +21,15 @@ export type SectionContentMap = {
 export type TypedExperienceContent = Partial<SectionContentMap>;
 
 /**
- * The one deliberate relaxation point from `TypedExperienceContent` (what
- * an author writes, checked against real section props) down to
- * `ExperienceContent` (what `SiteConfig.content` accepts) — mirrors the
- * single documented cast in resolve-sections.ts. A plain interface has no
- * index signature, so it isn't structurally assignable to
- * `SectionContent`'s `Record<string, unknown>`; being generic over `T` is
- * what keeps this function's *input* fully checked even though its output
- * type is the wider one.
+ * Единственная сознательная точка ослабления типа — от
+ * `TypedExperienceContent` (что пишет автор, проверяется по реальным
+ * пропсам секции) до `ExperienceContent` (что принимает
+ * `SiteConfig.content`) — по аналогии с единственным документированным
+ * приведением типа в resolve-sections.ts. У обычного interface нет
+ * индексной сигнатуры, поэтому он структурно не подходит под
+ * `Record<string, unknown>` из `SectionContent`; generic-параметр `T`
+ * здесь нужен, чтобы *вход* этой функции проверялся полностью, даже если
+ * тип на выходе шире.
  */
 export function defineContent<T extends TypedExperienceContent>(content: T): ExperienceContent {
   return content as ExperienceContent;

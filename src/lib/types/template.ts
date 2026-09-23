@@ -2,10 +2,10 @@ import type { Vertical } from "./vertical";
 import type { ExperienceMap } from "./experience-map";
 
 /**
- * TEMPLATE layer.
- * Binds a vertical to its default experience structure. A template holds
- * no business data, visual DNA, or assets — those are supplied at
- * render time from the other layers.
+ * Слой TEMPLATE.
+ * Связывает вертикаль с её структурой experience по умолчанию. Шаблон не
+ * содержит бизнес-данных, Visual DNA или ассетов — на этапе рендера они
+ * приходят из других слоёв.
  */
 export interface Template {
   vertical: Vertical;

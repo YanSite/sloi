@@ -27,18 +27,21 @@ import type {
 
 /**
  * SECTION REGISTRY.
- * The `SectionRegistry` in `SiteConfig → PageRenderer → SectionRegistry →
- * Section`. Maps a section id (the closed `SectionId` set — never a
- * vertical-specific name) plus a variant slug to the component that
- * renders it. This is where `section.type + section.variant` lookup
- * lives — e.g. `"product-reveal" + "image-parallax"`.
+ * `SectionRegistry` в цепочке `SiteConfig → PageRenderer →
+ * SectionRegistry → Section`. Сопоставляет id секции (закрытое множество
+ * `SectionId` — никогда не вертикально-специфичное имя) и слаг варианта с
+ * компонентом, который её рендерит. Именно здесь живёт lookup
+ * `section.type + section.variant` — например,
+ * `"product-reveal" + "image-parallax"` (реально выбирается вертикалью
+ * barber, см. src/templates/barber.template.ts).
  *
- * Exactly one real variant per section is registered for now
- * ("default"), plus one extra example on `product-reveal` to prove the
- * variant axis works — this is architecture, not a visual-variant
- * catalog. Every component here is still an "interface only" stub (see
- * each file under `@/components/wow/sections`); the registry doesn't
- * know or care about that, it only wires ids to components.
+ * Большинство секций регистрируют один вариант "default"; `product-reveal`
+ * дополнительно регистрирует "image-parallax", указывающий на тот же
+ * компонент, что и "default" — variant-механизм требует лишь
+ * зарегистрированной записи, а не визуально другой реализации. Семь из
+ * десяти компонентов секций пока остаются заглушками-интерфейсами (см.
+ * каждый файл в `@/components/wow/sections`); реестр об этом не знает и
+ * не заботится — он лишь связывает id с компонентами.
  */
 export interface SectionPropsMap {
   "cinematic-hero": CinematicHeroProps;
@@ -64,9 +67,10 @@ export const sectionRegistry: SectionVariants = {
   "editorial-statement": { [DEFAULT_VARIANT]: EditorialStatement },
   "product-reveal": {
     [DEFAULT_VARIANT]: ProductReveal,
-    // Same stub component as "default" for now — the variant axis is
-    // proven structurally; a visually distinct implementation is a later
-    // stage, not this one.
+    // Зарегистрирован под обоими слагами варианта намеренно —
+    // variant-ось требует лишь отдельной ЗАРЕГИСТРИРОВАННОЙ записи, а не
+    // визуально другого компонента. Реально выбран вертикалью barber
+    // (Stage 8).
     "image-parallax": ProductReveal,
   },
   "editorial-grid": { [DEFAULT_VARIANT]: EditorialGrid },
@@ -78,18 +82,15 @@ export const sectionRegistry: SectionVariants = {
   "final-cta": { [DEFAULT_VARIANT]: FinalCTA },
 };
 
-/** Looks up a section's component by id + variant. Throws rather than silently falling back — an unregistered variant is a config mistake to surface, not paper over. */
+/** Резолвит компонент секции по id + variant. Бросает ошибку вместо тихого fallback — незарегистрированный variant это ошибка конфигурации, которую нужно показать, а не скрыть. */
 export function resolveSectionComponent<S extends SectionId>(
   section: S,
-  variant: string
+  variant: string,
 ): ComponentType<SectionPropsMap[S]> {
   const component = sectionRegistry[section][variant] as
-    | ComponentType<SectionPropsMap[S]>
-    | undefined;
+    ComponentType<SectionPropsMap[S]> | undefined;
   if (!component) {
-    throw new Error(
-      `No component registered for section "${section}" variant "${variant}".`
-    );
+    throw new Error(`No component registered for section "${section}" variant "${variant}".`);
   }
   return component;
 }

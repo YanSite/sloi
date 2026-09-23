@@ -1,9 +1,9 @@
 import type { SectionId } from "./section";
 
 /**
- * ASSETS layer.
- * Tracks every image/video a business needs, its generation status, and
- * where it belongs — never the asset binary or generation credentials.
+ * Слой ASSETS.
+ * Отслеживает каждое изображение/видео, нужное бизнесу, статус его
+ * генерации и место применения — но никогда сам файл или generation-credentials.
  */
 export const ASSET_TYPES = ["image", "video"] as const;
 export type AssetType = (typeof ASSET_TYPES)[number];
@@ -11,16 +11,22 @@ export type AssetType = (typeof ASSET_TYPES)[number];
 export const ASSET_SOURCES = ["higgsfield", "stock", "client-provided", "placeholder"] as const;
 export type AssetSource = (typeof ASSET_SOURCES)[number];
 
-export const ASSET_STATUSES = ["planned", "approved", "generating", "generated", "rejected"] as const;
+export const ASSET_STATUSES = [
+  "planned",
+  "approved",
+  "generating",
+  "generated",
+  "rejected",
+] as const;
 export type AssetStatus = (typeof ASSET_STATUSES)[number];
 
-/** Where the subject sits in frame, for CSS `object-position`-driven crops. Both axes run 0 (left/top) to 1 (right/bottom); omitted means center. */
+/** Где в кадре находится объект — для CSS-кропов через `object-position`. Обе оси идут от 0 (лево/верх) до 1 (право/низ); при отсутствии — центр. */
 export interface AssetFocalPoint {
   x: number;
   y: number;
 }
 
-/** One concrete, renderable file — a single responsive width variant of an asset. */
+/** Один конкретный, готовый к рендеру файл — вариант одной адаптивной ширины ассета. */
 export interface AssetFile {
   url: string;
   width: number;
@@ -32,22 +38,22 @@ export interface AssetManifestEntry {
   purpose: string;
   type: AssetType;
   source: AssetSource;
-  /** Required when source is "higgsfield"; the exact generation prompt. */
+  /** Обязателен при source: "higgsfield" — точный промпт генерации. */
   prompt?: string;
   aspect_ratio: string;
   /**
-   * One generated/sourced file commonly backs more than one section (a
-   * hero shot re-graded for the closing CTA, a product shot recropped
-   * into a grid tile) — an array records every section it's reused in,
-   * without duplicating the entry per placement.
+   * Один сгенерированный/полученный файл часто используется в нескольких
+   * секциях (hero-кадр, переграженный для закрывающего CTA, товарный
+   * кадр, перекадрированный в тайл грида) — массив фиксирует все секции
+   * повторного использования без дублирования записи под каждое размещение.
    */
   section: SectionId | SectionId[];
   status: AssetStatus;
   focalPoint?: AssetFocalPoint;
   /**
-   * The real file variant(s) — populated once `status` reaches
-   * "generated". A section resolves this via `resolveAsset` (see
-   * src/lib/assets) and falls back to a placeholder while it's empty.
+   * Реальный файл/файлы — заполняется, когда `status` достигает
+   * "generated". Секция резолвит их через `resolveAsset` (см.
+   * src/lib/assets), пока список пуст — используется плейсхолдер.
    */
   files?: AssetFile[];
 }

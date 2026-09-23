@@ -1,11 +1,11 @@
 import type { AssetManifest } from "@/lib/types";
 
 /**
- * Approved production plan from /docs/asset-manifest.md. Every entry is
- * "planned" — per /docs/generation-policy.md, planning an asset never
- * itself triggers generation; only an explicit human approval moves an
- * entry from "planned"/"approved" toward "generating". No Higgsfield
- * call has been made for any entry here.
+ * Утверждённый план продакшна из /docs/asset-manifest.md. Каждая запись
+ * — "planned": согласно /docs/generation-policy.md, планирование ассета
+ * само по себе никогда не запускает генерацию; продвинуть запись из
+ * "planned"/"approved" к "generating" может только явное согласование
+ * человеком. Ни один вызов Higgsfield по этим записям не выполнялся.
  */
 export const floristAssetManifest: AssetManifest = [
   {

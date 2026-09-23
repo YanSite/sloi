@@ -1,34 +1,42 @@
 "use client";
 
-import { createContext, useCallback, useContext, useSyncExternalStore, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
 
 /**
- * MOTION CAPABILITY — the one place that decides whether a primitive
- * should do scroll-linked or JS-driven entrance work. No primitive
- * queries matchMedia or a provider on its own; they all read this.
+ * MOTION CAPABILITY — единственное место, решающее, должен ли примитив
+ * выполнять scroll-linked или JS-driven работу при появлении. Ни один
+ * примитив не запрашивает matchMedia или провайдер самостоятельно — все
+ * читают отсюда.
  *
- * This hook is a PERFORMANCE gate (should we bother attaching scroll
- * listeners / observers), not the primary reduced-motion guarantee —
- * every primitive also carries Tailwind `motion-reduce:` classes that
- * apply from a pure CSS media query on first paint, before any JS runs
- * or hydrates. That CSS is the full fallback; this hook is secondary.
+ * Этот хук — PERFORMANCE-шлюз (стоит ли вообще навешивать scroll
+ * listeners/observers), а не основная гарантия reduced-motion — каждый
+ * примитив также несёт Tailwind-классы `motion-reduce:`, которые
+ * применяются через чистый CSS media query при первой отрисовке, до
+ * запуска или гидратации любого JS. Именно этот CSS — полный fallback;
+ * этот хук вторичен.
  */
 export interface MotionCapability {
-  /** False under `prefers-reduced-motion: reduce` or the site's own kill switch. */
+  /** False при `prefers-reduced-motion: reduce` или собственном kill switch сайта. */
   enabled: boolean;
-  /** True on coarse-pointer/touch devices — primitives may skip expensive scroll-linked work and keep only cheap enter transitions. */
+  /** True на устройствах с coarse-pointer/touch — примитивы могут пропускать дорогую scroll-linked работу и оставлять только дешёвые enter-переходы. */
   simplify: boolean;
 }
 
 const MotionContext = createContext<{ siteEnabled: boolean }>({ siteEnabled: true });
 
 export interface MotionProviderProps {
-  /** Site-level kill switch, independent of the visitor's OS setting. Defaults to on. */
+  /** Kill switch уровня сайта, независимый от настройки ОС посетителя. По умолчанию включён. */
   enabled?: boolean;
   children: ReactNode;
 }
 
-/** Wrap the app (or a subtree) to control motion site-wide. Optional — every primitive still respects prefers-reduced-motion without it. */
+/** Оборачивает приложение (или поддерево) для управления motion во всём сайте. Опционально — каждый примитив и без этого соблюдает prefers-reduced-motion. */
 export function MotionProvider({ enabled = true, children }: MotionProviderProps) {
   return (
     <MotionContext.Provider value={{ siteEnabled: enabled }}>{children}</MotionContext.Provider>
@@ -42,7 +50,7 @@ function useMediaQuery(query: string): boolean {
       mql.addEventListener("change", callback);
       return () => mql.removeEventListener("change", callback);
     },
-    [query]
+    [query],
   );
   const getSnapshot = useCallback(() => window.matchMedia(query).matches, [query]);
   const getServerSnapshot = useCallback(() => false, []);

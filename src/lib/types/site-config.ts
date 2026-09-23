@@ -7,25 +7,25 @@ import type { ThemeTokens } from "./theme-tokens";
 import type { MotionConfig } from "./motion";
 
 /**
- * SITE COMPOSITION layer — the top-level shape a renderer (not built yet,
- * see /docs/engine-architecture.md) will eventually consume:
+ * Слой SITE COMPOSITION — верхнеуровневая форма, которую потребляет
+ * `PageRenderer` (см. src/lib/render):
  *
  *   SiteConfig = Business + VisualDNA + Experience + Content + Assets
  *                + Theme + Motion
  *
- * Every field is a business-specific VALUE of a vertical-agnostic TYPE.
- * Like every other type in this directory, this file must never import
- * from `src/config/verticals/*` or reference a vertical, a business
- * name, or a business-specific concept.
+ * Каждое поле — бизнес-специфичное ЗНАЧЕНИЕ вертикально-нейтрального
+ * ТИПА. Как и любой другой тип в этой директории, этот файл никогда не
+ * импортирует из `src/config/verticals/*` и не ссылается на вертикаль,
+ * название бизнеса или бизнес-специфичное понятие.
  */
 export interface SiteConfig {
   business: BusinessProfile;
   visualDNA: VisualDNA;
-  /** Which sections, in what order — see Template/ExperienceMap. */
+  /** Какие секции и в каком порядке — см. Template/ExperienceMap. */
   experience: Template;
   content: ExperienceContent;
   assets: AssetManifest;
   theme: ThemeTokens;
-  /** Sitewide baseline motion; the two Signature WOW builds override this per section once a renderer exists. */
+  /** Базовый motion на весь сайт; per-section override задаётся в ExperienceMapEntry.motion. */
   motion?: MotionConfig;
 }

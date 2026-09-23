@@ -23,15 +23,15 @@ business = BusinessProfile + VisualDNA + Template + AssetManifest (+ ExperienceC
 
 Эти слои строго разделены и не пересекаются:
 
-| Слой | За что отвечает | Где живёт |
-|---|---|---|
-| Бизнес-данные | Факты о бизнесе (имя, контакты, часы работы) | `src/config/verticals/<vertical>/business-profile.ts` |
-| Visual DNA | Внешний вид: палитра, типографика, настроение | `src/config/verticals/<vertical>/visual-dna.ts` |
-| Структура опыта | Какие секции и в каком порядке | `src/templates/<vertical>.template.ts` |
-| Ассеты | Манифест изображений/видео и их статус генерации | `src/config/verticals/<vertical>/asset-manifest.ts` |
-| Контент | Тексты внутри секций | `src/config/verticals/<vertical>/content.ts` |
-| Motion | Анимационные пресеты (общие для всех вертикалей) | `src/components/wow/motion` |
-| WOW-секции | Переиспользуемые компоненты (Hero, CTA и т.д.) | `src/components/wow/sections` |
+| Слой            | За что отвечает                                  | Где живёт                                             |
+| --------------- | ------------------------------------------------ | ----------------------------------------------------- |
+| Бизнес-данные   | Факты о бизнесе (имя, контакты, часы работы)     | `src/config/verticals/<vertical>/business-profile.ts` |
+| Visual DNA      | Внешний вид: палитра, типографика, настроение    | `src/config/verticals/<vertical>/visual-dna.ts`       |
+| Структура опыта | Какие секции и в каком порядке                   | `src/templates/<vertical>.template.ts`                |
+| Ассеты          | Манифест изображений/видео и их статус генерации | `src/config/verticals/<vertical>/asset-manifest.ts`   |
+| Контент         | Тексты внутри секций                             | `src/config/verticals/<vertical>/content.ts`          |
+| Motion          | Анимационные пресеты (общие для всех вертикалей) | `src/components/wow/motion`                           |
+| WOW-секции      | Переиспользуемые компоненты (Hero, CTA и т.д.)   | `src/components/wow/sections`                         |
 
 Полное описание — в [docs/engine-architecture.md](docs/engine-architecture.md).
 Остальные документы по каждому слою — в [docs/](docs).

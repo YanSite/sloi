@@ -1,23 +1,26 @@
 import type { AssetManifest } from "@/lib/types";
 
-// Tiny inline placeholder images (not generated, not a real photograph —
-// solid barber-brand-colored rectangles) standing in for the two assets
-// marked "generated" below, so the real `resolveAsset` -> `<img>` path
-// (see src/lib/assets/resolve-asset.ts) renders for real, alongside
-// still-"planned" assets that fall back to the gradient placeholder —
-// the same pattern proven in the abstract-test fixture (Stage 5).
+// Крохотные инлайновые placeholder-изображения (не сгенерированы, не
+// реальная фотография — просто залитые фирменным цветом barber
+// прямоугольники) вместо двух ассетов, помеченных ниже "generated", чтобы
+// реальный путь `resolveAsset` -> `<img>` (см.
+// src/lib/assets/resolve-asset.ts) рендерился по-настоящему, наравне с
+// ещё "planned" ассетами, уходящими на градиентный placeholder — та же
+// схема, что уже проверена в abstract-test фикстуре (Stage 5).
 const HERO_PLACEHOLDER =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='3'%3E%3Crect width='4' height='3' fill='%23B3341F'/%3E%3C/svg%3E";
 const CHAIR_PLACEHOLDER =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5'%3E%3Crect width='4' height='5' fill='%234A4A4F'/%3E%3C/svg%3E";
 
 /**
- * Planned production plan for the barber test vertical — same shape as
- * florist's asset-manifest.ts, deliberately different content/prompts.
- * No Higgsfield call has been made for any entry here; "higgsfield"
- * sourced entries are drafted prompts only (per /docs/generation-policy.md's
- * "never generate during planning" rule), and the two "placeholder"
- * sourced entries are inline stand-in files, not generated output.
+ * Плановый production-план для тестовой вертикали barber — та же форма,
+ * что у asset-manifest.ts вертикали florist, но сознательно другой
+ * контент/промпты. Ни один вызов Higgsfield по этим записям не
+ * выполнялся; записи с source "higgsfield" — это только черновики
+ * промптов (по правилу /docs/generation-policy.md «никогда не
+ * генерировать во время планирования»), а две записи с source
+ * "placeholder" — инлайновые подставные файлы, а не сгенерированный
+ * результат.
  */
 export const barberAssetManifest: AssetManifest = [
   {

@@ -1,7 +1,7 @@
 # Engine Architecture
 
 Local WOW Engine is a reusable system for producing premium landing pages
-for local businesses. The goal: a new business — even a new *vertical* — is
+for local businesses. The goal: a new business — even a new _vertical_ — is
 represented entirely through data and configuration, never by modifying the
 reusable core. As of the Engine v1 Lock audit, this has been proven with
 two verticals (florist, barber) rendering through one unmodified core — see
@@ -15,16 +15,16 @@ SiteConfig = BusinessProfile + VisualDNA + Experience(Template)
            + Theme(ThemeTokens) + Motion(MotionConfig)
 ```
 
-| Layer | Answers | Type | Lives in |
-|---|---|---|---|
-| Business data | "What are the facts?" | `BusinessProfile` | `src/config/verticals/<vertical>/business-profile.ts` |
-| Visual DNA | "What does it look like?" | `VisualDNA` | `src/config/verticals/<vertical>/visual-dna.ts` |
-| Experience structure | "What sections, in what order, which variant?" | `ExperienceMap` (inside `Template`) | `src/templates/<vertical>.template.ts` |
-| Content | "What does each section say?" | `ExperienceContent` | `src/config/verticals/<vertical>/content.ts` |
-| Assets | "What images/video, and their status?" | `AssetManifest` | `src/config/verticals/<vertical>/asset-manifest.ts` |
-| Theme | "What are the concrete, CSS-ready tokens?" | `ThemeTokens` | `src/config/verticals/<vertical>/theme-tokens.ts`, resolved from VisualDNA via `src/lib/theme` |
-| Motion | "How does it move, sitewide?" | `MotionConfig` | Set directly on `SiteConfig.motion`; per-section overrides live on `ExperienceMapEntry.motion` |
-| Composition | Binds every layer above into one renderable unit | `SiteConfig` | `src/config/verticals/<vertical>/site-config.ts` |
+| Layer                | Answers                                          | Type                                | Lives in                                                                                       |
+| -------------------- | ------------------------------------------------ | ----------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Business data        | "What are the facts?"                            | `BusinessProfile`                   | `src/config/verticals/<vertical>/business-profile.ts`                                          |
+| Visual DNA           | "What does it look like?"                        | `VisualDNA`                         | `src/config/verticals/<vertical>/visual-dna.ts`                                                |
+| Experience structure | "What sections, in what order, which variant?"   | `ExperienceMap` (inside `Template`) | `src/templates/<vertical>.template.ts`                                                         |
+| Content              | "What does each section say?"                    | `ExperienceContent`                 | `src/config/verticals/<vertical>/content.ts`                                                   |
+| Assets               | "What images/video, and their status?"           | `AssetManifest`                     | `src/config/verticals/<vertical>/asset-manifest.ts`                                            |
+| Theme                | "What are the concrete, CSS-ready tokens?"       | `ThemeTokens`                       | `src/config/verticals/<vertical>/theme-tokens.ts`, resolved from VisualDNA via `src/lib/theme` |
+| Motion               | "How does it move, sitewide?"                    | `MotionConfig`                      | Set directly on `SiteConfig.motion`; per-section overrides live on `ExperienceMapEntry.motion` |
+| Composition          | Binds every layer above into one renderable unit | `SiteConfig`                        | `src/config/verticals/<vertical>/site-config.ts`                                               |
 
 Full type definitions: [src/lib/types](../src/lib/types).
 
@@ -48,7 +48,7 @@ separate, independently-testable module — none of them import from
    `Reveal`, `Parallax`, `PinnedScroll`, `HorizontalScroll`, `Crossfade`,
    plus the `useMotionCapability()` hook every one of them reads instead
    of querying `matchMedia` independently. A `MotionPreset` slug selects
-   among these; sections express *intent*, never animation code.
+   among these; sections express _intent_, never animation code.
 4. **WebGL layer** — [src/components/wow/webgl](../src/components/wow/webgl).
    `WebGLImageLayer` — a pure enhancement, never a hard dependency. Only
    used by Cinematic Hero and Product Reveal (the two Signature WOW
@@ -76,7 +76,7 @@ separate, independently-testable module — none of them import from
 9. **Generation workflow** — [src/lib/generation](../src/lib/generation).
    Encodes [generation-policy.md](./generation-policy.md) as a state
    machine (`PLANNED → APPROVED → GENERATING → GENERATED → REVIEW →
-   {APPROVED|RETRY|REJECTED}`) plus Demo/Production budget policies and a
+{APPROVED|RETRY|REJECTED}`) plus Demo/Production budget policies and a
    call-count estimator. A planning/authoring tool, not a pipeline that
    calls a generation provider — nothing in this project calls Higgsfield
    automatically.
@@ -121,7 +121,7 @@ component changes.
 This file lives under `src/config`, not `src/lib/render` — it names real
 verticals by import, which is exactly what the core layers above are never
 allowed to do. A registry of real vertical configs is inherently
-vertical-*aware*, so it belongs beside `config/verticals/*`.
+vertical-_aware_, so it belongs beside `config/verticals/*`.
 
 ## Adding a new vertical without touching the core
 

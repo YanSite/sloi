@@ -1,9 +1,9 @@
 import type { BusinessProfile } from "@/lib/types";
 
 /**
- * Placeholder business data for the barber test vertical (Stage 8's
- * portability test, part 2) — every value is a stand-in, same convention
- * as the florist vertical's business-profile.ts.
+ * Плейсхолдерные бизнес-данные для тестовой вертикали barber (часть 2
+ * portability-теста Stage 8) — каждое значение заглушка, та же
+ * конвенция, что и в business-profile.ts вертикали florist.
  */
 export const barberBusinessProfile: BusinessProfile = {
   vertical: "barber",

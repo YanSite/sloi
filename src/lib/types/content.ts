@@ -1,10 +1,12 @@
 import type { SectionId } from "./section";
 
 /**
- * BUSINESS-SPECIFIC CONTENT layer.
- * Marketing copy per section (headlines, quotes, captions) — distinct from
- * BusinessProfile's objective facts. Left loose until each WOW section
- * defines its own strict props in a later phase.
+ * Слой BUSINESS-SPECIFIC CONTENT.
+ * Маркетинговый текст по секциям (заголовки, цитаты, подписи) — отдельно
+ * от объективных фактов в BusinessProfile. Тип сознательно остаётся
+ * нестрогим (`Record<string, unknown>`) — строгую проверку по реальным
+ * полям секции даёт `defineContent`/`SectionContentMap` на уровне
+ * авторинга (см. src/lib/render/section-content.ts), не меняя этот контракт.
  */
 export type SectionContent = Record<string, unknown>;
 

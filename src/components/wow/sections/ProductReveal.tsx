@@ -17,15 +17,23 @@ export interface ProductRevealProps {
 }
 
 /**
- * Single hero product/offering moment — Signature WOW Moment #2. Camera
- * language (scroll-linked zoom, via `WebGLImageLayer`'s `scaleRange`
- * when WebGL is available, or CSS-only `Parallax` otherwise), not a
- * transformation sequence — see /docs/experience-map.md Scene 3. The CSS
- * fallback renders `media`'s real, resolved photograph once one exists
- * (via `resolveAsset`), falling back further to a graded color block
- * while it's still "planned".
+ * Единственный момент показа товара/услуги — Signature WOW Moment #2.
+ * Язык камеры (scroll-linked zoom через `scaleRange` `WebGLImageLayer`,
+ * когда WebGL доступен, иначе — CSS-only `Parallax`), а не
+ * transformation-последовательность — см. /docs/experience-map.md Scene
+ * 3. CSS-fallback рендерит реальную, резолвленную фотографию `media`,
+ * как только она появляется (через `resolveAsset`), иначе — градиентный
+ * цветовой блок, пока статус "planned".
  */
-export function ProductReveal({ title, description, media, cta, assets, theme, motion }: ProductRevealProps) {
+export function ProductReveal({
+  title,
+  description,
+  media,
+  cta,
+  assets,
+  theme,
+  motion,
+}: ProductRevealProps) {
   const background = theme?.colors.background ?? "#15110D";
   const foreground = theme?.colors.foreground ?? "#F3ECDF";
   const accent = theme?.colors.secondary ?? "#4A5240";
@@ -33,7 +41,10 @@ export function ProductReveal({ title, description, media, cta, assets, theme, m
   const hasRealSource = resolvedMedia.sources.length > 0;
 
   return (
-    <section aria-labelledby="product-reveal-title" style={{ backgroundColor: background, color: foreground }}>
+    <section
+      aria-labelledby="product-reveal-title"
+      style={{ backgroundColor: background, color: foreground }}
+    >
       <PinnedScroll scrollLengthVh={220}>
         <WebGLImageLayer
           from={accent}
@@ -48,13 +59,14 @@ export function ProductReveal({ title, description, media, cta, assets, theme, m
               className="flex h-full items-center justify-center"
             >
               {hasRealSource ? (
+                // eslint-disable-next-line @next/next/no-img-element -- источник может быть data-URI плейсхолдер (см. resolve-asset.ts); next/image не годится без реального хостинга изображений, см. известные риски в Engine v1 Lock Audit.
                 <img
                   src={resolvedMedia.sources[0].url}
                   srcSet={toSrcSet(resolvedMedia.sources)}
                   sizes="(min-width: 640px) 28rem, 70vw"
                   alt={resolvedMedia.alt}
-                  // Below the fold — deferred until it's near the
-                  // viewport, unlike the Hero's eagerly-loaded image.
+                  // Ниже сгиба — загрузка откладывается до приближения
+                  // вьюпорта, в отличие от eager-загрузки в Hero.
                   loading="lazy"
                   decoding="async"
                   className="aspect-[4/5] w-[min(70vw,28rem)] object-cover"
@@ -95,7 +107,10 @@ export function ProductReveal({ title, description, media, cta, assets, theme, m
             <a
               href={cta.href}
               className="mt-6 inline-block underline underline-offset-4 transition-opacity hover:opacity-70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4"
-              style={{ transitionDuration: theme?.transitions.base, outlineColor: theme?.colors.accent ?? "#B08D57" }}
+              style={{
+                transitionDuration: theme?.transitions.base,
+                outlineColor: theme?.colors.accent ?? "#B08D57",
+              }}
             >
               {cta.label}
             </a>

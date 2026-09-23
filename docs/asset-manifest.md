@@ -235,21 +235,21 @@ real.
 
 ### Reuse map — how 4 Higgsfield assets cover ~9 placements
 
-| Asset | Also appears in | Treatment that creates the variation |
-|---|---|---|
-| `hero-atmosphere` | Final CTA | Different crop region (mirrored/shifted), warmer CSS color-grade — reads as "the same room, later," not a repeated frame. |
-| `flagship-bouquet` | Collection Showcase (featured card) | Wider crop showing the vessel/base, no overlay, new caption — a different "moment" with the same subject. |
-| `flagship-bouquet` | Editorial Grid (one tile) | Tight crop on the bloom only, duotone overlay via CSS `mix-blend-mode` — reads as a graphic tile, not a repeated product photo. |
-| `detail-texture` | Editorial Statement (optional accent) | Small, low-opacity crop, mostly obscured behind headline type. |
-| `detail-texture` | Service Section (optional accent) | Small corner crop, low opacity, non-narrative. |
-| `detail-texture` | Editorial Grid (one tile) | Different crop than the Statement/Service placements, duotone-graded — the grid's second image tile. |
-| `atmospheric-editorial` | Editorial Grid (one tile) | Wide frame, minimal cropping — the grid's third image tile, visually distinct from the other two because it's a different source photo, not just a different crop. |
-| `atmospheric-editorial` | Collection Showcase (optional second card) | Used in place of a typographic-only note if it reads better during build — no extra cost either way. |
+| Asset                   | Also appears in                            | Treatment that creates the variation                                                                                                                               |
+| ----------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `hero-atmosphere`       | Final CTA                                  | Different crop region (mirrored/shifted), warmer CSS color-grade — reads as "the same room, later," not a repeated frame.                                          |
+| `flagship-bouquet`      | Collection Showcase (featured card)        | Wider crop showing the vessel/base, no overlay, new caption — a different "moment" with the same subject.                                                          |
+| `flagship-bouquet`      | Editorial Grid (one tile)                  | Tight crop on the bloom only, duotone overlay via CSS `mix-blend-mode` — reads as a graphic tile, not a repeated product photo.                                    |
+| `detail-texture`        | Editorial Statement (optional accent)      | Small, low-opacity crop, mostly obscured behind headline type.                                                                                                     |
+| `detail-texture`        | Service Section (optional accent)          | Small corner crop, low opacity, non-narrative.                                                                                                                     |
+| `detail-texture`        | Editorial Grid (one tile)                  | Different crop than the Statement/Service placements, duotone-graded — the grid's second image tile.                                                               |
+| `atmospheric-editorial` | Editorial Grid (one tile)                  | Wide frame, minimal cropping — the grid's third image tile, visually distinct from the other two because it's a different source photo, not just a different crop. |
+| `atmospheric-editorial` | Collection Showcase (optional second card) | Used in place of a typographic-only note if it reads better during build — no extra cost either way.                                                               |
 
 Editorial Grid now runs three image tiles (one per Higgsfield asset) plus
 two pure typographic color-block tiles — more visual variety than a
 two-image grid, at zero additional generation cost, because each tile
-draws from a *different* source photo rather than recropping the same
+draws from a _different_ source photo rather than recropping the same
 one repeatedly.
 
 No Higgsfield asset appears in Story Section or Location Section — those
@@ -297,14 +297,14 @@ to plan against, so this reports **counts only**, per
 [generation-policy.md](./generation-policy.md#demo-mode-limit), cap: 4
 images / 0 videos / 1 retry per asset):
 
-| | Count |
-|---|---|
-| Planned generations (MUST_HAVE only) | 4 images, 0 video |
-| Uses the full demo image cap | Yes — 4 of 4 |
-| Possible retries (1 per asset, only if a generation fails review) | up to 4 |
-| **Maximum generation calls this phase, if all 4 are approved** | **4 initial + up to 4 retries = up to 8 image API calls; 0 video calls** |
-| Video allowance used | 0 of 0 (demo mode has no video allowance) |
-| Reserve candidate (`closing-visual`) | **Not counted — not authorized.** Generating it would be a 5th image, which exceeds the demo cap and needs explicit approval to go over the limit, independent of this plan. |
+|                                                                   | Count                                                                                                                                                                        |
+| ----------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Planned generations (MUST_HAVE only)                              | 4 images, 0 video                                                                                                                                                            |
+| Uses the full demo image cap                                      | Yes — 4 of 4                                                                                                                                                                 |
+| Possible retries (1 per asset, only if a generation fails review) | up to 4                                                                                                                                                                      |
+| **Maximum generation calls this phase, if all 4 are approved**    | **4 initial + up to 4 retries = up to 8 image API calls; 0 video calls**                                                                                                     |
+| Video allowance used                                              | 0 of 0 (demo mode has no video allowance)                                                                                                                                    |
+| Reserve candidate (`closing-visual`)                              | **Not counted — not authorized.** Generating it would be a 5th image, which exceeds the demo cap and needs explicit approval to go over the limit, independent of this plan. |
 
 **Against production mode** (future tier, not active — see
 [generation-policy.md](./generation-policy.md#production-mode-limit),

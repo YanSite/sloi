@@ -40,6 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# редакторы/IDE
-.vscode/
+# редакторы/IDE — .vscode/settings.json трекается сознательно (общий
+# editor config для проекта), остальное — личные/machine-specific файлы
+.vscode/*
+!.vscode/settings.json
 .idea/

@@ -8,7 +8,7 @@ consistently against it, by anyone, without redefining the look each time.
 **Scope of this phase:** art direction only.
 
 - No image/video generated, no Higgsfield credits spent. Any prompt draft
-  below is a *plan*, subject to the approval gate in
+  below is a _plan_, subject to the approval gate in
   [generation-policy.md](./generation-policy.md).
 - No `floristVisualDNA` values committed to
   [visual-dna.ts](../src/config/verticals/florist/visual-dna.ts) — that
@@ -34,7 +34,7 @@ This is the direction because it solves the production problem in
 distinctive without depending on a specific location or season, and its
 "recipe" (hard key light, near-black ground, one saturated color note) is
 tight enough to reproduce consistently across a handful of separate
-Higgsfield generations *and* real client photography — a $0 phone photo
+Higgsfield generations _and_ real client photography — a $0 phone photo
 of the actual shop, lit near a single window and graded to match, sits in
 the same visual family as the generated hero asset. That consistency is
 what makes a small, fixed asset budget look intentional instead of thin —
@@ -42,6 +42,7 @@ the whole point of a system meant to produce a convincing demo quickly
 and repeatedly, not one expensive portfolio site.
 
 ### Emotional tone
+
 Reverent, unhurried, quietly dramatic. Attention is treated as something
 earned, not seized — the opposite of a bright, evenly-lit product shot
 shouting for a scroll-past thumb. Confidence comes from restraint: one
@@ -50,6 +51,7 @@ both florist-industry pastel-romantic cliché and clinical "clean beauty"
 white-background cliché.
 
 ### Color palette
+
 - Background — `#15110D`, a warm bitumen brown-black, never a neutral or
   cool-toned black.
 - Foreground/text on dark — `#F3ECDF`, warm ivory, never pure white.
@@ -58,10 +60,11 @@ white-background cliché.
   kelly or mint green).
 - Accent — `#B08D57`, aged/oxidized brass (props, dividers, hover states;
   never a bright gold or chrome).
-No pastel pink, no cool blue, no pure white or pure black anywhere in the
-system.
+  No pastel pink, no cool blue, no pure white or pure black anywhere in the
+  system.
 
 ### Typography direction
+
 - **Display** — a high-contrast, Didone-register serif (reference class:
   Canela, GT Sectra Display) for headlines set against generous dark
   space. Reads like engraved gallery wall-text, not a wedding-invitation
@@ -76,6 +79,7 @@ system.
   museum wall-label register, not ecommerce button styling.
 
 ### Lighting
+
 Single key, large soft source (window-diffused daylight or one softbox),
 struck at roughly 45° to the subject. High lighting ratio — approximately
 8:1 to 16:1, key to fill — so shadows fall to near-black rather than a
@@ -83,23 +87,26 @@ softened gray. No bounce fill lifting the shadow side. The subject should
 look like it is emerging from the dark, not sitting on an evenly lit set.
 
 ### Camera language
+
 Still and deliberate. Locked-off or slow, controlled movement only — no
 handheld shake, no whip pans. Two registers alternate: extreme macro for
 texture beats (Editorial Statement accent, detail crops) and a static,
 "held-breath" medium shot for the hero product. Any camera movement paces
 like a gallery walkthrough, not a product-ad push-in. On-screen, the only
-places the camera is allowed to actually *move* (as opposed to the still
+places the camera is allowed to actually _move_ (as opposed to the still
 frame a photograph implies) are the two builds named in
 [Signature WOW moments](#signature-wow-moments) — everywhere else, "camera
 language" describes how the photograph was shot, not how it animates.
 
 ### Lens language
+
 Vintage-character prime equivalents, 85–135mm, shot wide open. Gentle
 field curvature and soft edge vignette. Warm glass character rather than
 clinical modern-optical sharpness. Flare, if present, comes only from the
 single hard source — never a generic anamorphic streak or bokeh sparkle.
 
 ### Depth of field
+
 Very shallow — f/1.4–f/2.8 equivalent. One plane of focus (a bloom edge,
 a petal vein) is legible; everything else dissolves within centimeters.
 Focus falloff is what CSS/WebGL blur simulates on the layered parallax in
@@ -107,22 +114,26 @@ Product Reveal — it doesn't need to be re-created with a real focus rack,
 just approximated from one sharply-focused source photograph.
 
 ### Composition
+
 Diagonal, off-center, classical still-life triangulation — the subject
 sits in the lower two-thirds or to one side of frame. Never centered,
 never a symmetrical catalog product shot.
 
 ### Negative space
+
 Large and deliberate — 40–60% of any hero frame is unresolved dark field.
 This is not empty leftover space; it is where headline type sits in
 Cinematic Hero, Editorial Statement, and Final CTA. Negative space is
 load-bearing, not decorative.
 
 ### Materials
+
 Aged/oxidized brass, dark oiled wood, raw linen, hand-thrown or dark
 glazed stoneware vessels, waxed kraft paper wrap. Never glossy cellophane,
 printed ribbon, or plastic packaging.
 
 ### Background treatment
+
 The background is never a passive backdrop — it's the same warm bitumen
 black (`#15110D`) in every generated asset and every scene, acting as a
 connective thread the whole page shares. It falls from a narrow lit zone
@@ -136,17 +147,20 @@ Section / Location Section photography, brought into the same tonal
 family through grading, not through generation.
 
 ### Texture
+
 Visible, fine photographic grain (ISO 400–800 film character, not
 digital-clean). Petal surfaces show real imperfection — a browning edge,
 a water droplet, a slightly loose outer petal. Deliberate imperfection is
 what keeps this from reading as synthetic.
 
 ### Contrast
+
 High global contrast — deep, unlifted blacks, no shadow detail forced
 back in. Soft local contrast on the bloom itself, so petal falloff reads
 skin-like rather than clipped and specular.
 
 ### Image grading
+
 Warm-shifted shadows (a bitumen/sepia undertone, never neutral or
 cool-blue-black). Slightly desaturated overall, except the single hero
 bloom color per frame, which is allowed to read fully saturated — the one
@@ -156,6 +170,7 @@ before it ships; grading is what makes a phone photo of the actual
 storefront sit in the same family as a Higgsfield hero shot.
 
 ### Photographic realism
+
 Must read as a photograph of a real, physical arrangement in a real room
 — reference class is editorial food/object photography for a design
 magazine. Not a 3D render, not airbrushed AI-skin petal texture, not a
@@ -164,11 +179,13 @@ asset and the first thing to check before approving one — see
 [Generation order](./asset-manifest.md#5-generation-order)'s stop-gate.
 
 ### Motion language
+
 Slow, physical, gravity-bound — drift, settle, unfurl. Never bounce,
 spring, or elastic easing. Reveals happen the way eyes adjust entering a
 dark room: a slow aperture-opening feel, not a slide or wipe.
 
 ### Transition language
+
 Cross-fade through the background black between scenes — never a hard
 cut, never a horizontal ecommerce-carousel snap. Every scene boundary
 briefly touches `#15110D` before the next scene resolves, reinforcing the
@@ -177,6 +194,7 @@ mechanism behind [WOW Moment #3](#signature-wow-moments) at Final CTA,
 and it needs no WebGL — a timed CSS opacity/color transition is enough.
 
 ### WebGL language
+
 WebGL is reserved for exactly the two builds named in
 [Signature WOW moments](#signature-wow-moments) (Cinematic Hero, Product
 Reveal) — never used decoratively elsewhere, and never required for any
@@ -193,6 +211,7 @@ build that can't hit that ships as its CSS fallback instead, not as a
 degraded WebGL scene.
 
 ### Negative visual rules
+
 A single checklist — for briefing a generation prompt, and for rejecting
 a generated asset before it's approved:
 
@@ -217,7 +236,7 @@ a generated asset before it's approved:
 ## Signature WOW moments
 
 Three moments, not one per scene, carry the entire "why does a business
-owner say *I want this*" case for the engine — the full narrative
+owner say _I want this_" case for the engine — the full narrative
 rationale for each is in
 [experience-map.md](./experience-map.md#signature-wow-moments); this is
 the production-ready spec for each, in the exact terms a build or a

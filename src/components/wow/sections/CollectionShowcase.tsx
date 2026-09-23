@@ -12,7 +12,7 @@ export interface CollectionShowcaseProps {
   items: CollectionShowcaseItem[];
 }
 
-/** Browsable grid of products/services/collections. Interface only. */
+/** Грид товаров/услуг/коллекций для просмотра. Пока только интерфейс. */
 export function CollectionShowcase(_props: CollectionShowcaseProps) {
   return null;
 }

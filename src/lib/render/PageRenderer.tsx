@@ -8,12 +8,12 @@ export interface PageRendererProps {
 /**
  * `SiteConfig → PageRenderer → SectionRegistry → Section`.
  *
- * Builds a full page from nothing but a SiteConfig. Order and which
- * sections appear come entirely from `config.experience.experienceMap`
- * (an `ExperienceTemplate`) — never hardcoded here. No vertical, no
- * business name, no section-specific conditions live in this file; see
- * `resolveSections` for the (also vertical-agnostic) prop-assembly logic
- * and `section-registry.ts` for the id+variant → component lookup.
+ * Собирает полную страницу из одного лишь SiteConfig. Порядок и состав
+ * секций целиком берутся из `config.experience.experienceMap`
+ * (`ExperienceTemplate`) — никогда не хардкодятся здесь. В этом файле нет
+ * ни вертикали, ни названия бизнеса, ни section-специфичных условий — см.
+ * `resolveSections` (тоже вертикально-нейтральная сборка пропсов) и
+ * `section-registry.ts` (lookup id+variant → компонент).
  */
 export function PageRenderer({ config }: PageRendererProps) {
   const sections = resolveSections(config);

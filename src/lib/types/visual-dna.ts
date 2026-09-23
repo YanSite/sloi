@@ -1,9 +1,9 @@
 import type { Vertical } from "./vertical";
 
 /**
- * VISUAL DNA layer.
- * The look, palette, type, and imagery direction for a business. Holds no
- * copy and no business facts — see BusinessProfile and ExperienceContent.
+ * Слой VISUAL DNA.
+ * Внешний вид, палитра, типографика и стиль изображений для бизнеса. Не
+ * содержит копирайта и бизнес-фактов — см. BusinessProfile и ExperienceContent.
  */
 export interface ColorPalette {
   primary: string;
@@ -21,7 +21,7 @@ export interface TypographyScale {
 
 export interface VisualDNA {
   vertical: Vertical;
-  /** Descriptive mood keywords, e.g. ["romantic", "editorial", "organic"]. */
+  /** Описательные ключевые слова настроения, например ["romantic", "editorial", "organic"]. */
   mood: string[];
   colorPalette: ColorPalette;
   typography: TypographyScale;

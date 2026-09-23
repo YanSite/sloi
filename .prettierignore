@@ -1,0 +1,30 @@
+# зависимости
+node_modules
+
+# next.js build output и кэш
+.next
+out
+build
+*.tsbuildinfo
+
+# автогенерируется Next.js
+next-env.d.ts
+
+# автогенерируется/переписывается `next dev` — см. собственный
+# заголовок файла
+AGENTS.md
+
+# lock-файл — формат и порядок ключей строго под контролем npm
+package-lock.json
+
+# служебное
+.DS_Store
+*.log
+
+# бинарные ассеты — Prettier их не форматирует, исключены явно
+public/**/*.ico
+public/**/*.png
+public/**/*.jpg
+public/**/*.jpeg
+public/**/*.svg
+public/**/*.webp

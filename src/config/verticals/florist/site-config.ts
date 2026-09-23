@@ -8,13 +8,13 @@ import { floristAssetManifest } from "./asset-manifest";
 import { floristThemeTokens } from "./theme-tokens";
 
 /**
- * Composes every approved florist config layer — Business Profile,
- * Botanical Noir Visual DNA, the 10-scene Experience, Content, Asset
- * Manifest, Theme, Motion — into one SiteConfig (Stage 8's portability
- * test, part 1). Now that `floristContent` carries real (placeholder)
- * copy for every section, this is validated at module load like
- * `demoSiteConfig`/`abstractTestSiteConfig`, and registered in the
- * preview registry as "florist".
+ * Собирает все утверждённые слои конфигурации florist — Business
+ * Profile, Botanical Noir Visual DNA, 10-сценовый Experience, Content,
+ * Asset Manifest, Theme, Motion — в один SiteConfig (часть 1
+ * portability-теста Stage 8). Теперь, когда `floristContent` несёт
+ * реальный (placeholder) текст для каждой секции, конфиг валидируется
+ * при загрузке модуля так же, как `demoSiteConfig`/`abstractTestSiteConfig`,
+ * и зарегистрирован в preview registry как "florist".
  */
 export const floristSiteConfig: SiteConfig = assertValidSiteConfig({
   business: floristBusinessProfile,
