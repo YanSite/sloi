@@ -214,7 +214,6 @@ export function FlowerstimStage({ stage: c, assets, theme }: FlowerstimStageProp
   const co3Ref = useRef<HTMLDivElement>(null);
   const finalRef = useRef<HTMLDivElement>(null);
   const hudSceneRef = useRef<HTMLSpanElement>(null);
-  const hudAssetRef = useRef<HTMLSpanElement>(null);
   const hudBarRef = useRef<HTMLDivElement>(null);
 
   const [copied, setCopied] = useState(false);
@@ -262,7 +261,6 @@ export function FlowerstimStage({ stage: c, assets, theme }: FlowerstimStageProp
         callouts: [co0Ref, co1Ref, co2Ref, co3Ref],
         final: finalRef,
         hudScene: hudSceneRef,
-        hudAsset: hudAssetRef,
         hudBar: hudBarRef,
       };
       return createFlowerstimProgram({ content: c, dom, background, grain: true, urls })(ctx);
@@ -331,6 +329,7 @@ export function FlowerstimStage({ stage: c, assets, theme }: FlowerstimStageProp
           </span>
           <div ref={ctaRef} style={{ display: "flex", alignItems: "center", gap: 10, opacity: 0 }}>
             <span
+              className={styles.hideNarrow}
               style={{
                 fontFamily: MONO,
                 fontSize: 11,
@@ -339,6 +338,7 @@ export function FlowerstimStage({ stage: c, assets, theme }: FlowerstimStageProp
                 color: TEXT,
                 background: SURFACE,
                 padding: "4px 8px",
+                whiteSpace: "nowrap",
               }}
             >
               {c.header.hours}
@@ -367,6 +367,7 @@ export function FlowerstimStage({ stage: c, assets, theme }: FlowerstimStageProp
 
         <div
           ref={heroRef}
+          className={styles.heroNarrow}
           style={{
             position: "absolute",
             right: "calc(clamp(18px,4vw,64px) - 44px)",
@@ -724,10 +725,7 @@ export function FlowerstimStage({ stage: c, assets, theme }: FlowerstimStageProp
                 color: MUTED,
               }}
             >
-              <span ref={hudSceneRef}>{c.hud.scenes[0][0]}</span>
-              <span ref={hudAssetRef} style={{ background: "#FBF8F2CC", padding: "3px 6px" }}>
-                Placeholder → A01 layers
-              </span>
+              <span ref={hudSceneRef}>{c.hud.scenes[0]}</span>
             </div>
             <div style={{ height: 1, background: "#D9CFC0", position: "relative" }}>
               <div

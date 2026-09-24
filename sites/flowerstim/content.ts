@@ -146,12 +146,7 @@ const stage: FlowerstimStageContent = {
   },
   hud: {
     enabled: true,
-    scenes: [
-      ["S01 · Aperture", "Higgsfield · A01-BG + A01-BQ + A01-FG"],
-      ["S02 · Pull-back", "Higgsfield · A02 → V01-END (видео V01 ждёт тарифа)"],
-      ["S03 · Exhibition", "Higgsfield · V01-END · G1 · A02 · G2 · V02-STILL · A03"],
-      ["S04 · The Object", "Higgsfield · A03 + depth"],
-    ],
+    scenes: ["S01 · Aperture", "S02 · Pull-back", "S03 · Exhibition", "S04 · The Object"],
   },
 };
 

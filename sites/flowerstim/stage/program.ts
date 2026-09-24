@@ -64,7 +64,6 @@ export interface FlowerstimDom {
   callouts: El[];
   final: El;
   hudScene: El;
-  hudAsset: El;
   hudBar: El;
 }
 
@@ -104,7 +103,36 @@ const CAMERA_PATH_S03: [number, number, number][] = [
   [0, -0.12, -19.6],
 ];
 
-type Frame = { m: THREE.Mesh; base: THREE.Vector3; lift: number; url: string };
+/**
+ * Узкий экран (≤460px, портрет телефона) — поправки, согласованные с
+ * владельцем дизайна поверх прототипа: камеры прототипа рассчитаны на
+ * горизонтальный кадр, и F-фактора не хватало, чтобы букет и галерея
+ * помещались. Desktop и планшеты идут по прототипу без изменений.
+ */
+const NARROW_MAX_WIDTH = 460;
+/** Коэффициент отъезда камеры до общего плана букета (S01 старт, S04 стоп 1). */
+const NARROW_OBJECT_K = 2.3;
+/** S01: стартовый кадр центрируется на букете (к этой же x камера приходит при въезде в розу). */
+const NARROW_HERO_START_X = 0.45;
+/** S01: стартовый кадр опущен — букет выше на экране, заголовок не перекрывает вазу. */
+const NARROW_HERO_START_Y = 0.7 - 1.95;
+/** S01: низ заголовка, px от низа экрана — блок заголовка и оффера поднят ближе к уровню глаз. */
+const NARROW_TITLE_BOTTOM = 320;
+/** S03: рамы крупнее, подписи под ними — ещё крупнее, чтобы читались. */
+const NARROW_FRAME_SCALE = 1.35;
+const NARROW_CAPTION_SCALE = 1.8;
+/** S03: шире угол — фразы и рамы вписываются по ширине; траектория и сдвиг камеры как в прототипе. */
+const NARROW_GALLERY_FOV = 66;
+
+type Frame = {
+  m: THREE.Mesh;
+  cap: THREE.Mesh;
+  w: number;
+  h: number;
+  base: THREE.Vector3;
+  lift: number;
+  url: string;
+};
 
 export function createFlowerstimProgram(input: FlowerstimProgramInput): StageProgramFactory {
   return async (ctx): Promise<StageProgram> => {
@@ -202,7 +230,15 @@ export function createFlowerstimProgram(input: FlowerstimProgramInput): StagePro
       const capM = plane(sC, caption, 1.6, 0.1, 0, 0, 0, { fog: true });
       capM.position.set(-w / 2 + 0.8, -h / 2 - 0.14, 0.001);
       m.add(capM);
-      return { m, base: new T.Vector3(...p), lift: 0, url: content.exhibition.frames[i].href };
+      return {
+        m,
+        cap: capM,
+        w,
+        h,
+        base: new T.Vector3(...p),
+        lift: 0,
+        url: content.exhibition.frames[i].href,
+      };
     });
     const [phrase1, phrase2] = content.exhibition.phrases;
     const ph1 = serifText(phrase1, 220, 1700);
@@ -254,6 +290,8 @@ export function createFlowerstimProgram(input: FlowerstimProgramInput): StagePro
       H: 1,
       aspect: 1,
       f: 1,
+      fObj: 1,
+      narrow: false,
       gx: 0,
       gy: 0,
       tgx: 0,
@@ -277,6 +315,20 @@ export function createFlowerstimProgram(input: FlowerstimProgramInput): StagePro
       st.H = H;
       st.aspect = W / H;
       st.f = st.aspect < 1 ? 1 + (1 - st.aspect) * 1.1 : 1;
+      st.narrow = W <= NARROW_MAX_WIDTH;
+      st.fObj = st.narrow ? 1 + (1 - st.aspect) * NARROW_OBJECT_K : st.f;
+      camC.fov = st.narrow ? NARROW_GALLERY_FOV : 45;
+      const fs = st.narrow ? NARROW_FRAME_SCALE : 1;
+      const cs = st.narrow ? NARROW_CAPTION_SCALE : 1;
+      frames.forEach((fr) => {
+        fr.m.scale.set(fs, fs, 1);
+        // Подпись растёт от левого края рамы и опускается на прирост своей высоты.
+        fr.cap.scale.set(cs, cs, 1);
+        fr.cap.position.set(-fr.w / 2 + 0.8 * cs, -fr.h / 2 - 0.14 - (cs - 1) * 0.05, 0.001);
+      });
+      // Передний план растёт вместе с отъездом камеры, чтобы его края не попадали в кадр.
+      const fgScale = (5 * st.fObj + 0.6) / (5 * st.f + 0.6);
+      fgA.forEach((m) => m.scale.set(fgScale, fgScale, 1));
       compositor.resize(W, H, dpr, coarse ? 90 : 120);
       [camA, camB, camC, camD].forEach((c) => {
         c.aspect = st.aspect;
@@ -284,15 +336,15 @@ export function createFlowerstimProgram(input: FlowerstimProgramInput): StagePro
       });
       // Заголовок S01 ставится от фрустума стартовой камеры на своей глубине.
       const narrow = st.aspect < 0.9;
-      const halfH = (5 * st.f + 2) * Math.tan((19 * Math.PI) / 180);
+      const halfH = (5 * st.fObj + 2) * Math.tan((19 * Math.PI) / 180);
       const halfW = halfH * st.aspect;
       const k = (2 * halfW) / W;
       const mPx = Math.min(64, Math.max(18, W * 0.04));
       const tw = narrow ? (2 * halfW - 2 * mPx * k) * 0.9 : Math.min(3.3, halfW * 0.78);
       const th = tw / tLeft.userData.aspect;
-      const bPx = narrow ? 262 : Math.max(H * 0.11, 100);
-      const tx = -halfW + mPx * k + tw / 2;
-      const ty = 0.7 - halfH + bPx * k + th / 2 - th * 0.1;
+      const bPx = st.narrow ? NARROW_TITLE_BOTTOM : narrow ? 262 : Math.max(H * 0.11, 100);
+      const tx = (st.narrow ? NARROW_HERO_START_X : 0) - halfW + mPx * k + tw / 2;
+      const ty = (st.narrow ? NARROW_HERO_START_Y : 0.7) - halfH + bPx * k + th / 2 - th * 0.1;
       titleA.position.set(tx, ty, -2.0);
       titleA.scale.set(tw, th, 1);
       haloA.position.set(tx, ty, -2.03);
@@ -398,14 +450,16 @@ export function createFlowerstimProgram(input: FlowerstimProgramInput): StagePro
       const dol = smoothstep(0.04, 1, p1);
       const intro = reduce ? 1 : smoothstep(0, 2.6, time);
       const gazeA = 1 - dol * 0.92;
+      const startX = st.narrow ? NARROW_HERO_START_X : 0;
+      const startY = st.narrow ? NARROW_HERO_START_Y : 0.7;
       camA.position.set(
-        lerp(0, hero.x, dol) + gx * 0.4 * gazeA,
-        lerp(0.7, hero.y, dol) - gy * 0.24 * gazeA,
-        lerp(5 * F + (1 - intro) * 0.5, hero.z + 1.05, Math.pow(dol, 0.85)),
+        lerp(startX, hero.x, dol) + gx * 0.4 * gazeA,
+        lerp(startY, hero.y, dol) - gy * 0.24 * gazeA,
+        lerp(5 * st.fObj + (1 - intro) * 0.5, hero.z + 1.05, Math.pow(dol, 0.85)),
       );
       camA.fov = lerp(38, 26, dol) * (1 + breath);
       camA.updateProjectionMatrix();
-      camA.lookAt(lerp(0, hero.x, dol), lerp(0.7, hero.y, dol), -3);
+      camA.lookAt(lerp(startX, hero.x, dol), lerp(startY, hero.y, dol), -3);
       [titleA, haloA, ...fgA].forEach((m) => {
         m.material.opacity = clamp((camA.position.z - m.position.z - 0.15) / 0.9);
       });
@@ -454,7 +508,9 @@ export function createFlowerstimProgram(input: FlowerstimProgramInput): StagePro
       else if (q < 0.8) [s0, s1, k] = [1, 2, smoothstep(0.6, 0.8, q)];
       else [s0, s1, k] = [2, 2, 0];
       const tgt = stops[s0].t.clone().lerp(stops[s1].t, k);
-      const dist = lerp(stops[s0].d, stops[s1].d, k) * F;
+      // Общий план (стоп 1) на узком экране — с бо́льшим отъездом, детали (стопы 2–3) — как в прототипе.
+      const stopF = (i: number) => (i === 0 ? st.fObj : F);
+      const dist = lerp(stops[s0].d * stopF(s0), stops[s1].d * stopF(s1), k);
       const yaw = gx * 0.105;
       const pit = -gy * 0.07;
       camD.position.set(
@@ -579,15 +635,18 @@ export function createFlowerstimProgram(input: FlowerstimProgramInput): StagePro
         el.style.opacity = v.toFixed(3);
         if (v > 0) {
           const p = projectToViewport(a, camD, st.W, st.H, tmp);
-          el.style.transform = `translate3d(${p.x.toFixed(1)}px, ${(p.y - 10).toFixed(1)}px, 0)`;
+          // Подпись не помещается справа — разворачиваем выноску влево от точки.
+          const w = el.offsetWidth;
+          const flip = p.x + w > st.W - 8;
+          el.style.flexDirection = flip ? "row-reverse" : "row";
+          const x = flip ? Math.max(8, p.x - w + 7) : p.x;
+          el.style.transform = `translate3d(${x.toFixed(1)}px, ${(p.y - 10).toFixed(1)}px, 0)`;
         }
       });
       if (sceneIx !== lastHud) {
         lastHud = sceneIx;
         const scene = $(dom.hudScene);
-        const asset = $(dom.hudAsset);
-        if (scene) scene.textContent = hudScenes[sceneIx][0];
-        if (asset) asset.textContent = hudScenes[sceneIx][1];
+        if (scene) scene.textContent = hudScenes[sceneIx];
       }
       const bar = $(dom.hudBar);
       if (bar) bar.style.width = (clamp(g / 960) * 100).toFixed(2) + "%";

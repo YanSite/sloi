@@ -76,6 +76,6 @@ export type FlowerstimStageContent = {
     cta: Link;
     contacts: ContactItem[];
   };
-  /** Служебная полоса прототипа (сцена, источник ассетов, прогресс) — открытый вопрос к владельцу дизайна. */
-  hud: { enabled: boolean; scenes: [string, string][] };
+  /** Служебная полоса прототипа: название сцены и прогресс. Подпись источника ассетов убрана по решению владельца. */
+  hud: { enabled: boolean; scenes: [string, string, string, string] };
 };

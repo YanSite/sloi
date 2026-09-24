@@ -146,8 +146,16 @@ export class BeatController {
     const onTouchStart = (e: TouchEvent) => {
       this.touchY = e.touches[0].clientY;
     };
+    // Шаг делается, как только палец прошёл порог, — не дожидаясь, пока
+    // его оторвут от экрана. Один жест = один шаг: после срабатывания
+    // точка отсчёта сбрасывается до следующего touchstart.
     const onTouchMove = (e: TouchEvent) => {
       e.preventDefault();
+      if (this.touchY == null) return;
+      const dy = this.touchY - e.touches[0].clientY;
+      if (Math.abs(dy) <= o.swipeThreshold) return;
+      this.touchY = null;
+      this.step(dy > 0 ? 1 : -1);
     };
     const onTouchEnd = (e: TouchEvent) => {
       if (this.touchY == null) return;
