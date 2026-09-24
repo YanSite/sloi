@@ -1,6 +1,10 @@
 import type { SectionId, SiteConfig } from "@/lib/types";
 import { MOTION_PRESETS, SECTION_IDS } from "@/lib/types";
-import { DEFAULT_VARIANT, sectionRegistry } from "@/lib/render/section-registry";
+import {
+  DEFAULT_VARIANT,
+  lookupSectionComponent,
+  sectionRegistry,
+} from "@/lib/render/section-registry";
 import type { ValidationIssue } from "./types";
 
 /**
@@ -9,6 +13,20 @@ import type { ValidationIssue } from "./types";
  * вправе сознательно обойтись без них (поэтому warning, а не error).
  */
 const CORE_SECTIONS: SectionId[] = ["cinematic-hero", "final-cta"];
+
+/**
+ * Секции, которые занимают всю страницу сами (фиксированный canvas,
+ * собственная навигация вместо нативного скролла). Рядом с ними другой
+ * секции физически негде жить, а правила порядка hero/CTA к ним не
+ * применимы — hero и финал у такой сцены внутри.
+ */
+const FULL_PAGE_SECTIONS: SectionId[] = ["immersive-stage"];
+
+function isFullPageExperience(config: SiteConfig): boolean {
+  return config.experience.experienceMap.some(
+    (entry) => entry.enabled && FULL_PAGE_SECTIONS.includes(entry.section),
+  );
+}
 
 function validateEntries(config: SiteConfig): ValidationIssue[] {
   const issues: ValidationIssue[] = [];
@@ -40,7 +58,7 @@ function validateEntries(config: SiteConfig): ValidationIssue[] {
     }
 
     const variant = entry.variant ?? DEFAULT_VARIANT;
-    if (!sectionRegistry[entry.section][variant]) {
+    if (!lookupSectionComponent(entry.section, variant, config.sectionVariants)) {
       issues.push({
         severity: "error",
         code: "experience/invalid-variant",
@@ -62,7 +80,49 @@ function validateEntries(config: SiteConfig): ValidationIssue[] {
   return issues;
 }
 
+/** Вариант сайта не может подменить core-вариант с тем же слагом — иначе поведение core стало бы зависеть от сайта. */
+function validateSiteVariants(config: SiteConfig): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  for (const [section, variants] of Object.entries(config.sectionVariants ?? {})) {
+    if (!SECTION_IDS.includes(section as SectionId)) {
+      issues.push({
+        severity: "error",
+        code: "experience/site-variant-invalid-section",
+        message: `sectionVariants registers variants for unknown section "${section}".`,
+        path: `sectionVariants.${section}`,
+      });
+      continue;
+    }
+    for (const variant of Object.keys(variants ?? {})) {
+      if (sectionRegistry[section as SectionId][variant]) {
+        issues.push({
+          severity: "error",
+          code: "experience/site-variant-shadows-core",
+          message: `Site variant "${variant}" for "${section}" collides with a core variant of the same name — pick a site-specific slug.`,
+          path: `sectionVariants.${section}.${variant}`,
+        });
+      }
+    }
+  }
+  return issues;
+}
+
+function validateFullPageSections(config: SiteConfig): ValidationIssue[] {
+  const enabled = config.experience.experienceMap.filter((entry) => entry.enabled);
+  const fullPage = enabled.filter((entry) => FULL_PAGE_SECTIONS.includes(entry.section));
+  if (fullPage.length === 0 || enabled.length === 1) return [];
+  return [
+    {
+      severity: "error",
+      code: "experience/full-page-section-not-alone",
+      message: `"${fullPage[0].section}" takes over the whole page (fixed canvas, own navigation) and must be the only enabled section.`,
+      path: "experience.experienceMap",
+    },
+  ];
+}
+
 function validateCoreSectionsPresent(config: SiteConfig): ValidationIssue[] {
+  if (isFullPageExperience(config)) return [];
   const enabled = new Set(
     config.experience.experienceMap.filter((entry) => entry.enabled).map((entry) => entry.section),
   );
@@ -76,6 +136,7 @@ function validateCoreSectionsPresent(config: SiteConfig): ValidationIssue[] {
 
 function validateOrder(config: SiteConfig): ValidationIssue[] {
   const issues: ValidationIssue[] = [];
+  if (isFullPageExperience(config)) return issues;
   const enabled = config.experience.experienceMap.filter((entry) => entry.enabled);
   if (enabled.length === 0) return issues;
 
@@ -102,10 +163,12 @@ function validateOrder(config: SiteConfig): ValidationIssue[] {
   return issues;
 }
 
-/** Структурные проверки experience-map: валидные id, отсутствие дублей, зарегистрированные варианты, корректный порядок, невалидные перекрёстные ссылки (motion preset). */
+/** Структурные проверки experience-map: валидные id, отсутствие дублей, зарегистрированные варианты (core или сайта), полноэкранные секции, корректный порядок, невалидные перекрёстные ссылки (motion preset). */
 export function validateExperience(config: SiteConfig): ValidationIssue[] {
   return [
     ...validateEntries(config),
+    ...validateSiteVariants(config),
+    ...validateFullPageSections(config),
     ...validateCoreSectionsPresent(config),
     ...validateOrder(config),
   ];

@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import type { SectionId } from "@/lib/types";
+import type { SectionId, SiteSectionVariants } from "@/lib/types";
 import {
   CinematicHero,
   EditorialStatement,
@@ -23,6 +23,7 @@ import type {
   SocialProofProps,
   LocationSectionProps,
   FinalCTAProps,
+  ImmersiveStageProps,
 } from "@/components/wow/sections";
 
 /**
@@ -54,6 +55,7 @@ export interface SectionPropsMap {
   "social-proof": SocialProofProps;
   "location-section": LocationSectionProps;
   "final-cta": FinalCTAProps;
+  "immersive-stage": ImmersiveStageProps;
 }
 
 export const DEFAULT_VARIANT = "default";
@@ -80,15 +82,34 @@ export const sectionRegistry: SectionVariants = {
   "social-proof": { [DEFAULT_VARIANT]: SocialProof },
   "location-section": { [DEFAULT_VARIANT]: LocationSection },
   "final-cta": { [DEFAULT_VARIANT]: FinalCTA },
+  // Core-реализации нет намеренно: хореография immersive-сцены у каждого
+  // сайта своя и регистрируется через `SiteConfig.sectionVariants` (см.
+  // ImmersiveStage.ts). Core задаёт только контракт пропсов.
+  "immersive-stage": {},
 };
+
+/**
+ * Ищет компонент сначала в core-реестре, затем среди вариантов,
+ * зарегистрированных сайтом. Возвращает undefined, если вариант не найден
+ * нигде, — общий lookup для рендерера и валидации.
+ */
+export function lookupSectionComponent<S extends SectionId>(
+  section: S,
+  variant: string,
+  siteVariants?: SiteSectionVariants,
+): ComponentType<SectionPropsMap[S]> | undefined {
+  const core = sectionRegistry[section][variant];
+  if (core) return core as ComponentType<SectionPropsMap[S]>;
+  return siteVariants?.[section]?.[variant] as ComponentType<SectionPropsMap[S]> | undefined;
+}
 
 /** Резолвит компонент секции по id + variant. Бросает ошибку вместо тихого fallback — незарегистрированный variant это ошибка конфигурации, которую нужно показать, а не скрыть. */
 export function resolveSectionComponent<S extends SectionId>(
   section: S,
   variant: string,
+  siteVariants?: SiteSectionVariants,
 ): ComponentType<SectionPropsMap[S]> {
-  const component = sectionRegistry[section][variant] as
-    ComponentType<SectionPropsMap[S]> | undefined;
+  const component = lookupSectionComponent(section, variant, siteVariants);
   if (!component) {
     throw new Error(`No component registered for section "${section}" variant "${variant}".`);
   }

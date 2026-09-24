@@ -9,6 +9,7 @@ export const SECTION_IDS = [
   "social-proof",
   "location-section",
   "final-cta",
+  "immersive-stage",
 ] as const;
 
 export type SectionId = (typeof SECTION_IDS)[number];

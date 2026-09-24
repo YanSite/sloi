@@ -5,6 +5,7 @@ import type { ExperienceContent } from "./content";
 import type { AssetManifest } from "./asset-manifest";
 import type { ThemeTokens } from "./theme-tokens";
 import type { MotionConfig } from "./motion";
+import type { SiteSectionVariants } from "./section-variants";
 
 /**
  * Слой SITE COMPOSITION — верхнеуровневая форма, которую потребляет
@@ -28,4 +29,10 @@ export interface SiteConfig {
   theme: ThemeTokens;
   /** Базовый motion на весь сайт; per-section override задаётся в ExperienceMapEntry.motion. */
   motion?: MotionConfig;
+  /**
+   * Реализации вариантов секций, которых нет в core-реестре, —
+   * композиция конкретного сайта (см. `SiteSectionVariants`). Core-варианты
+   * переопределить нельзя: совпадение слага — ошибка валидации.
+   */
+  sectionVariants?: SiteSectionVariants;
 }

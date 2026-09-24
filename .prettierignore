@@ -28,3 +28,13 @@ public/**/*.jpg
 public/**/*.jpeg
 public/**/*.svg
 public/**/*.webp
+
+# утверждённый дизайн-референс — хранится байт-в-байт как прислан, не форматируется
+design-reference
+
+# бинарные ассеты Site Instance
+sites/**/*.png
+sites/**/*.jpg
+sites/**/*.webp
+sites/**/*.woff2
+sites/**/assets/fonts/*.css

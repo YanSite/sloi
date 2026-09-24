@@ -45,6 +45,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Утверждённый дизайн-референс (прототип + вендорный three.min.js) —
+    // неизменяемый visual source of truth, а не код проекта.
+    "design-reference/**",
   ]),
 ]);
 

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="fonts/fonts.css" rel="stylesheet">
+<script src="vendor/three.min.js"></script>
+<style>
+:root{--fs-serif:'Cormorant Garamond',serif;--fs-serif-w:500;--fs-sans:'Onest',sans-serif}
+body{margin:0;background:#F6F2EA;color:#2B2723;font-family:var(--fs-sans);-webkit-font-smoothing:antialiased;overscroll-behavior:none}
+a{color:#8A5F59;text-underline-offset:4px}a:hover{color:#2B2723}
+*{box-sizing:border-box}
+</style>
+</helmet>
+<div style="position:relative;background:#F6F2EA">
+  <div style="position:fixed;inset:0;z-index:0">
+    <canvas ref="{{ canvasRef }}" style="display:block;width:100%;height:100%"></canvas>
+  </div>
+
+  <div style="position:fixed;inset:0;z-index:2;pointer-events:none">
+    <div style="position:absolute;top:0;left:0;right:0;z-index:3;padding:22px clamp(18px,3vw,40px);display:flex;justify-content:space-between;align-items:baseline;gap:16px">
+      <span ref="{{ kickRef }}" style="position:absolute;left:clamp(18px,3vw,40px);top:28px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#2B2723;opacity:0">Магазин цветов · Москва</span>
+      <span ref="{{ brandRef }}" style="font-family:var(--fs-serif);font-weight:var(--fs-serif-w);font-size:22px;letter-spacing:-.01em;color:#1F1B18;text-shadow:0 0 6px rgba(250,246,239,.95),0 0 14px rgba(250,246,239,.85);opacity:0">Эстетика цветов</span>
+      <div ref="{{ ctaRef }}" style="display:flex;align-items:center;gap:10px;opacity:0">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#2B2723;background:#FBF8F2;padding:4px 8px">Открыто до 00:00</span>
+        <a href="https://flowerstim.ru/?utm_source=aesthetic_experience&amp;utm_medium=referral&amp;utm_campaign=osen26&amp;utm_content=header" target="_blank" rel="noopener" style="pointer-events:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#FBF8F2;background:#1F1B18;padding:9px 14px;text-decoration:none;white-space:nowrap" style-hover="background:#7A534D">Выбрать букет →</a>
+      </div>
+    </div>
+
+    <div ref="{{ heroRef }}" style="position:absolute;right:calc(clamp(18px,4vw,64px) - 44px);bottom:calc(max(11vh,100px) - 44px);width:calc(min(272px,100vw - 2 * clamp(18px,4vw,64px)) + 88px);padding:44px;background:radial-gradient(ellipse 50% 50% at 50% 55%,rgba(250,246,239,.88) 0%,rgba(250,246,239,.62) 58%,rgba(250,246,239,0) 100%);display:flex;flex-direction:column;gap:12px;text-shadow:0 0 6px rgba(250,246,239,.95),0 0 16px rgba(250,246,239,.85);opacity:0">
+      <span style="font-family:var(--fs-serif);font-weight:var(--fs-serif-w);font-size:clamp(18px,1.5vw,22px);line-height:1.18;letter-spacing:-.005em;color:#1F1B18;text-wrap:pretty">Авторские букеты с круглосуточной доставкой <em style="color:#7A534D">по Москве</em></span>
+      <span style="height:1px;background:rgba(43,39,35,.3)"></span>
+      <div style="display:flex;flex-direction:column;gap:5px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#2B2723">
+        <span>★ 5,0 · 192 оценки</span>
+        <span>Фото букета перед отправкой</span>
+      </div>
+      <button onClick="{{ copyPromo }}" title="Скопировать промокод" style="pointer-events:auto;align-self:flex-start;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#1F1B18;background:none;border:none;border-bottom:1px dashed #1F1B18;padding:2px 0;cursor:pointer;text-shadow:0 0 6px rgba(250,246,239,.95),0 0 16px rgba(250,246,239,.85)" style-hover="color:#7A534D;border-bottom-color:#7A534D">{{ promoHero }}</button>
+    </div>
+    <div ref="{{ hint1Ref }}" style="position:absolute;left:50%;bottom:58px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-size:10px;color:#4A443E;white-space:nowrap;opacity:0"><span>Листайте</span><span style="width:1px;height:18px;background:rgba(43,39,35,.4)"></span></div>
+
+    <div ref="{{ hint3Ref }}" style="position:absolute;left:50%;bottom:11vh;transform:translateX(-50%);color:#2B2723;background:#FBF8F2;padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;opacity:0">Нажмите на кадр — откроется раздел каталога</div>
+    <div ref="{{ veilRef }}" style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(250,246,239,.9) 0%,rgba(250,246,239,.72) 34%,rgba(250,246,239,0) 62%);opacity:0"></div>
+    <div ref="{{ roseRef }}" style="position:absolute;left:clamp(20px,6vw,96px);top:17vh;max-width:min(520px,84vw);display:flex;flex-direction:column;gap:18px;text-shadow:0 0 6px rgba(250,246,239,.95),0 0 16px rgba(250,246,239,.85);opacity:0"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#2B2723">01 · Широкий ассортимент</span><span style="font-family:var(--fs-serif);font-weight:var(--fs-serif-w);font-size:clamp(32px,3.9vw,54px);line-height:1.02;letter-spacing:-.015em;color:#1F1B18;text-wrap:pretty">Каждый букет — это произведение искусства,<br><em style="color:#7A534D">выполненное с любовью и вниманием к деталям.</em></span><span style="font-size:15px;line-height:1.6;color:#2B2723;max-width:36ch;text-wrap:pretty">Мы предлагаем только лучшие цветы, которые привозим напрямую от проверенных поставщиков.</span><a href="https://flowerstim.ru/rozy?utm_source=aesthetic_experience&amp;utm_medium=referral&amp;utm_campaign=osen26&amp;utm_content=b02_rozy" target="_blank" rel="noopener" style="pointer-events:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#1F1B18;text-decoration:none;border-bottom:1px solid #1F1B18;padding:6px 0 5px;text-shadow:none" style-hover="color:#7A534D;border-bottom-color:#7A534D">Розы в каталоге <span>→</span></a></div>
+    <div ref="{{ line2Ref }}" style="position:absolute;left:clamp(20px,6vw,96px);top:17vh;max-width:min(520px,84vw);display:flex;flex-direction:column;gap:18px;text-shadow:0 0 6px rgba(250,246,239,.95),0 0 16px rgba(250,246,239,.85);opacity:0"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#2B2723">02 · Индивидуальный подход</span><span style="font-family:var(--fs-serif);font-weight:var(--fs-serif-w);font-size:clamp(32px,3.9vw,54px);line-height:1.02;letter-spacing:-.015em;color:#1F1B18;text-wrap:pretty">Наши флористы создадут композицию,<br><em style="color:#7A534D">которая точно передаст ваши эмоции.</em></span><span style="font-size:15px;line-height:1.6;color:#2B2723;max-width:36ch;text-wrap:pretty">Мы учитываем все ваши пожелания и помогаем подобрать идеальные цветы для любого события.</span><a href="https://flowerstim.ru/avtorskie-bukety?utm_source=aesthetic_experience&amp;utm_medium=referral&amp;utm_campaign=osen26&amp;utm_content=b03_avtorskie" target="_blank" rel="noopener" style="pointer-events:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#1F1B18;text-decoration:none;border-bottom:1px solid #1F1B18;padding:6px 0 5px;text-shadow:none" style-hover="color:#7A534D;border-bottom-color:#7A534D">Авторские букеты <span>→</span></a></div>
+
+    <div ref="{{ s4Ref }}" style="position:absolute;left:clamp(20px,5vw,72px);top:18vh;display:flex;flex-direction:column;gap:14px;max-width:min(26ch,34vw);opacity:0">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#4A443E">№ 06 · Signature</span>
+      <span style="font-family:var(--fs-serif);font-weight:var(--fs-serif-w);font-size:clamp(40px,4.6vw,64px);line-height:.95;letter-spacing:-.015em">Композиция<br><em>ателье</em></span>
+      <span style="font-size:15px;line-height:1.55;color:#2B2723;text-shadow:0 0 6px rgba(250,246,239,.95),0 0 14px rgba(250,246,239,.85)">Роза, лизиантус, ранункулюс, астильба, эвкалипт. Лён и шёлк.</span>
+      <a href="https://flowerstim.ru/premium-bukety?utm_source=aesthetic_experience&amp;utm_medium=referral&amp;utm_campaign=osen26&amp;utm_content=b07_premium" target="_blank" rel="noopener" style="pointer-events:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#1F1B18;text-decoration:none;border-bottom:1px solid #1F1B18;padding:6px 0 5px;text-shadow:none" style-hover="color:#7A534D;border-bottom-color:#7A534D">Премиум-букеты <span>→</span></a>
+    </div>
+    <div ref="{{ hint4Ref }}" style="position:absolute;left:50%;bottom:11vh;transform:translateX(-50%);color:#2B2723;background:#FBF8F2;padding:5px 9px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;opacity:0">Нажмите и удерживайте, чтобы рассмотреть</div>
+    <div ref="{{ s4bRef }}" style="position:absolute;left:clamp(20px,6vw,96px);top:17vh;max-width:min(520px,84vw);display:flex;flex-direction:column;gap:18px;text-shadow:0 0 6px rgba(250,246,239,.95),0 0 16px rgba(250,246,239,.85);opacity:0"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#2B2723">03 · Быстрая доставка</span><span style="font-family:var(--fs-serif);font-weight:var(--fs-serif-w);font-size:clamp(32px,3.9vw,54px);line-height:1.02;letter-spacing:-.015em;color:#1F1B18;text-wrap:pretty">Мы привезем ваш букет прямо в руки,<br><em style="color:#7A534D">где бы вы ни находились.</em></span><span style="font-size:15px;line-height:1.6;color:#2B2723;max-width:36ch;text-wrap:pretty">Мы гарантируем доставку цветов в кратчайшие сроки и в идеальном состоянии. Круглосуточная доставка цветов по Москве. Фото букета перед отправкой.</span><div style="display:grid;grid-template-columns:auto 1fr;gap:6px 18px;font-size:14px;color:#1F1B18;border-top:1px solid rgba(43,39,35,.28);padding-top:14px"><span>Самовывоз</span><span>бесплатно</span><span>В пределах МКАД</span><span>750 ₽</span></div><a href="https://flowerstim.ru/delivery-and-payment?utm_source=aesthetic_experience&amp;utm_medium=referral&amp;utm_campaign=osen26&amp;utm_content=b08_delivery" target="_blank" rel="noopener" style="pointer-events:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#1F1B18;text-decoration:none;border-bottom:1px solid #1F1B18;padding:6px 0 5px;text-shadow:none" style-hover="color:#7A534D;border-bottom-color:#7A534D">Доставка и оплата <span>→</span></a></div>
+    <div ref="{{ s4cRef }}" style="position:absolute;left:clamp(20px,6vw,96px);top:17vh;max-width:min(520px,84vw);display:flex;flex-direction:column;gap:18px;text-shadow:0 0 6px rgba(250,246,239,.95),0 0 16px rgba(250,246,239,.85);opacity:0"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#2B2723">Уход за цветами · Flowers care</span><div style="display:flex;flex-direction:column;gap:0;border-top:1px solid rgba(43,39,35,.28)"><div style="display:grid;grid-template-columns:44px 1fr;align-items:baseline;gap:8px;padding:14px 0;border-bottom:1px solid rgba(43,39,35,.28)"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;color:#4A443E">01</span><span style="font-family:var(--fs-serif);font-weight:var(--fs-serif-w);font-size:clamp(22px,2.2vw,30px);line-height:1.15;color:#1F1B18">Обновляйте срез каждые 2-3 дня</span></div><div style="display:grid;grid-template-columns:44px 1fr;align-items:baseline;gap:8px;padding:14px 0;border-bottom:1px solid rgba(43,39,35,.28)"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;color:#4A443E">02</span><span style="font-family:var(--fs-serif);font-weight:var(--fs-serif-w);font-size:clamp(22px,2.2vw,30px);line-height:1.15;color:#1F1B18">Удалите все лишние листья</span></div><div style="display:grid;grid-template-columns:44px 1fr;align-items:baseline;gap:8px;padding:14px 0;border-bottom:1px solid rgba(43,39,35,.28)"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;color:#4A443E">03</span><span style="font-family:var(--fs-serif);font-weight:var(--fs-serif-w);font-size:clamp(22px,2.2vw,30px);line-height:1.15;color:#1F1B18">Наполняйте вазу свежей водой</span></div><div style="display:grid;grid-template-columns:44px 1fr;align-items:baseline;gap:8px;padding:14px 0;border-bottom:1px solid rgba(43,39,35,.28)"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;color:#4A443E">04</span><span style="font-family:var(--fs-serif);font-weight:var(--fs-serif-w);font-size:clamp(22px,2.2vw,30px);line-height:1.15;color:#1F1B18">Не держите цветы под прямыми лучами</span></div></div><a href="https://flowerstim.ru/tpost/mv4h2zbdt1-kak-uhazhivat-za-tsvetami-posle-pokupki?utm_source=aesthetic_experience&amp;utm_medium=referral&amp;utm_campaign=osen26&amp;utm_content=b09_care" target="_blank" rel="noopener" style="pointer-events:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:10px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#1F1B18;text-decoration:none;border-bottom:1px solid #1F1B18;padding:6px 0 5px;text-shadow:none" style-hover="color:#7A534D;border-bottom-color:#7A534D">Подробнее об уходе <span>→</span></a></div>
+
+    <div ref="{{ co0 }}" style="position:absolute;left:0;top:0;display:flex;align-items:center;gap:8px;opacity:0;will-change:transform">
+      <span style="width:7px;height:7px;border-radius:50%;background:#2B2723;margin-left:-3.5px"></span><span style="width:44px;height:1px;background:#2B2723"></span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:#FBF8F2;padding:4px 7px;white-space:nowrap">Лён, необработанный</span>
+    </div>
+    <div ref="{{ co1 }}" style="position:absolute;left:0;top:0;display:flex;align-items:center;gap:8px;opacity:0;will-change:transform">
+      <span style="width:7px;height:7px;border-radius:50%;background:#2B2723;margin-left:-3.5px"></span><span style="width:44px;height:1px;background:#2B2723"></span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:#FBF8F2;padding:4px 7px;white-space:nowrap">Шёлковая лента, шампань</span>
+    </div>
+    <div ref="{{ co2 }}" style="position:absolute;left:0;top:0;display:flex;align-items:center;gap:8px;opacity:0;will-change:transform">
+      <span style="width:7px;height:7px;border-radius:50%;background:#2B2723;margin-left:-3.5px"></span><span style="width:44px;height:1px;background:#2B2723"></span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:#FBF8F2;padding:4px 7px;white-space:nowrap">Керамика, матовая</span>
+    </div>
+    <div ref="{{ co3 }}" style="position:absolute;left:0;top:0;display:flex;align-items:center;gap:8px;opacity:0;will-change:transform">
+      <span style="width:7px;height:7px;border-radius:50%;background:#2B2723;margin-left:-3.5px"></span><span style="width:44px;height:1px;background:#2B2723"></span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;background:#FBF8F2;padding:4px 7px;white-space:nowrap">Кромка лепестка</span>
+    </div>
+
+    <div ref="{{ endRef }}" style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 50% 50%,rgba(250,246,239,.94) 0%,rgba(250,246,239,.82) 55%,rgba(250,246,239,.55) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;text-align:center;padding:24px;opacity:0">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#2B2723">Наш магазин · Our store</span>
+      <span style="font-family:var(--fs-serif);font-weight:var(--fs-serif-w);font-size:clamp(48px,7vw,104px);line-height:.95;letter-spacing:-.02em;color:#1F1B18">Эстетика <em>цветов</em></span>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;pointer-events:auto">
+        <a href="https://flowerstim.ru/?utm_source=aesthetic_experience&amp;utm_medium=referral&amp;utm_campaign=osen26&amp;utm_content=b10_final" target="_blank" rel="noopener" style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#FBF8F2;background:#1F1B18;padding:18px 30px;text-decoration:none" style-hover="background:#7A534D">Выбрать букет на flowerstim.ru →</a>
+        <button onClick="{{ copyPromo }}" style="display:flex;align-items:center;gap:12px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#1F1B18;background:#FBF8F2;border:1px dashed #1F1B18;padding:16px 20px;cursor:pointer" style-hover="border-style:solid"><span>−10% · ОСЕНЬ26</span><span style="color:#7A534D">{{ promoLabel }}</span></button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:24px 40px;max-width:760px;width:100%;text-align:left;pointer-events:auto">
+        <div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#4A443E">Время работы</span><span style="font-size:16px;line-height:1.45;color:#1F1B18">Ежедневно с 08:00 до 00:00</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#4A443E">Адрес</span><span style="font-size:16px;line-height:1.45;color:#1F1B18">г. Москва, Дмитровский пр., 1</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#4A443E">Телефон</span><span style="font-size:16px;line-height:1.45;color:#1F1B18"><a href="tel:+79260254544" style="color:#1F1B18;text-decoration:underline;text-underline-offset:4px">+ 7 (926) 025 45 44</a></span></div>
+        <div style="display:flex;flex-direction:column;gap:6px;min-width:0"><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#4A443E">Мессенджеры</span><span style="font-size:16px;line-height:1.45;color:#1F1B18"><a href="https://t.me/Aestheticsof_flowers" target="_blank" rel="noopener" style="color:#1F1B18;text-decoration:underline;text-underline-offset:4px">Telegram</a> / <a href="https://wa.me/message/HH7BH4JVMLY6B1" target="_blank" rel="noopener" style="color:#1F1B18;text-decoration:underline;text-underline-offset:4px">WhatsApp</a></span></div>
+      </div>
+    </div>
+
+    <sc-if value="{{ showHud }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:0;right:0;bottom:0;padding:0 clamp(18px,3vw,40px) 16px;display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#4A443E">
+        <span ref="{{ hudScene }}">S01 · Aperture</span>
+        <span ref="{{ hudAsset }}" style="background:#FBF8F2CC;padding:3px 6px">Placeholder → A01 layers</span>
+      </div>
+      <div style="height:1px;background:#D9CFC0;position:relative">
+        <div ref="{{ hudBar }}" style="position:absolute;left:0;top:0;bottom:0;width:0;background:#2B2723"></div>
+      </div>
+    </div>
+    </sc-if>
+  </div>
+
+  <div style="position:relative;z-index:1;pointer-events:none">
+    <section data-screen-label="S01 Aperture" style="height:180vh"><h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Эстетика цветов</h1></section>
+    <section data-screen-label="S02 Pull-back" style="height:220vh"></section>
+    <section data-screen-label="S03 Exhibition" style="height:320vh"></section>
+    <section data-screen-label="S04 The Object" style="height:240vh"></section>
+    <section data-screen-label="End" style="height:100vh"></section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;serifFont&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Cormorant Garamond&quot;,&quot;Playfair Display&quot;,&quot;Noto Serif Display&quot;],&quot;default&quot;:&quot;Cormorant Garamond&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Typography&quot;},&quot;sansFont&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Onest&quot;,&quot;IBM Plex Sans&quot;],&quot;default&quot;:&quot;Onest&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Typography&quot;},&quot;snapScroll&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Navigation&quot;},&quot;showLabels&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Placeholders&quot;},&quot;showHud&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Placeholders&quot;},&quot;grain&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Look&quot;}}">
+class Component extends DCLogic {
+  canvasRef = React.createRef(); brandRef = React.createRef(); hint1Ref = React.createRef(); line2Ref = React.createRef();
+  s4Ref = React.createRef(); hint4Ref = React.createRef(); endRef = React.createRef();
+  ctaRef = React.createRef(); heroRef = React.createRef(); kickRef = React.createRef(); hint3Ref = React.createRef(); state = { copied: false };
+  veilRef = React.createRef(); roseRef = React.createRef(); s4bRef = React.createRef(); s4cRef = React.createRef();
+  co = [React.createRef(), React.createRef(), React.createRef(), React.createRef()];
+  hudScene = React.createRef(); hudAsset = React.createRef(); hudBar = React.createRef();
+
+  fontCfg() {
+    const S = { 'Cormorant Garamond': 500, 'Playfair Display': 400, 'Noto Serif Display': 400 };
+    const serif = S[this.props.serifFont] ? this.props.serifFont : 'Cormorant Garamond';
+    const sans = ['Onest', 'IBM Plex Sans'].includes(this.props.sansFont) ? this.props.sansFont : 'Onest';
+    return { serif, w: S[serif], sans };
+  }
+  applyFonts() {
+    const f = this.fontCfg(), r = document.documentElement.style;
+    r.setProperty('--fs-serif', `'${f.serif}', serif`); r.setProperty('--fs-serif-w', String(f.w)); r.setProperty('--fs-sans', `'${f.sans}', sans-serif`);
+    this.fs = f;
+    return Promise.all([document.fonts.load(`${f.w} 160px "${f.serif}"`, 'Эстетика'), document.fonts.load(`italic ${f.w} 120px "${f.serif}"`, 'цветов'), document.fonts.load('500 24px "IBM Plex Mono"', 'Ш')]).catch(() => {});
+  }
+  componentDidMount() {
+    this.alive = true;
+    const wait = async () => {
+      while (this.alive && !window.THREE) await new Promise((r) => setTimeout(r, 50));
+      await this.applyFonts();
+      if (this.alive) this.init();
+    };
+    wait();
+  }
+  componentDidUpdate(prev) {
+    if (prev.serifFont !== this.props.serifFont || prev.sansFont !== this.props.sansFont) { this.applyFonts().then(() => { if (this.alive && this.world) { this.teardown(); this.init(); } }); return; }
+    if (prev.showLabels !== this.props.showLabels && this.world) { this.teardown(); this.init(); }
+  }
+  componentWillUnmount() { this.alive = false; this.teardown(); }
+
+  teardown() {
+    cancelAnimationFrame(this.raf);
+    if (this.off) this.off.forEach((f) => f());
+    if (this.world) {
+      this.world.disposables.forEach((d) => d.dispose && d.dispose());
+      this.world.renderer.dispose();
+    }
+    this.world = null;
+  }
+
+  init() {
+    const THREE = window.THREE;
+    THREE.ColorManagement.enabled = false;
+    const canvas = this.canvasRef.current; if (!canvas) return;
+    const labels = this.props.showLabels ?? true;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const coarse = window.matchMedia('(pointer: coarse)').matches;
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, preserveDrawingBuffer: true });
+    renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
+    const dpr = Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2);
+    renderer.setPixelRatio(dpr);
+    renderer.setClearColor(0xF6F2EA, 1);
+    const disposables = [];
+    const IV = '#F6F2EA';
+    const cl = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+    const ss = (a, b, v) => { const t = cl((v - a) / (b - a)); return t * t * (3 - 2 * t); };
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    const mkTex = (w, h, draw) => {
+      const c = document.createElement('canvas'); c.width = w; c.height = h;
+      const x = c.getContext('2d'); draw(x, w, h);
+      const t = new THREE.CanvasTexture(c); t.anisotropy = 8; disposables.push(t); return t;
+    };
+    const stripes = (x, w, h, col, a = 0.07, step = 16) => {
+      x.save(); x.globalAlpha = a; x.strokeStyle = col; x.lineWidth = 1.5;
+      for (let i = -h; i < w; i += step) { x.beginPath(); x.moveTo(i, h); x.lineTo(i + h, 0); x.stroke(); }
+      x.restore();
+    };
+    const label = (x, text, px, py, size = 22, col = '#6E665D') => {
+      if (!labels) return;
+      x.save(); x.font = `500 ${size}px "IBM Plex Mono", monospace`; x.fillStyle = col; x.fillText(text, px, py); x.restore();
+    };
+    const disc = (color, opts = {}) => mkTex(512, 512, (x) => {
+      x.save(); x.beginPath(); x.arc(256, 256, 250, 0, Math.PI * 2); x.clip();
+      x.fillStyle = color; x.fillRect(0, 0, 512, 512);
+      const rings = opts.spiral ? 14 : 4;
+      for (let k = 1; k < rings; k++) {
+        const r = 250 * (1 - k / rings);
+        const a = k * 0.9, off = opts.spiral ? 10 * (1 - k / rings) : 0;
+        x.beginPath(); x.arc(256 + Math.cos(a) * off, 256 + Math.sin(a) * off, r, 0, Math.PI * 2);
+        x.strokeStyle = k % 2 ? 'rgba(255,250,244,0.55)' : 'rgba(120,80,70,0.12)'; x.lineWidth = opts.spiral ? 5 : 3; x.stroke();
+      }
+      stripes(x, 512, 512, '#6b4a42', 0.06, 12);
+      x.restore();
+    });
+    const leaf = (color) => mkTex(256, 512, (x) => {
+      x.save(); x.beginPath(); x.ellipse(128, 256, 110, 250, 0, 0, Math.PI * 2); x.clip();
+      x.fillStyle = color; x.fillRect(0, 0, 256, 512); stripes(x, 256, 512, '#3f4a38', 0.08, 12);
+      x.strokeStyle = 'rgba(255,255,250,0.35)'; x.lineWidth = 3; x.beginPath(); x.moveTo(128, 10); x.lineTo(128, 502); x.stroke(); x.restore();
+    });
+    const blob = (color, a = 0.95) => mkTex(512, 512, (x) => {
+      const g = x.createRadialGradient(256, 256, 0, 256, 256, 256);
+      const c = new THREE.Color(color); const rgb = `${Math.round(c.r * 255)},${Math.round(c.g * 255)},${Math.round(c.b * 255)}`;
+      g.addColorStop(0, `rgba(${rgb},${a})`); g.addColorStop(0.45, `rgba(${rgb},${a * 0.85})`); g.addColorStop(1, `rgba(${rgb},0)`);
+      x.fillStyle = g; x.fillRect(0, 0, 512, 512);
+    });
+    const rect = (w, h, color, lbl, opts = {}) => mkTex(w, h, (x) => {
+      x.save();
+      if (opts.round) { x.beginPath(); x.roundRect(4, 4, w - 8, h - 8, opts.round); x.clip(); }
+      x.fillStyle = color; x.fillRect(0, 0, w, h);
+      if (opts.grad) { const g = x.createLinearGradient(0, 0, w, 0); g.addColorStop(0, 'rgba(255,255,255,0.35)'); g.addColorStop(0.5, 'rgba(255,255,255,0)'); g.addColorStop(1, 'rgba(90,70,50,0.12)'); x.fillStyle = g; x.fillRect(0, 0, w, h); }
+      stripes(x, w, h, opts.stripe || '#7a6a58', opts.sa ?? 0.07, opts.step || 16);
+      if (lbl) label(x, lbl, 22, h - 22, opts.ls || 22);
+      x.restore();
+    });
+    const textTex = (lines, size, opts = {}) => {
+      const w = opts.w || 2048, lh = size * 1.02, h = Math.ceil(lh * lines.length + size * 0.5);
+      const t = mkTex(w, h, (x) => {
+        x.fillStyle = opts.color || '#2B2723'; x.textAlign = opts.align || 'center'; x.textBaseline = 'alphabetic';
+        lines.forEach((ln, i) => {
+          x.font = `${ln.italic ? 'italic ' : ''}${this.fs.w} ${size}px "${this.fs.serif}", serif`;
+          const tx = opts.align === 'left' ? 20 : w / 2, ty = size * 0.95 + i * lh;
+          x.save(); x.fillStyle = 'rgba(250,246,239,0.9)'; x.shadowColor = 'rgba(250,246,239,0.95)';
+          x.shadowBlur = size * 0.45; x.fillText(ln.t, tx, ty); x.shadowBlur = size * 0.22; x.fillText(ln.t, tx, ty); x.shadowBlur = size * 0.08; x.fillText(ln.t, tx, ty); x.restore();
+          x.fillStyle = ln.color || opts.color || '#1F1B18'; x.fillText(ln.t, tx, ty);
+        });
+      });
+      t.userData = { aspect: w / h }; return t;
+    };
+    const monoTex = (text, opts = {}) => mkTex(1024, 64, (x) => {
+      x.font = '500 30px "IBM Plex Mono", monospace'; x.fillStyle = opts.color || '#4A443E'; x.fillText(text.toUpperCase(), 4, 42);
+    });
+    const plane = (scene, tex, w, h, px, py, pz, o = {}) => {
+      const mat = new THREE.MeshBasicMaterial({ map: tex, transparent: o.opaque ? false : true, depthWrite: !!o.opaque, fog: !!o.fog, side: THREE.DoubleSide });
+      const geo = new THREE.PlaneGeometry(w, h);
+      const m = new THREE.Mesh(geo, mat); m.position.set(px, py, pz); if (o.rz) m.rotation.z = o.rz; if (o.rx) m.rotation.x = o.rx;
+      m.renderOrder = Math.round((pz + 60) * 100); scene.add(m); disposables.push(mat, geo); return m;
+    };
+
+    const C = { blush: '#EFD2CA', rose: '#D9AAA2', dusty: '#CFA39B', cream: '#F4ECDD', peach: '#F1D6C2', white: '#FAF6EF', sage: '#BFC6B0', sageD: '#A9B39B' };
+    const spiral = disc(C.blush, { spiral: true });
+
+    // ---------- Scene A · Aperture ----------
+    const sA = new THREE.Scene(); sA.background = new THREE.Color(IV);
+    const camA = new THREE.PerspectiveCamera(38, 1, 0.02, 100);
+    const tl = new THREE.TextureLoader();
+    const img = (u, o = {}) => { const t = tl.load(u); t.anisotropy = 8; if (o.rep) { t.repeat.set(o.rep[0], o.rep[1]); t.offset.set(o.off[0], o.off[1]); } disposables.push(t); return t; };
+    plane(sA, img('media/A01-BG-src.jpg'), 24.2, 13.5, -3.29, -0.25, -6, { opaque: true });
+    plane(sA, blob('#CDBFA8', 0.45), 1.9, 0.32, 0.43, -1.02, -2.97);
+    plane(sA, img('media/A01-BQ-4k.webp'), 5.0, 5.0, 0.40, 1.15, -2.95);
+    const hero = new THREE.Vector3(0.35, 1.05, -2.95);
+    const tWide = textTex([{ t: 'Эстетика цветов' }], 300, { w: 2600 });
+    const tLeft = textTex([{ t: 'Эстетика' }, { t: 'цветов', italic: true }], 300, { w: 1700, align: 'left' });
+    const titleA = plane(sA, tWide, 6.6, 6.6 / tWide.userData.aspect, 0, 0.62, -2.0);
+    const fgA = [plane(sA, img('media/A01-FG.webp'), 8.8, 4.95, 0, 0.7, -0.6)];
+    fgA.forEach((m) => { m.renderOrder = 99999; });
+    titleA.renderOrder = 100001;
+    const haloA = plane(sA, blob('#FAF6EF', 0.6), 1, 1, 0, 0.62, -2.03); haloA.renderOrder = 100000;
+
+    // ---------- Scene B · Pull-back (A02 macro → V01 end frame; V01 video pending) ----------
+    const sB = new THREE.Scene(); sB.background = new THREE.Color(IV);
+    const camB = new THREE.PerspectiveCamera(26, 1, 0.02, 100);
+    plane(sB, img('media/V01-END.jpg'), 16, 8.93, 0, 0, 0, { opaque: true });
+    const macroAlpha = mkTex(512, 512, (x) => { const g = x.createRadialGradient(256, 256, 0, 256, 256, 256); g.addColorStop(0, '#fff'); g.addColorStop(0.72, '#fff'); g.addColorStop(1, '#000'); x.fillStyle = g; x.fillRect(0, 0, 512, 512); });
+    const macro = plane(sB, img('media/A02.jpg'), 2.6, 1.452, 0.08, -0.98, 0.02);
+    macro.material.alphaMap = macroAlpha; macro.material.needsUpdate = true;
+    const roseB = new THREE.Vector3(0.08, -0.98, 0);
+
+    // ---------- Scene C · Exhibition ----------
+    const sC = new THREE.Scene(); sC.background = new THREE.Color(IV); sC.fog = new THREE.Fog(IV, 3, 21);
+    const camC = new THREE.PerspectiveCamera(45, 1, 0.05, 100);
+    const frames = [
+      ['V01 · last frame', 16 / 9, '#EFE4D8', 3.2, [0, 0, 0], 0, '№ 01 · Сборные букеты →', 'sbornye-bukety'],
+      ['G1 · stems in glass', 0.8, '#E7E5D8', 1.7, [-2.6, 0.35, -5], 0.28, '№ 02 · Розы →', 'rozy'],
+      ['A02 · macro crop', 1, '#EFD9D3', 1.8, [2.4, -0.35, -9], -0.22, '№ 03 · Монобукеты →', 'monobukety'],
+      ['G2 · linen + ranunculus', 0.8, '#EDE3D6', 1.7, [-1.8, 0.5, -13], 0.2, '№ 04 · Ранункулюсы →', 'ranunkulusy'],
+      ['V02 · atelier light still', 16 / 9, '#E6E3D6', 3.0, [2.2, 0.1, -17], -0.18, '№ 05 · Авторские →', 'avtorskie-bukety'],
+      ['A03 · signature', 0.8, '#F0DDD6', 1.9, [0, 0.05, -23], 0, '№ 06 · Премиум →', 'premium-bukety'],
+    ].map(([lbl, ar, tint, w, p, ry, cap, slug], i) => {
+      const h = w / ar;
+      const src = ['media/V01-END.jpg', 'media/G1.jpg', null, 'media/G2.jpg', 'media/V02-STILL.jpg', 'media/A03-src.jpg'][i];
+      const tex = src ? img(src) : img('media/A02.jpg', { rep: [0.558, 1], off: [0.221, 0] });
+      const m = plane(sC, tex, w, h, p[0], p[1], p[2], { opaque: true, fog: true });
+      m.rotation.y = ry;
+      const capM = plane(sC, monoTex(cap), 1.6, 0.1, 0, 0, 0, { fog: true });
+      capM.position.set(-w / 2 + 0.8, -h / 2 - 0.14, 0.001); m.add(capM);
+      return { m, base: new THREE.Vector3(...p), ry, lift: 0, w, h, i, url: 'https://flowerstim.ru/' + slug + '?utm_source=aesthetic_experience&utm_medium=referral&utm_campaign=osen26&utm_content=s03_' + slug };
+    });
+    const ph1 = textTex([{ t: 'Свет — первый' }, { t: 'материал.', italic: true }], 220, { w: 1700 });
+    const ph2 = textTex([{ t: 'Остальное —' }, { t: 'руками.', italic: true, color: '#8A5F59' }], 220, { w: 1500 });
+    plane(sC, ph1, 2.6, 2.6 / ph1.userData.aspect, 0.7, 0.8, -7, { fog: true });
+    plane(sC, ph2, 2.3, 2.3 / ph2.userData.aspect, -0.5, -0.75, -15.2, { fog: true });
+    const pathC = new THREE.CatmullRomCurve3([[0, 0, 2.3], [0.6, 0.1, -1.8], [-0.4, 0, -6.4], [0.5, 0.2, -11], [-0.3, 0.05, -15.6], [0, -0.12, -19.6]].map((a) => new THREE.Vector3(...a)));
+
+    // ---------- Scene D · The Object ----------
+    const sD = new THREE.Scene(); sD.background = new THREE.Color(IV);
+    const camD = new THREE.PerspectiveCamera(35, 1, 0.02, 100);
+    plane(sD, mkTex(512, 512, (x, w, h) => { const g = x.createLinearGradient(0, 0, 0, h); g.addColorStop(0, '#F5EEE6'); g.addColorStop(0.62, '#F2E7DB'); g.addColorStop(1, '#EAD8C3'); x.fillStyle = g; x.fillRect(0, 0, w, h); }), 18, 16, 0, 0.3, -3);
+    const edge = mkTex(128, 160, (x, w, h) => { const id = x.createImageData(w, h); for (let jj = 0; jj < h; jj++) for (let ii = 0; ii < w; ii++) { const e = Math.min(ii, w - 1 - ii, jj, h - 1 - jj) / (w * 0.12); const a = Math.max(0, Math.min(1, e)); const v = Math.round(a * a * (3 - 2 * a) * 255); const k = (jj * w + ii) * 4; id.data[k] = id.data[k + 1] = id.data[k + 2] = v; id.data[k + 3] = 255; } x.putImageData(id, 0, 0); });
+    const a3geo = new THREE.PlaneGeometry(3.22, 4.0, 160, 200);
+    const a3mat = new THREE.MeshBasicMaterial({ map: img('media/A03-src.jpg'), alphaMap: edge, transparent: true, depthWrite: false });
+    const a3 = new THREE.Mesh(a3geo, a3mat); a3.position.set(0, 0.3, 0); a3.renderOrder = 7000; sD.add(a3); disposables.push(a3geo, a3mat);
+    const dImg = new Image(); dImg.onload = () => {
+      const c = document.createElement('canvas'); c.width = dImg.width; c.height = dImg.height; const x = c.getContext('2d'); x.drawImage(dImg, 0, 0);
+      const d = x.getImageData(0, 0, c.width, c.height).data; const pos = a3geo.attributes.position, uv = a3geo.attributes.uv;
+      for (let n = 0; n < pos.count; n++) { const px = Math.round(uv.getX(n) * (c.width - 1)), py = Math.round((1 - uv.getY(n)) * (c.height - 1)); pos.setZ(n, d[(py * c.width + px) * 4] / 255 * 0.38); }
+      pos.needsUpdate = true;
+    };
+    dImg.src = 'media/A03-depth.png';
+    const anchors = [new THREE.Vector3(0.11, -0.34, 0.36), new THREE.Vector3(0.32, -0.5, 0.36), new THREE.Vector3(0.19, -0.98, 0.36), new THREE.Vector3(0.0, 0.34, 0.37)];
+    const stops = [{ t: new THREE.Vector3(0, 0.3, 0.1), d: 5.4 }, { t: new THREE.Vector3(0.16, 0.62, 0.3), d: 3.0 }, { t: new THREE.Vector3(0.1, 0.22, 0.36), d: 1.35 }];
+
+    // ---------- Post ----------
+    const rtOpts = { depthBuffer: true };
+    const rtA = new THREE.WebGLRenderTarget(2, 2, rtOpts), rtB = new THREE.WebGLRenderTarget(2, 2, rtOpts), rtL = new THREE.WebGLRenderTarget(512, 512, rtOpts);
+    disposables.push(rtA, rtB, rtL);
+    const post = new THREE.ShaderMaterial({
+      uniforms: { tA: { value: rtA.texture }, tB: { value: rtB.texture }, tL: { value: rtL.texture }, mixv: { value: 0 }, disp: { value: 0 }, blur: { value: 0 }, expo: { value: 0 }, grain: { value: 0.035 }, time: { value: 0 }, res: { value: new THREE.Vector2(1, 1) }, lP: { value: new THREE.Vector2() }, lR: { value: 110 }, lA: { value: 0 } },
+      vertexShader: 'varying vec2 vUv; void main(){ vUv=uv; gl_Position=vec4(position.xy,0.,1.); }',
+      fragmentShader: `
+        precision highp float; varying vec2 vUv;
+        uniform sampler2D tA, tB, tL; uniform float mixv, disp, blur, expo, grain, time, lR, lA; uniform vec2 res, lP;
+        float h(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453); }
+        float n(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f); return mix(mix(h(i),h(i+vec2(1,0)),f.x), mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x), f.y); }
+        float fbm(vec2 p){ float v=0., a=.5; for(int i=0;i<4;i++){ v+=a*n(p); p*=2.03; a*=.5; } return v; }
+        vec3 sb(sampler2D t, vec2 uv, float b){
+          if(b<0.05) return texture2D(t, uv).rgb;
+          vec3 c=texture2D(t, uv).rgb; float w=1.;
+          float rot=h(uv*res)*6.2831;
+          for(int i=1;i<32;i++){
+            float fi=float(i); float rr=sqrt(fi/31.)*b; float a=fi*2.39996+rot;
+            c+=texture2D(t, uv+vec2(cos(a),sin(a))*rr/res).rgb; w+=1.;
+          }
+          return c/w;
+        }
+        void main(){
+          vec2 uv=vUv; vec2 c=uv-.5; c.x*=res.x/res.y; float r=length(c);
+          float ang=atan(c.y,c.x);
+          float veins=fbm(vec2(ang*2.2+r*3., r*9.));
+          float f=1.-r*1.25+(veins-.5)*.5;
+          float th=1.35-mixv*2.1;
+          float e=smoothstep(th-.12, th+.12, f);
+          vec2 dir=normalize(c+1e-5)*vec2(res.y/res.x,1.);
+          vec3 col;
+          if(e<=0.001) col=sb(tA, uv+dir*disp*mixv*(.4+veins), blur);
+          else if(e>=.999) col=sb(tB, uv-dir*disp*(1.-mixv)*(.4+veins), blur);
+          else col=mix(sb(tA, uv+dir*disp*mixv*(.4+veins), blur), sb(tB, uv-dir*disp*(1.-mixv)*(.4+veins), blur), e);
+          if(lA>0.001){
+            vec2 px=uv*res; float d=length(px-lP); float R=lR*lA;
+            vec2 luv=(px-lP)/(lR*2.)+.5;
+            vec3 lc=texture2D(tL, luv).rgb;
+            col=mix(col, lc, 1.-smoothstep(R-1.5, R, d));
+            col=mix(col, vec3(.984,.973,.949), (1.-smoothstep(0., 2.5, abs(d-R)))*lA);
+          }
+          col*=exp2(expo);
+          col*=mix(1., .965, smoothstep(.3, 1.1, r));
+          col+=(h(uv*res+fract(time)*91.7)-.5)*grain;
+          gl_FragColor=vec4(col,1.);
+        }`,
+      depthTest: false, depthWrite: false,
+    });
+    const quad = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), post);
+    const sP = new THREE.Scene(); sP.add(quad); const camP = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+    disposables.push(post, quad.geometry);
+    const camL = new THREE.PerspectiveCamera(10, 1, 0.02, 100);
+
+    const st = { W: 1, H: 1, aspect: 1, f: 1, g: 0, gT: 0, gx: 0, gy: 0, tgx: 0, tgy: 0, mx: -1, my: -1, moved: false, hold: false, touch: false, lA: 0, hover: -1, t0: performance.now() };
+    const resize = () => {
+      const W = window.innerWidth, H = window.innerHeight; st.W = W; st.H = H; st.aspect = W / H;
+      st.f = st.aspect < 1 ? 1 + (1 - st.aspect) * 1.1 : 1;
+      renderer.setSize(W, H, false);
+      [rtA, rtB].forEach((rt) => rt.setSize(Math.round(W * dpr), Math.round(H * dpr)));
+      [camA, camB, camC, camD].forEach((c) => { c.aspect = st.aspect; c.updateProjectionMatrix(); });
+      post.uniforms.res.value.set(W * dpr, H * dpr);
+      post.uniforms.lR.value = (coarse ? 90 : 120) * dpr;
+      const tt = tLeft, narrow = st.aspect < 0.9;
+      const halfH = (5 * st.f + 2) * Math.tan((19 * Math.PI) / 180), halfW = halfH * st.aspect, k = (2 * halfW) / W;
+      const mPx = Math.min(64, Math.max(18, W * 0.04));
+      const tw = narrow ? (2 * halfW - 2 * mPx * k) * 0.9 : Math.min(3.3, halfW * 0.78), th = tw / tt.userData.aspect;
+      const bPx = narrow ? 262 : Math.max(H * 0.11, 100);
+      const tx = -halfW + mPx * k + tw / 2, ty = 0.7 - halfH + bPx * k + th / 2 - th * 0.1;
+      titleA.material.map = tt; titleA.material.needsUpdate = true;
+      titleA.position.set(tx, ty, -2.0); titleA.scale.set(tw / 6.6, th / (6.6 / tWide.userData.aspect), 1);
+      haloA.position.set(tx, ty, -2.03); haloA.scale.set(tw * 1.5, th * 1.8, 1);
+    };
+    // Beat navigation: one swipe / notch / key = one composed frame
+    const snap = this.props.snapScroll ?? true;
+    const cz = []; for (let i = 0; i <= 400; i++) cz.push(pathC.getPoint(i / 400).z);
+    const pcAt = (z) => { let b = 0; for (let i = 0; i <= 400; i++) if (Math.abs(cz[i] - z) < Math.abs(cz[b] - z)) b = i; return b / 400; };
+    const beats = [0, 215, 377, 400 + 320 * pcAt(-3.4), 400 + 320 * pcAt(-9.6), 690, 770, 842, 936, 1010];
+    let bi = 0, locked = false, lockT = 0, lastW = 0, acc = 0, ty0 = null;
+    const go = (d) => { if (performance.now() - st.twT0 < st.twD * 0.7) return; const n = Math.max(0, Math.min(beats.length - 1, bi + d)); if (n === bi) return; bi = n; st.gT = beats[bi]; locked = true; lockT = performance.now(); acc = 0; };
+    window.__fsGo = (i) => { bi = Math.max(0, Math.min(beats.length - 1, i)); st.gT = beats[bi]; };
+    const onWheel = (e) => {
+      if (!snap) return; e.preventDefault();
+      const now = performance.now(), gap = now - lastW; lastW = now;
+      if (locked) { if ((gap > 180 && now - lockT > 450) || now - lockT > 1700) locked = false; else return; }
+      if (gap > 180) acc = 0;
+      acc += e.deltaY + e.deltaX * 0.3;
+      if (Math.abs(acc) > 28) go(acc > 0 ? 1 : -1);
+    };
+    const onTS = (e) => { ty0 = e.touches[0].clientY; };
+    const onTM = (e) => { if (snap) e.preventDefault(); };
+    const onTE = (e) => { if (!snap || ty0 == null) return; const dy = ty0 - e.changedTouches[0].clientY; ty0 = null; if (Math.abs(dy) > 42) go(dy > 0 ? 1 : -1); };
+    const onKey = (e) => {
+      if (!snap) return;
+      if (['ArrowDown', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); go(1); }
+      else if (['ArrowUp', 'PageUp'].includes(e.key)) { e.preventDefault(); go(-1); }
+      else if (e.key === 'Home') { e.preventDefault(); go(-bi); }
+      else if (e.key === 'End') { e.preventDefault(); go(beats.length - 1 - bi); }
+    };
+    if (snap) { document.documentElement.style.overflow = 'hidden'; window.scrollTo(0, 0); }
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('touchstart', onTS, { passive: true }); window.addEventListener('touchmove', onTM, { passive: false }); window.addEventListener('touchend', onTE);
+    window.addEventListener('keydown', onKey);
+    const offSnap = () => { window.removeEventListener('wheel', onWheel); window.removeEventListener('touchstart', onTS); window.removeEventListener('touchmove', onTM); window.removeEventListener('touchend', onTE); window.removeEventListener('keydown', onKey); document.documentElement.style.overflow = ''; };
+    const onScroll = () => { if (window.__fsHold || snap) return; st.gT = (window.scrollY / window.innerHeight) * 100; };
+    const onMove = (e) => { st.mx = e.clientX; st.my = e.clientY; st.tgx = (e.clientX / st.W - 0.5) * 2; st.tgy = (e.clientY / st.H - 0.5) * 2; st.moved = true; st.touch = e.pointerType === 'touch'; };
+    const onDown = (e) => { onMove(e); st.hold = true; st.dX = e.clientX; st.dY = e.clientY; st.dT = performance.now(); };
+    const onUp = (e) => {
+      st.hold = false;
+      if (e && e.target && e.target.closest && e.target.closest('a,button')) return;
+      const g = st.g; if (!(g > 418 && g < 700) || !e || Math.hypot(e.clientX - st.dX, e.clientY - st.dY) > 10 || performance.now() - st.dT > 500) return;
+      ndc.set((e.clientX / st.W) * 2 - 1, -(e.clientY / st.H) * 2 + 1); ray.setFromCamera(ndc, camC);
+      const hit = ray.intersectObjects(frames.map((fr) => fr.m), false)[0];
+      if (hit) { const fr = frames.find((f) => f.m === hit.object); if (fr) window.open(fr.url, '_blank', 'noopener'); }
+    };
+    window.addEventListener('resize', resize); window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('pointermove', onMove, { passive: true }); window.addEventListener('pointerdown', onDown); window.addEventListener('pointerup', onUp); window.addEventListener('pointercancel', onUp);
+    this.off = [() => window.removeEventListener('resize', resize), () => window.removeEventListener('scroll', onScroll), () => window.removeEventListener('pointermove', onMove), () => window.removeEventListener('pointerdown', onDown), () => window.removeEventListener('pointerup', onUp), () => window.removeEventListener('pointercancel', onUp)];
+    this.off.push(offSnap);
+    resize(); onScroll(); if (snap) st.gT = 0; st.g = st.gT; st.twFrom = st.twTo = st.g; st.twT0 = 0; st.twD = 1;
+    this.world = { renderer, disposables };
+
+    const ray = new THREE.Raycaster(); const ndc = new THREE.Vector2(); const tmp = new THREE.Vector3();
+    const hudInfo = [['S01 · Aperture', 'Higgsfield · A01-BG + A01-BQ + A01-FG'], ['S02 · Pull-back', 'Higgsfield · A02 → V01-END (видео V01 ждёт тарифа)'], ['S03 · Exhibition', 'Higgsfield · V01-END · G1 · A02 · G2 · V02-STILL · A03'], ['S04 · The Object', 'Higgsfield · A03 + depth']];
+    let lastHud = -1;
+    const setO = (ref, v) => { if (ref.current) { ref.current.style.opacity = v.toFixed(3); ref.current.style.visibility = v < 0.02 ? 'hidden' : 'visible'; } };
+
+    const frame = (now) => {
+      this.raf = requestAnimationFrame(frame);
+      const time = (now - st.t0) / 1000;
+      if (snap && !reduce) {
+        if (st.gT !== st.twTo) { st.twFrom = st.g; st.twTo = st.gT; st.twT0 = now; st.twD = Math.min(3000, 1500 + Math.abs(st.gT - st.g) * 7); }
+        const tp = cl((now - st.twT0) / st.twD), e = tp < 0.5 ? 4 * tp * tp * tp : 1 - Math.pow(-2 * tp + 2, 3) / 2;
+        st.g = lerp(st.twFrom, st.twTo, e);
+      } else st.g += (st.gT - st.g) * (reduce ? 1 : 0.055);
+      const gk = reduce ? 0 : 0.06; st.gx += (st.tgx * (reduce ? 0 : 1) - st.gx) * (gk || 1); st.gy += (st.tgy * (reduce ? 0 : 1) - st.gy) * (gk || 1);
+      const g = st.g, gx = st.gx, gy = st.gy, F = st.f;
+      const p1 = cl(g / 180), p2 = cl((g - 180) / 220), p3 = cl((g - 400) / 320), p4 = cl((g - 720) / 240);
+      const breath = reduce ? 0 : Math.sin(time * Math.PI * 2 / 14) * 0.004;
+
+      // A
+      const dol = ss(0.04, 1, p1);
+      const intro = reduce ? 1 : ss(0, 2.6, time);
+      const gazeA = 1 - dol * 0.92;
+      camA.position.set(lerp(0, hero.x, dol) + gx * 0.4 * gazeA, lerp(0.7, hero.y, dol) - gy * 0.24 * gazeA, lerp(5 * F + (1 - intro) * 0.5, hero.z + 1.05, Math.pow(dol, 0.85)));
+      camA.fov = lerp(38, 26, dol) * (1 + breath); camA.updateProjectionMatrix();
+      camA.lookAt(lerp(0, hero.x, dol), lerp(0.7, hero.y, dol), -3);
+      [titleA, haloA, ...fgA].forEach((m) => { m.material.opacity = cl((camA.position.z - m.position.z - 0.15) / 0.9); });
+      // B
+      const pe = ss(0, 0.9, p2), pp = Math.pow(pe, 1.7);
+      camB.position.set(lerp(roseB.x, 0, pe) + gx * 0.3 * pe, lerp(roseB.y, 0.2, pe) - gy * 0.15 * pe, lerp(2.2, 11.6 * F, pp));
+      camB.fov = lerp(26, 40, pe) * (1 + breath); camB.updateProjectionMatrix();
+      camB.lookAt(lerp(roseB.x, 0, pe), lerp(roseB.y, 0, pe), 0);
+      macro.material.opacity = 1 - ss(0.12, 0.5, pe);
+      // C
+      const pc = ss(0, 1, p3);
+      pathC.getPoint(pc, camC.position);
+      camC.position.z += (st.aspect < 1 ? 1.2 : 0);
+      pathC.getPoint(Math.min(1, pc + 0.08), tmp);
+      const endLook = frames[5].base;
+      tmp.lerp(endLook, ss(0.8, 1, pc));
+      if (pc < 0.03) tmp.set(0, 0, -1);
+      camC.lookAt(tmp);
+      camC.rotateY(-gx * 0.07); camC.rotateX(-gy * 0.04);
+      const f3 = frames[3], d3 = camC.position.z - f3.base.z, side = ss(2.5, 8, d3);
+      f3.m.rotation.y = lerp(0.2, 1.0, side); f3.m.position.x = lerp(f3.base.x, -4.6, side);
+      if (st.mx >= 0 && g > 400 && g < 720 && !st.touch) {
+        ndc.set((st.mx / st.W) * 2 - 1, -(st.my / st.H) * 2 + 1); ray.setFromCamera(ndc, camC);
+        const hit = ray.intersectObjects(frames.map((fr) => fr.m), false)[0];
+        st.hover = hit ? frames.findIndex((fr) => fr.m === hit.object) : -1;
+      } else st.hover = -1;
+      frames.forEach((fr, i) => { fr.lift += ((st.hover === i ? 0.35 : 0) - fr.lift) * 0.1; fr.m.position.z = fr.base.z + fr.lift; });
+      // D
+      const q = p4; let s0, s1, k;
+      if (q < 0.22) { s0 = 0; s1 = 0; k = 0; } else if (q < 0.42) { s0 = 0; s1 = 1; k = ss(0.22, 0.42, q); } else if (q < 0.6) { s0 = 1; s1 = 1; k = 0; } else if (q < 0.8) { s0 = 1; s1 = 2; k = ss(0.6, 0.8, q); } else { s0 = 2; s1 = 2; k = 0; }
+      const tgt = stops[s0].t.clone().lerp(stops[s1].t, k), dist = lerp(stops[s0].d, stops[s1].d, k) * F;
+      const yaw = gx * 0.105, pit = -gy * 0.07;
+      camD.position.set(tgt.x + Math.sin(yaw) * Math.cos(pit) * dist, tgt.y + Math.sin(pit) * dist, tgt.z + Math.cos(yaw) * Math.cos(pit) * dist);
+      camD.fov = 35 * (1 + breath); camD.updateProjectionMatrix(); camD.lookAt(tgt);
+
+      // pairing
+      let A = sA, cA = camA, B = null, cB = null, m = 0, disp = 0, blur = 0, expo = 0, sceneIx = 0;
+      if (g < 160) { sceneIx = 0; }
+      else if (g < 205) { B = sB; cB = camB; m = ss(160, 205, g); disp = 0.1; blur = Math.sin(Math.PI * m) * 3.2; expo = Math.sin(Math.PI * m) * 0.12; sceneIx = m < 0.5 ? 0 : 1; }
+      else if (g < 385) { A = sB; cA = camB; sceneIx = 1; }
+      else if (g < 418) { A = sB; cA = camB; B = sC; cB = camC; m = ss(385, 418, g); disp = 0.035; blur = Math.sin(Math.PI * m) * 1.6; sceneIx = m < 0.5 ? 1 : 2; }
+      else if (g < 700) { A = sC; cA = camC; sceneIx = 2; }
+      else if (g < 738) { A = sC; cA = camC; B = sD; cB = camD; m = ss(700, 738, g); disp = 0.03; blur = Math.sin(Math.PI * m) * 2.2; sceneIx = m < 0.5 ? 2 : 3; }
+      else { A = sD; cA = camD; sceneIx = 3; }
+      blur += (1 - intro) * 9;
+
+      renderer.setRenderTarget(rtA); renderer.render(A, cA);
+      if (B) { renderer.setRenderTarget(rtB); renderer.render(B, cB); }
+      const loupeOn = A === sD && !B && st.hold && st.mx >= 0 && g < 960;
+      st.lA += ((loupeOn ? 1 : 0) - st.lA) * (reduce ? 1 : 0.16);
+      if (st.lA > 0.01) {
+        const ly = st.touch ? st.my - 110 : st.my;
+        ndc.set((st.mx / st.W) * 2 - 1, -(ly / st.H) * 2 + 1); ray.setFromCamera(ndc, camD);
+        camL.position.copy(camD.position); camL.lookAt(tmp.copy(camD.position).add(ray.ray.direction));
+        camL.fov = camD.fov * (post.uniforms.lR.value * 2 / (st.H * dpr)) / 3.2; camL.aspect = 1; camL.updateProjectionMatrix();
+        renderer.setRenderTarget(rtL); renderer.render(sD, camL);
+        post.uniforms.lP.value.set(st.mx * dpr, (st.H - ly) * dpr);
+      }
+      const u = post.uniforms;
+      u.mixv.value = B ? m : 0; u.tB.value = B ? rtB.texture : rtA.texture; u.disp.value = disp; u.blur.value = blur * dpr; u.expo.value = expo;
+      u.time.value = time; u.lA.value = st.lA; u.grain.value = (this.props.grain ?? true) ? 0.035 : 0;
+      renderer.setRenderTarget(null); renderer.render(sP, camP);
+
+      // DOM
+      setO(this.brandRef, ss(150, 190, g));
+      setO(this.ctaRef, reduce ? 1 : ss(2.4, 3.6, time));
+      const heroV = (reduce ? 1 : ss(2.8, 4.2, time)) * (1 - ss(4, 36, g));
+      setO(this.heroRef, heroV); setO(this.kickRef, (reduce ? 1 : ss(2.4, 3.6, time)) * (1 - ss(60, 140, g)));
+      setO(this.hint3Ref, ss(425, 450, g) * (1 - ss(680, 700, g)) * (st.touch ? 1 : 0.95));
+      setO(this.hint1Ref, (reduce ? 1 : ss(4.2, 5.4, time)) * (1 - ss(2, 14, g)));
+      const vRose = ss(198, 222, g) * (1 - ss(240, 285, g));
+      const vL2 = ss(0.78, 0.9, p2) * (1 - ss(380, 398, g));
+      setO(this.roseRef, vRose); setO(this.line2Ref, vL2);
+      const s4v = ss(740, 765, g) * (1 - ss(0.22, 0.3, p4)) * (1 - ss(955, 975, g));
+      setO(this.s4Ref, s4v);
+      const vB = ss(0.44, 0.52, p4) * (1 - ss(0.58, 0.66, p4)), vC = ss(0.82, 0.88, p4) * (1 - ss(955, 975, g));
+      setO(this.s4bRef, vB); setO(this.s4cRef, vC);
+      setO(this.veilRef, Math.max(vRose, vL2, s4v, vB, vC));
+      setO(this.hint4Ref, ss(745, 780, g) * (1 - ss(0.2, 0.26, p4)) * (st.lA > 0.2 ? 0 : 1));
+      setO(this.endRef, ss(975, 1010, g));
+      const vis = [ss(0.02, 0.1, p4) * (1 - ss(0.2, 0.26, p4)), ss(0.02, 0.1, p4) * (1 - ss(0.2, 0.26, p4)), ss(0.04, 0.12, p4) * (1 - ss(0.2, 0.26, p4)), ss(0.82, 0.9, p4) * 0];
+      anchors.forEach((a, i) => {
+        const el = this.co[i].current; if (!el) return;
+        const v = (g > 738 && g < 970) ? vis[i] * (1 - st.lA) : 0;
+        el.style.opacity = v.toFixed(3);
+        if (v > 0) { tmp.copy(a).project(camD); el.style.transform = `translate3d(${((tmp.x + 1) / 2 * st.W).toFixed(1)}px, ${((1 - tmp.y) / 2 * st.H - 10).toFixed(1)}px, 0)`; }
+      });
+      if (sceneIx !== lastHud) {
+        lastHud = sceneIx;
+        if (this.hudScene.current) this.hudScene.current.textContent = hudInfo[sceneIx][0];
+        if (this.hudAsset.current) { this.hudAsset.current.textContent = hudInfo[sceneIx][1]; this.hudAsset.current.style.display = labels ? '' : 'none'; }
+      }
+      if (this.hudBar.current) this.hudBar.current.style.width = (cl(g / 960) * 100).toFixed(2) + '%';
+      document.body.style.cursor = st.hover >= 0 ? 'pointer' : (A === sD && !B ? 'zoom-in' : '');
+    };
+    this.raf = requestAnimationFrame(frame);
+  }
+
+  renderVals() {
+    return {
+      canvasRef: this.canvasRef, brandRef: this.brandRef, hint1Ref: this.hint1Ref, line2Ref: this.line2Ref, s4Ref: this.s4Ref, hint4Ref: this.hint4Ref, endRef: this.endRef, veilRef: this.veilRef, ctaRef: this.ctaRef, heroRef: this.heroRef, kickRef: this.kickRef,
+      promoHero: this.state.copied ? 'ОСЕНЬ26 скопирован' : '−10% по промокоду ОСЕНЬ26', hint3Ref: this.hint3Ref,
+      promoLabel: this.state.copied ? 'Скопировано' : 'Скопировать',
+      copyPromo: () => { try { navigator.clipboard.writeText('ОСЕНЬ26'); } catch (e) {} this.setState({ copied: true }); clearTimeout(this._ct); this._ct = setTimeout(() => this.setState({ copied: false }), 2200); }, roseRef: this.roseRef, s4bRef: this.s4bRef, s4cRef: this.s4cRef,
+      co0: this.co[0], co1: this.co[1], co2: this.co[2], co3: this.co[3],
+      hudScene: this.hudScene, hudAsset: this.hudAsset, hudBar: this.hudBar,
+      showHud: this.props.showHud ?? true,
+    };
+  }
+}
+</script>
+</body>
+</html>

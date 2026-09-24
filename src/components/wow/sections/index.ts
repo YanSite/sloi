@@ -9,3 +9,4 @@ export * from "./ServiceSection";
 export * from "./SocialProof";
 export * from "./LocationSection";
 export * from "./FinalCTA";
+export * from "./ImmersiveStage";

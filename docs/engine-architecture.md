@@ -48,11 +48,22 @@ separate, independently-testable module — none of them import from
    `Reveal`, `Parallax`, `PinnedScroll`, `HorizontalScroll`, `Crossfade`,
    plus the `useMotionCapability()` hook every one of them reads instead
    of querying `matchMedia` independently. A `MotionPreset` slug selects
-   among these; sections express _intent_, never animation code.
+   among these; sections express _intent_, never animation code. For
+   full-page immersive stages: `BeatController` (one gesture = one
+   composed frame, native scroll disabled) and the timeline math
+   (`smoothstep`/`lerp`/`clamp`, `setLayerOpacity`) shared by camera and
+   DOM curves.
 4. **WebGL layer** — [src/components/wow/webgl](../src/components/wow/webgl).
    `WebGLImageLayer` — a pure enhancement, never a hard dependency. Only
    used by Cinematic Hero and Product Reveal (the two Signature WOW
    Moments approved for it, see visual-dna.md); Final CTA never uses it.
+   `webgl/stage` — primitives for a full-page multi-scene stage:
+   `StageCompositor` (render-to-texture of two scenes + one post shader:
+   organic mask transition, blur, exposure, vignette, grain, magnifier),
+   procedural textures (canvas typography, masks), depth-mapped planes,
+   3D→DOM projection, and `ImmersiveStageHost` (lazy `three` import,
+   WebGL detection, context loss → fallback, rAF/resize lifecycle). The
+   host runs a site-supplied _program_; it knows nothing about scenes.
 5. **Asset resolver** — [src/lib/assets](../src/lib/assets).
    `resolveAsset(mediaRef, manifest)` is the only place a `MediaRef`
    becomes real render data (alt, focal point, responsive sources,
@@ -102,7 +113,10 @@ separate, independently-testable module — none of them import from
    `SectionId` + variant slug to a component — `"product-reveal"` +
    `"image-parallax"` resolves to a different registered implementation
    than `"product-reveal"` + `"default"`. Throws on an unregistered
-   section/variant pair rather than degrading silently.
+   section/variant pair rather than degrading silently. After the core
+   registry it consults `SiteConfig.sectionVariants` — implementations a
+   Site Instance registers for slugs the core doesn't ship (a site may
+   not shadow a core slug; validation errors on that).
 4. `defineContent`/`SectionContentMap`
    ([section-content.ts](../src/lib/render/section-content.ts)) gives a
    vertical's `content.ts` compile-time checking against each section's
@@ -122,6 +136,22 @@ This file lives under `src/config`, not `src/lib/render` — it names real
 verticals by import, which is exactly what the core layers above are never
 allowed to do. A registry of real vertical configs is inherently
 vertical-_aware_, so it belongs beside `config/verticals/*`.
+
+## Site Instances and `immersive-stage`
+
+A Site Instance (`sites/<site>/`) is one real business built on the
+Engine: its own `SiteConfig` layers, assets and, when its approved design
+needs it, its own section variant registered through
+`SiteConfig.sectionVariants`. It is imported via `@sites/*` from
+`src/config/preview-registry.ts` only; nothing under `src/lib` or
+`src/components/wow` imports from `sites/`.
+
+`immersive-stage` is a full-page section (fixed canvas, own navigation):
+validation requires it to be the only enabled section and skips the
+hero-first / CTA-last rules for it. The core ships its props contract
+(`ImmersiveStageProps`) but no implementation — camera choreography is
+per site and is composed from the `webgl/stage` and motion primitives.
+First instance: [flowerstim-integration.md](./flowerstim-integration.md).
 
 ## Adding a new vertical without touching the core
 
@@ -154,6 +184,8 @@ already a valid `Vertical` (see
   `src/lib/generation` must never import from `src/config/verticals/*` or
   reference a vertical by name.
 - Section components must never import from `src/config/verticals/*`.
+- Core layers must never import from `sites/*`; a Site Instance plugs in
+  only through its `SiteConfig` (including `sectionVariants`).
 - `BusinessProfile` must never contain color/type/motion values (that's
   `VisualDNA`).
 - `VisualDNA` must never contain business facts like phone numbers.
@@ -173,7 +205,7 @@ already a valid `Vertical` (see
   `abstractTestSiteConfig`) exist purely to prove the renderer/theme
   system in isolation — they are not verticals and aren't meant to be
   extended like one.
-- Six of the ten approved section types (`EditorialGrid`,
+- Six of the ten approved editorial section types (`EditorialGrid`,
   `CollectionShowcase`, `StorySection`, `ServiceSection`, `SocialProof`,
   `LocationSection`) are still interface-only stubs (`return null`).
   Their content/asset/theme contracts are proven; their visual

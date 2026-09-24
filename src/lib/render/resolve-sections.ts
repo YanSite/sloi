@@ -49,13 +49,21 @@ function withBusinessFacts(
  * (id/variant), контент, assets, VisualDNA/theme и motion.
  */
 export function resolveSections(config: SiteConfig): ResolvedSection[] {
+  // Промпт генерации — авторские метаданные для generation workflow, ни
+  // одна секция его не рендерит. Секции часто клиентские, и всё, что им
+  // передано, сериализуется в payload страницы, поэтому промпты в
+  // браузер не уходят.
+  const assets = config.assets.map(({ prompt: _prompt, ...entry }) => entry);
+
   return config.experience.experienceMap
     .filter((entry) => entry.enabled)
     .map((entry): ResolvedSection => {
       const variant = entry.variant ?? DEFAULT_VARIANT;
-      const Component = resolveSectionComponent(entry.section, variant) as unknown as ComponentType<
-        Record<string, unknown>
-      >;
+      const Component = resolveSectionComponent(
+        entry.section,
+        variant,
+        config.sectionVariants,
+      ) as unknown as ComponentType<Record<string, unknown>>;
       const content = (config.content[entry.section] ?? {}) as Record<string, unknown>;
 
       const props: Record<string, unknown> = {
@@ -64,7 +72,7 @@ export function resolveSections(config: SiteConfig): ResolvedSection[] {
         // совпадении с одноимённым ключом контента.
         section: entry.section,
         variant,
-        assets: config.assets,
+        assets,
         visualDNA: config.visualDNA,
         theme: config.theme,
         motion: entry.motion ?? config.motion,

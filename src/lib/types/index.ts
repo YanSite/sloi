@@ -9,4 +9,5 @@ export * from "./template";
 export * from "./media-ref";
 export * from "./motion";
 export * from "./theme-tokens";
+export * from "./section-variants";
 export * from "./site-config";

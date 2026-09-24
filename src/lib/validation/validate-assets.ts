@@ -138,7 +138,11 @@ function validateAssetReferences(config: SiteConfig): ValidationIssue[] {
  * типов TypeScript — они стираются при компиляции; это единственное
  * место, где факт приходится продублировать для рантайм-проверки.
  */
-const SECTIONS_REQUIRING_MEDIA: SectionId[] = ["cinematic-hero", "product-reveal"];
+const SECTIONS_REQUIRING_MEDIA: SectionId[] = [
+  "cinematic-hero",
+  "product-reveal",
+  "immersive-stage",
+];
 
 function validateRequiredAssets(config: SiteConfig): ValidationIssue[] {
   const issues: ValidationIssue[] = [];

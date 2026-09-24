@@ -6,3 +6,5 @@ export * from "./Parallax";
 export * from "./PinnedScroll";
 export * from "./HorizontalScroll";
 export * from "./Crossfade";
+export * from "./timeline";
+export * from "./beat-controller";
