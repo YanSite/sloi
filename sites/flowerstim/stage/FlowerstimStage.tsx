@@ -114,9 +114,20 @@ function Heading({ h }: { h: SplitHeading }) {
   );
 }
 
-function UnderlineLink({ link }: { link: { label: string; href: string } }) {
+function UnderlineLink({
+  link,
+  className,
+}: {
+  link: { label: string; href: string };
+  className?: string;
+}) {
   return (
-    <a href={link.href} {...EXTERNAL} className={styles.hoverAccent} style={underlineLink}>
+    <a
+      href={link.href}
+      {...EXTERNAL}
+      className={className ? `${styles.hoverAccent} ${className}` : styles.hoverAccent}
+      style={underlineLink}
+    >
       {link.label} <span>→</span>
     </a>
   );
@@ -504,7 +515,7 @@ export function FlowerstimStage({ stage: c, assets, theme }: FlowerstimStageProp
           <span style={{ fontSize: 15, lineHeight: 1.55, color: TEXT, textShadow: GLOW_14 }}>
             {c.signature.body}
           </span>
-          <UnderlineLink link={c.signature.link} />
+          <UnderlineLink link={c.signature.link} className={styles.hidePhone} />
         </div>
         <div ref={hint4Ref} style={hintStyle}>
           {c.signature.hint}

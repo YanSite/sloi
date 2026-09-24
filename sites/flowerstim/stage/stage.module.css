@@ -64,4 +64,9 @@
     right: auto !important;
     bottom: calc(150px - 44px) !important;
   }
+
+  /* Ссылка «Премиум-букеты» в интро S04 на телефоне скрыта (решение владельца). */
+  .hidePhone {
+    display: none !important;
+  }
 }

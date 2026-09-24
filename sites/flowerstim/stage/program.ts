@@ -121,6 +121,13 @@ const NARROW_TITLE_BOTTOM = 320;
 /** S03: рамы крупнее, подписи под ними — ещё крупнее, чтобы читались. */
 const NARROW_FRAME_SCALE = 1.35;
 const NARROW_CAPTION_SCALE = 1.8;
+/**
+ * Потолок плотности рендера на телефоне. Прототип ограничивал touch-экраны
+ * 1.5× — на экранах 3× сцена рендерилась в половину разрешения и тонкий
+ * 3D-текст S03 выглядел смазанным. Полные 3× слишком тяжелы для blur в
+ * переходах на средних телефонах; 2.5× визуально почти не отличаются.
+ */
+const NARROW_MAX_PIXEL_RATIO = 2.5;
 /** S03: шире угол — фразы и рамы вписываются по ширине; траектория и сдвиг камеры как в прототипе. */
 const NARROW_GALLERY_FOV = 66;
 
@@ -149,7 +156,8 @@ export function createFlowerstimProgram(input: FlowerstimProgramInput): StagePro
 
     const IV = input.background;
     const { renderer, dpr, restore } = createStageRenderer(T, canvas, {
-      maxPixelRatio: coarse ? 1.5 : 2,
+      maxPixelRatio:
+        window.innerWidth <= NARROW_MAX_WIDTH ? NARROW_MAX_PIXEL_RATIO : coarse ? 1.5 : 2,
       clearColor: parseInt(IV.slice(1), 16),
     });
     const disposables: Disposable[] = [];
@@ -576,7 +584,8 @@ export function createFlowerstimProgram(input: FlowerstimProgramInput): StagePro
 
       const passB = B && cB ? { scene: B, camera: cB } : null;
       compositor.renderScenes({ scene: A, camera: cA }, passB);
-      const loupeOn = A === sD && !B && st.hold && st.mx >= 0 && g < 960;
+      // Лупа на телефоне отключена (решение владельца).
+      const loupeOn = !st.narrow && A === sD && !B && st.hold && st.mx >= 0 && g < 960;
       st.lA += ((loupeOn ? 1 : 0) - st.lA) * (reduce ? 1 : 0.16);
       if (st.lA > 0.01) {
         const ly = st.touch ? st.my - 110 : st.my;
@@ -618,12 +627,15 @@ export function createFlowerstimProgram(input: FlowerstimProgramInput): StagePro
       setO(dom.veil, Math.max(vRose, vL2, s4v, vB, vC));
       setO(
         dom.hint4,
-        smoothstep(745, 780, g) * (1 - smoothstep(0.2, 0.26, p4)) * (st.lA > 0.2 ? 0 : 1),
+        smoothstep(745, 780, g) *
+          (1 - smoothstep(0.2, 0.26, p4)) *
+          (st.lA > 0.2 || st.narrow ? 0 : 1),
       );
       setO(dom.final, smoothstep(975, 1010, g));
       const out = 1 - smoothstep(0.2, 0.26, p4);
       const vis = [
-        smoothstep(0.02, 0.1, p4) * out,
+        // «Лён, необработанный» на телефоне скрыта — сталкивалась с интро-блоком.
+        smoothstep(0.02, 0.1, p4) * out * (st.narrow ? 0 : 1),
         smoothstep(0.02, 0.1, p4) * out,
         smoothstep(0.04, 0.12, p4) * out,
         smoothstep(0.82, 0.9, p4) * 0, // «Кромка лепестка» в прототипе всегда скрыта
@@ -650,7 +662,7 @@ export function createFlowerstimProgram(input: FlowerstimProgramInput): StagePro
       }
       const bar = $(dom.hudBar);
       if (bar) bar.style.width = (clamp(g / 960) * 100).toFixed(2) + "%";
-      body.cursor = st.hover >= 0 ? "pointer" : A === sD && !B ? "zoom-in" : "";
+      body.cursor = st.hover >= 0 ? "pointer" : A === sD && !B && !st.narrow ? "zoom-in" : "";
     };
 
     return {
