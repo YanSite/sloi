@@ -11,9 +11,9 @@ import type { BusinessProfile } from "@/lib/types";
 export const flowerstimBusinessProfile: BusinessProfile = {
   vertical: "florist",
   name: "Эстетика цветов",
-  tagline: "Доставка цветов по Москве с гарантией свежести",
+  tagline: "Свежие цветы с доставкой по Москве",
   description:
-    "Только лучшие цветы, которые привозим напрямую от проверенных поставщиков — каждый букет становится произведением искусства.",
+    "Отборные цветы напрямую от поставщиков, которым мы доверяем, — и каждый букет как отдельная авторская работа.",
   contact: {
     phone: "+7 (926) 025-45-44",
     email: "flowerstim@mail.ru",
