@@ -1,13 +1,16 @@
-# Flowerstim — production integration
+# Florist Atelier — integration
 
-Production-сайт Flowerstim («Эстетика цветов») — **Site Instance** поверх
-Engine, а не вертикаль внутри него. Visual source of truth —
-[design-reference/flowerstim/prototype.html](../design-reference/flowerstim/prototype.html)
+Florist Atelier — immersive-прототип сайта для цветочных магазинов,
+**Site Instance** поверх Engine, а не вертикаль внутри него. Прототип не
+привязан к конкретному бизнесу: название «Ателье цветов», контакты, часы,
+цены, промокод и ссылки на каталог — демо-заглушки, которые под конкретный
+магазин заменяются в `business-profile.ts` и `content.ts`. Visual source of truth —
+[design-reference/florist-atelier/prototype.html](../design-reference/florist-atelier/prototype.html)
 (см. там же `DESIGN-HANDOFF.md` и `ASSET-MANIFEST.md`). Дизайн не менялся:
 всё, что Engine не умел, закрыто расширением Engine, а не упрощением
 дизайна.
 
-Preview: `/preview/flowerstim`. Корневой `/` не переключён.
+Preview: `/preview/florist-atelier`. Корневой `/` не переключён.
 
 ## 1. Архитектура
 
@@ -19,10 +22,10 @@ Engine core (generic)
   src/components/wow/motion        timeline math, BeatController
   src/components/wow/webgl/stage   StageCompositor, текстуры, плоскости, depth map, ImmersiveStageHost
         ↓
-sites/flowerstim/          Site Instance
-  site-config.ts           SiteConfig + sectionVariants["immersive-stage"].flowerstim
+sites/florist-atelier/          Site Instance
+  site-config.ts           SiteConfig + sectionVariants["immersive-stage"].atelier
   stage/program.ts         хореография S01–S04 (порт init() прототипа)
-  stage/FlowerstimStage.tsx DOM-слой 1:1 + host
+  stage/FloristAtelierStage.tsx DOM-слой 1:1 + host
   asset-manifest.ts        стабильные ID → файлы через статический импорт
         ↓
 app/preview/[slug]         тот же PageRenderer через preview-registry
@@ -30,7 +33,7 @@ app/preview/[slug]         тот же PageRenderer через preview-registry
 
 Рендер идёт обычным путём `SiteConfig → PageRenderer → SectionRegistry →
 Section`: единственная секция `immersive-stage` резолвится в вариант
-`flowerstim`, который сайт регистрирует через `SiteConfig.sectionVariants`.
+`atelier`, который сайт регистрирует через `SiteConfig.sectionVariants`.
 Второго renderer'а, motion- или WebGL-фреймворка нет.
 
 ## 2. Почему не последовательность секций (ENGINE GAP → решение)
@@ -57,8 +60,8 @@ Section`: единственная секция `immersive-stage` резолви
 | DOM-выноски из 3D-якорей                                                                                                | нет                                              | **generic**: `projectToViewport`                                                                                              | `planes.ts`                                 |
 | Ленивая загрузка three, WebGL detect, context loss → fallback, rAF/resize                                               | частично (`WebGLImageLayer`, `isWebGLAvailable`) | **generic**: `ImmersiveStageHost` (переиспользует `isWebGLAvailable`, `useMotionCapability`)                                  | `webgl/stage/ImmersiveStageHost.tsx`        |
 | Полноэкранная секция + реализация от сайта                                                                              | нет                                              | **generic**: `SectionId "immersive-stage"`, `SiteConfig.sectionVariants`, валидация                                           | `lib/types`, `lib/render`, `lib/validation` |
-| Камеры S01–S04, пары сцен и тайминги переходов, beats, DOM-тайминги, рама 04 уходит в сторону, hover-lift, клик по раме | —                                                | **Flowerstim-specific**                                                                                                       | `sites/flowerstim/stage/program.ts`         |
-| DOM-слой (шапка, hero, блоки 01–03, уход, S04, финал, HUD)                                                              | —                                                | **Flowerstim-specific**, разметка и inline-стили 1:1                                                                          | `stage/FlowerstimStage.tsx`                 |
+| Камеры S01–S04, пары сцен и тайминги переходов, beats, DOM-тайминги, рама 04 уходит в сторону, hover-lift, клик по раме | —                                                | **site-specific**                                                                                                             | `sites/florist-atelier/stage/program.ts`    |
+| DOM-слой (шапка, hero, блоки 01–03, уход, S04, финал, HUD)                                                              | —                                                | **site-specific**, разметка и inline-стили 1:1                                                                                | `stage/FloristAtelierStage.tsx`             |
 | Hover-стили (`style-hover` → `:hover {… !important}`)                                                                   | —                                                | CSS-модуль с теми же `!important`                                                                                             | `stage/stage.module.css`                    |
 | Шрифты Cormorant Garamond / Onest / IBM Plex Mono (кириллица)                                                           | —                                                | локальные woff2, `fonts.css` без изменений                                                                                    | `assets/fonts/`                             |
 
@@ -75,10 +78,10 @@ Section`: единственная секция `immersive-stage` резолви
 
 ## 4. Ассеты
 
-`design-reference/flowerstim/media/` → `sites/flowerstim/assets/media/`
+`design-reference/florist-atelier/media/` → `sites/florist-atelier/assets/media/`
 (байт-в-байт) → статический импорт в `asset-manifest.ts` (хешированный URL
 
-- размеры) → `resolveAsset` в `FlowerstimStage`. Путей к файлам в
+- размеры) → `resolveAsset` в `FloristAtelierStage`. Путей к файлам в
   компонентах нет; программа сцены получает готовые URL.
 
 | ID               | Файл                                | Статус                             | Higgsfield job                         |
@@ -110,15 +113,13 @@ Section`: единственная секция `immersive-stage` резолви
 
 ## 5. Контент
 
-Все строки — из прототипа 1:1 (`content.ts`). Факты сверены с
-`business-profile.ts` (flowerstim.ru, 2026-09-23): адрес, телефон, часы,
-Telegram/WhatsApp, доставка 750 ₽ в МКАД, бесплатный самовывоз.
-Телефон в финале показан в формате прототипа («+ 7 (926) 025 45 44»),
-канонический формат — в `BusinessProfile`.
-
-**CONTENT GAP (G-09):** рейтинг «★ 5,0 · 192 оценки» и промокод ОСЕНЬ26
-(−10%) взяты прототипом из карточки магазина от владельца; на
-flowerstim.ru не подтверждены. Проверить перед запуском.
+Все строки — демо-контент прототипа (`content.ts`), совпадают с
+`prototype.html`. Под конкретный магазин заменяются: название (шапка,
+3D-заголовок S01, финал), кикер с городом, часы, строка оффера и факты
+hero, промокод, стоимость доставки, контакты и мессенджеры, адрес каталога
+(`SITE`) и его разделы для рам S03. Факты в `content.ts` должны совпадать с
+`business-profile.ts`; непроверенные claims (рейтинги, отзывы, награды) не
+добавляются.
 
 ## 6. Verification (2026-09-25)
 
@@ -131,20 +132,20 @@ S03→S04, стопы S04, финал, hover рамы, лупа, курсор-к
 
 Runtime: reduced motion (DOM сразу видим, без твина), fallback без WebGL,
 wheel/клавиатура, клик по раме (`window.open` + UTM), копирование
-промокода, очистка `overflow`/cursor/`__fsGo` при уходе со страницы, SSR и
+промокода, очистка `overflow`/cursor/`__stageGo` при уходе со страницы, SSR и
 гидрация (dev) без ошибок.
 
 **UNVERIFIED:** реальные устройства (iOS Safari, Android Chrome), реальный
 GPU, touch long-press лупы на железе, производительность на слабых
 телефонах, 120 Гц дисплеи. Проверено только в эмуляции.
 
-## 6a. Согласованные отклонения от прототипа (решения владельца, 2026-09-25)
+## 6a. Согласованные отклонения от прототипа (2026-09-25)
 
 - **Свайп** срабатывает, как только палец прошёл порог 42px, — не
   дожидаясь `touchend` (`BeatController`, generic для всех сайтов).
 - **HUD:** подпись источника ассетов («Higgsfield · A01…») убрана;
   название сцены и полоса прогресса остались.
-- **Шапка ≤520px:** плашка «Открыто до 00:00» скрыта — в строку не
+- **Шапка ≤520px:** плашка часов работы скрыта — в строку не
   помещались кикер, плашка и CTA (часы есть в финале).
 - **Экраны ≤460px** (`NARROW_*` в `stage/program.ts`), desktop и планшеты
   без изменений:
@@ -173,15 +174,15 @@ GPU, touch long-press лупы на железе, производительно
 | G-03 | ASSET                 | Вырезка `S01_BOUQUET`/`S01_FOREGROUND` по цвету фона — возможен светлый ореол на крупном плане (как в прототипе).                                                                                                                                                    |
 | G-04 | ASSET                 | `S04_DEPTH` — размытая маска силуэта, а не depth (как в прототипе).                                                                                                                                                                                                  |
 | G-05 | ASSET                 | Нет отдельного hi-res слоя центральной розы (как в прототипе).                                                                                                                                                                                                       |
-| G-09 | CONTENT GAP           | Рейтинг и промокод — см. §5.                                                                                                                                                                                                                                         |
+| G-09 | CONTENT GAP           | Весь контент — демо-заглушки; перед запуском для магазина заменить проверенными данными, см. §5.                                                                                                                                                                     |
 | F-01 | DESIGN GAP (fallback) | Без WebGL показывается статичная версия: тот же контент и фото, вертикальный скролл, без 3D, переходов, лупы и beat'ов. В прототипе fallback'а нет.                                                                                                                  |
 | F-02 | ENGINE                | three r186 требует WebGL2; устройства только с WebGL1 (прототип r160 их поддерживал) получат fallback F-01.                                                                                                                                                          |
 | F-03 | OPEN QUESTION         | Подпись источника ассетов в HUD убрана (§6a); нужны ли название сцены и прогресс — `content.hud.enabled`.                                                                                                                                                            |
-| F-04 | OPEN QUESTION         | Root layout задаёт `<html lang="en">` и заголовок «Create Next App» для всех роутов; для promotion на `/` нужны `lang="ru"` и metadata Flowerstim.                                                                                                                   |
+| F-04 | OPEN QUESTION         | Root layout задаёт `<html lang="en">` и заголовок «Create Next App» для всех роутов; для promotion на `/` нужны `lang="ru"` и metadata сайта.                                                                                                                        |
 
 Особенности прототипа, сохранённые 1:1 (решение за дизайнером, не
-исправлялись): на узком портрете «Магазин цветов · Москва» наезжает на
-плашку «Открыто до 00:00», а выноски S04 уходят за правый край; raycast
+исправлялись): на узком портрете кикер шапки наезжает на
+плашку часов работы, а выноски S04 уходят за правый край; raycast
 клика в S03 попадает и в раму, ещё скрытую туманом; сам
-`design-reference/flowerstim/prototype.html` грузит React 18 с unpkg (не
+`design-reference/florist-atelier/prototype.html` грузит React 18 с unpkg (не
 полностью офлайн).

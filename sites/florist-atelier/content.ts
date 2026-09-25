@@ -1,18 +1,17 @@
 import { defineContent } from "@/lib/render";
-import type { FlowerstimStageContent } from "./stage/content-types";
+import type { FloristAtelierStageContent } from "./stage/content-types";
 
 /**
- * Контент Flowerstim — все строки перенесены 1:1 из утверждённого
- * прототипа (design-reference/flowerstim/prototype.html). Факты сверены
- * с business-profile.ts (источник: flowerstim.ru). Рейтинг «5,0 · 192» и
- * промокод ОСЕНЬ26 взяты прототипом из карточки магазина, присланной
- * владельцем, — CONTENT GAP G-09: проверить актуальность перед запуском.
- * Длинные тексты блоков (01–03, уход) пересказаны своими словами, а не
- * скопированы с flowerstim.ru, — смысл и факты не менялись.
+ * Демо-контент прототипа — строки совпадают с
+ * design-reference/florist-atelier/prototype.html. Название, контакты,
+ * часы, цены, промокод и адрес каталога — заглушки: для конкретного
+ * магазина они заменяются его проверенными данными (согласованно с
+ * business-profile.ts).
  */
 
-const SITE = "https://flowerstim.ru";
-const UTM = "utm_source=aesthetic_experience&utm_medium=referral&utm_campaign=osen26";
+/** Адрес каталога магазина; ссылки ведут на его разделы с UTM-метками. */
+const SITE = "https://example.com";
+const UTM = "utm_source=immersive_site&utm_medium=referral";
 const utm = (path: string, content: string) => `${SITE}${path}?${UTM}&utm_content=${content}`;
 
 const FRAMES: [string, string][] = [
@@ -24,7 +23,7 @@ const FRAMES: [string, string][] = [
   ["№ 06 · Премиум →", "premium-bukety"],
 ];
 
-const stage: FlowerstimStageContent = {
+const stage: FloristAtelierStageContent = {
   assets: {
     s01Background: { assetId: "S01_BG" },
     s01Bouquet: { assetId: "S01_BOUQUET" },
@@ -42,28 +41,28 @@ const stage: FlowerstimStageContent = {
     s04Bouquet: { assetId: "S04_BOUQUET" },
     s04Depth: { assetId: "S04_DEPTH" },
   },
-  srTitle: "Эстетика цветов",
+  srTitle: "Ателье цветов",
   header: {
-    kicker: "Магазин цветов · Москва",
-    brand: "Эстетика цветов",
-    hours: "Открыто до 00:00",
+    kicker: "Магазин цветов · Город",
+    brand: "Ателье цветов",
+    hours: "Открыто до 22:00",
     cta: { label: "Выбрать букет →", href: utm("/", "header") },
   },
   hero: {
-    line: { lead: "Авторские букеты с круглосуточной доставкой ", accent: "по Москве" },
-    facts: ["★ 5,0 · 192 оценки", "Фото букета перед отправкой"],
+    line: { lead: "Авторские букеты с доставкой ", accent: "в день заказа" },
+    facts: ["Свежие поставки каждый день", "Фото букета перед отправкой"],
   },
   promo: {
-    code: "ОСЕНЬ26",
-    heroLabel: "−10% по промокоду ОСЕНЬ26",
-    heroCopied: "ОСЕНЬ26 скопирован",
+    code: "ЦВЕТЫ10",
+    heroLabel: "−10% по промокоду ЦВЕТЫ10",
+    heroCopied: "ЦВЕТЫ10 скопирован",
     heroTitle: "Скопировать промокод",
-    finalBadge: "−10% · ОСЕНЬ26",
+    finalBadge: "−10% · ЦВЕТЫ10",
     finalLabel: "Скопировать",
     finalCopied: "Скопировано",
   },
   scrollHint: "Листайте",
-  title3d: [{ t: "Эстетика" }, { t: "цветов", italic: true }],
+  title3d: [{ t: "Ателье" }, { t: "цветов", italic: true }],
   blockAssortment: {
     label: "01 · Широкий ассортимент",
     heading: {
@@ -109,12 +108,12 @@ const stage: FlowerstimStageContent = {
       lead: "Букет приедет лично к вам в руки,",
       accent: "в какой бы точке города вы ни были.",
     },
-    body: "Доставляем быстро, и цветы приезжают свежими, без единого изъяна. Возим по Москве круглосуточно, а перед отправкой присылаем фото букета.",
+    body: "Доставляем быстро, и цветы приезжают свежими, без единого изъяна. Возим по всему городу каждый день, а перед отправкой присылаем фото букета.",
     rows: [
       ["Самовывоз", "бесплатно"],
-      ["В пределах МКАД", "750 ₽"],
+      ["По городу", "от 500 ₽"],
     ],
-    link: { label: "Доставка и оплата", href: utm("/delivery-and-payment", "b08_delivery") },
+    link: { label: "Доставка и оплата", href: utm("/delivery", "b08_delivery") },
   },
   care: {
     label: "Уход за цветами · Flowers care",
@@ -126,22 +125,22 @@ const stage: FlowerstimStageContent = {
     ],
     link: {
       label: "Подробнее об уходе",
-      href: utm("/tpost/mv4h2zbdt1-kak-uhazhivat-za-tsvetami-posle-pokupki", "b09_care"),
+      href: utm("/care", "b09_care"),
     },
   },
   final: {
     label: "Наш магазин · Our store",
-    heading: { lead: "Эстетика ", accent: "цветов" },
-    cta: { label: "Выбрать букет на flowerstim.ru →", href: utm("/", "b10_final") },
+    heading: { lead: "Ателье ", accent: "цветов" },
+    cta: { label: "Выбрать букет в каталоге →", href: utm("/", "b10_final") },
     contacts: [
-      { label: "Время работы", text: "Ежедневно с 08:00 до 00:00" },
-      { label: "Адрес", text: "г. Москва, Дмитровский пр., 1" },
-      { label: "Телефон", links: [{ label: "+ 7 (926) 025 45 44", href: "tel:+79260254544" }] },
+      { label: "Время работы", text: "Ежедневно с 09:00 до 22:00" },
+      { label: "Адрес", text: "г. Город, ул. Цветочная, 1" },
+      { label: "Телефон", links: [{ label: "+7 (000) 000-00-00", href: "tel:+70000000000" }] },
       {
         label: "Мессенджеры",
         links: [
-          { label: "Telegram", href: "https://t.me/Aestheticsof_flowers", external: true },
-          { label: "WhatsApp", href: "https://wa.me/message/HH7BH4JVMLY6B1", external: true },
+          { label: "Telegram", href: "https://t.me/", external: true },
+          { label: "WhatsApp", href: "https://wa.me/", external: true },
         ],
       },
     ],
@@ -152,4 +151,4 @@ const stage: FlowerstimStageContent = {
   },
 };
 
-export const flowerstimContent = defineContent({ "immersive-stage": { stage } });
+export const floristAtelierContent = defineContent({ "immersive-stage": { stage } });

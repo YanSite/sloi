@@ -11,13 +11,13 @@ import v01End from "./assets/media/V01-END.jpg";
 import v02Still from "./assets/media/V02-STILL.jpg";
 
 /**
- * Asset manifest Flowerstim — стабильные ID из
- * design-reference/flowerstim/ASSET-MANIFEST.md. Файлы лежат в
- * `sites/flowerstim/assets/media/` (копия `design-reference/flowerstim/media/`
+ * Asset manifest цветочного ателье — стабильные ID из
+ * design-reference/florist-atelier/ASSET-MANIFEST.md. Файлы лежат в
+ * `sites/florist-atelier/assets/media/` (копия `design-reference/florist-atelier/media/`
  * байт-в-байт) и подключаются статическим импортом: сборщик выдаёт
  * хешированный URL и размеры, компоненты получают их только через
  * `resolveAsset`. Полное сопоставление ID → файл → Higgsfield job —
- * docs/flowerstim-integration.md §4.
+ * docs/florist-atelier-integration.md §4.
  *
  * Новых генераций для production не было: все файловые ассеты — те же,
  * что в утверждённом прототипе.
@@ -62,7 +62,7 @@ const PROMPT = {
     STYLE,
 };
 
-export const flowerstimAssetManifest: AssetManifest = [
+export const floristAtelierAssetManifest: AssetManifest = [
   {
     asset_id: "S01_BG",
     purpose: "Стена из извести с аркой и пустым травертиновым постаментом — фон сцены S01",

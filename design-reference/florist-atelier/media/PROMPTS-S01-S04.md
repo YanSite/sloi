@@ -1,4 +1,4 @@
-# Эстетика цветов · Production media S01–S04 (Higgsfield)
+# Florist Atelier · Production media S01–S04 (Higgsfield)
 
 Бюджет Core: 6 изображений + 2 видео, 1 retry на ассет. Ниже 6 изображений (A01-BG, A01-BQ, A01-FG, A02, G1, A03), 2 видео (V01, V02) и опциональный G2 (сверх лимита, только по одобрению).
 Как работать: вставьте блок PROMPT в чат Claude с подключённым Higgsfield, максимальное разрешение, затем upscale 2×.

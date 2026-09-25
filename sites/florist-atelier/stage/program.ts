@@ -20,11 +20,11 @@ import {
   type StageProgramFactory,
   type TextureBag,
 } from "@/components/wow/webgl/stage";
-import type { FlowerstimStageContent } from "./content-types";
+import type { FloristAtelierStageContent } from "./content-types";
 
 /**
- * Хореография Flowerstim S01–S04 + финал — порт `init()` утверждённого
- * прототипа (design-reference/flowerstim/prototype.html) на generic
+ * Хореография ателье S01–S04 + финал — порт `init()` утверждённого
+ * прототипа (design-reference/florist-atelier/prototype.html) на generic
  * stage-примитивы Engine. Каждое число, кривая и тайминг перенесены без
  * изменений; расхождения с прототипом — только технические (модульный
  * three вместо UMD, ассеты через resolveAsset), визуально ничего.
@@ -34,7 +34,7 @@ import type { FlowerstimStageContent } from "./content-types";
  * в переходе — две, сведённые композитором.
  */
 
-export interface FlowerstimUrls {
+export interface FloristAtelierUrls {
   background: string;
   bouquet: string;
   foreground: string;
@@ -47,7 +47,7 @@ export interface FlowerstimUrls {
 
 type El = RefObject<HTMLElement | null>;
 
-export interface FlowerstimDom {
+export interface FloristAtelierDom {
   kick: El;
   brand: El;
   cta: El;
@@ -67,10 +67,10 @@ export interface FlowerstimDom {
   hudBar: El;
 }
 
-export interface FlowerstimProgramInput {
-  urls: FlowerstimUrls;
-  content: FlowerstimStageContent;
-  dom: FlowerstimDom;
+export interface FloristAtelierProgramInput {
+  urls: FloristAtelierUrls;
+  content: FloristAtelierStageContent;
+  dom: FloristAtelierDom;
   /** Цвет фона сцен, clear color и тумана S03. */
   background: string;
   grain: boolean;
@@ -141,14 +141,16 @@ type Frame = {
   url: string;
 };
 
-export function createFlowerstimProgram(input: FlowerstimProgramInput): StageProgramFactory {
+export function createFloristAtelierProgram(
+  input: FloristAtelierProgramInput,
+): StageProgramFactory {
   return async (ctx): Promise<StageProgram> => {
     const { T, canvas, reducedMotion: reduce, coarsePointer: coarse } = ctx;
     const { urls, content, dom } = input;
 
     // Canvas-текстуры 3D-заголовков требуют загруженных шрифтов.
     await Promise.all([
-      document.fonts.load(`${SERIF_WEIGHT} 160px "Cormorant Garamond"`, "Эстетика"),
+      document.fonts.load(`${SERIF_WEIGHT} 160px "Cormorant Garamond"`, "Ателье"),
       document.fonts.load(`italic ${SERIF_WEIGHT} 120px "Cormorant Garamond"`, "цветов"),
       document.fonts.load('500 24px "IBM Plex Mono"', "Ш"),
     ]).catch(() => {});
@@ -176,7 +178,7 @@ export function createFlowerstimProgram(input: FlowerstimProgramInput): StagePro
       o?: PlaneOptions,
     ) => addPlane(T, disposables, scene, tex, w, h, [x, y, z], o);
     const serifText = (
-      lines: FlowerstimStageContent["title3d"],
+      lines: FloristAtelierStageContent["title3d"],
       size: number,
       width: number,
       align?: "left",
@@ -381,11 +383,11 @@ export function createFlowerstimProgram(input: FlowerstimProgramInput): StagePro
     ];
     const nav = new BeatController({ beats, reducedMotion: reduce });
     ctx.onDispose(nav.attach());
-    // Тот же отладочный хук, что у прототипа: window.__fsGo(i) — прыжок к beat'у.
-    const win = window as unknown as { __fsGo?: (i: number) => void };
-    win.__fsGo = (i) => nav.goTo(i);
+    // Тот же отладочный хук, что у прототипа: window.__stageGo(i) — прыжок к beat'у.
+    const win = window as unknown as { __stageGo?: (i: number) => void };
+    win.__stageGo = (i) => nav.goTo(i);
     ctx.onDispose(() => {
-      delete win.__fsGo;
+      delete win.__stageGo;
     });
 
     const ray = new T.Raycaster();

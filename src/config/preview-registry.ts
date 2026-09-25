@@ -3,7 +3,7 @@ import { floristSiteConfig } from "@/config/verticals/florist";
 import { barberSiteConfig } from "@/config/verticals/barber";
 import { demoSiteConfig } from "./__fixtures__/demo-site-config";
 import { abstractTestSiteConfig } from "./__fixtures__/abstract-test-site-config";
-import { flowerstimSiteConfig } from "@sites/flowerstim";
+import { floristAtelierSiteConfig } from "@sites/florist-atelier";
 
 export interface PreviewEntry {
   slug: string;
@@ -30,9 +30,10 @@ export interface PreviewEntry {
  * `src/lib/render/__fixtures__` и импортировали `@/config/verticals/florist`
  * напрямую — то же нарушение чистоты core, что раньше было и у этого реестра.
  *
- * `flowerstim` — production Site Instance (`sites/flowerstim`), не
- * вертикаль: собственный SiteConfig поверх Engine, см.
- * docs/flowerstim-integration.md.
+ * `florist-atelier` — Site Instance (`sites/florist-atelier`), не
+ * вертикаль: прототип immersive-сайта для цветочных магазинов, собственный
+ * SiteConfig поверх Engine, см.
+ * docs/florist-atelier-integration.md.
  */
 export const previewRegistry: PreviewEntry[] = [
   { slug: "florist", label: "Florist — Botanical Noir", config: floristSiteConfig },
@@ -44,9 +45,9 @@ export const previewRegistry: PreviewEntry[] = [
   },
   { slug: "abstract-test", label: "Abstract test theme", config: abstractTestSiteConfig },
   {
-    slug: "flowerstim",
-    label: "Flowerstim — «Эстетика цветов» (production Site Instance)",
-    config: flowerstimSiteConfig,
+    slug: "florist-atelier",
+    label: "Florist Atelier — immersive-прототип (Site Instance)",
+    config: floristAtelierSiteConfig,
   },
 ];
 

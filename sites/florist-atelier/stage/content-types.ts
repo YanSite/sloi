@@ -1,7 +1,7 @@
 import type { MediaRef } from "@/lib/types";
 
 /**
- * Форма контента immersive-stage Flowerstim (`stage` в
+ * Форма контента immersive-stage цветочного ателье (`stage` в
  * `ImmersiveStageProps`). Объявлены через `type`, а не `interface`:
  * только type-alias структурно совместим с `Record<string, unknown>`,
  * который ожидает контракт секции.
@@ -27,7 +27,7 @@ export type ContactItem = {
   links?: { label: string; href: string; external?: boolean }[];
 };
 
-export type FlowerstimStageContent = {
+export type FloristAtelierStageContent = {
   assets: {
     s01Background: MediaRef;
     s01Bouquet: MediaRef;

@@ -1,8 +1,8 @@
 import type { VisualDNA } from "@/lib/types";
 
 /**
- * Visual DNA Flowerstim — снята с утверждённого прототипа
- * (design-reference/flowerstim/DESIGN-HANDOFF.md §1), а не с вертикального
+ * Visual DNA цветочного ателье — снята с утверждённого прототипа
+ * (design-reference/florist-atelier/DESIGN-HANDOFF.md §1), а не с вертикального
  * «Botanical Noir» из docs/visual-dna.md: у Site Instance собственный
  * утверждённый дизайн, и при конфликте приоритет у него.
  *
@@ -10,7 +10,7 @@ import type { VisualDNA } from "@/lib/types";
  * foreground — основной текст, accent — dusty rose `<em>`/hover,
  * secondary — цвет ссылок, background — ivory фон и clear color WebGL.
  */
-export const flowerstimVisualDNA: VisualDNA = {
+export const floristAtelierVisualDNA: VisualDNA = {
   vertical: "florist",
   mood: ["light", "editorial", "airy", "tactile", "cinematic"],
   colorPalette: {

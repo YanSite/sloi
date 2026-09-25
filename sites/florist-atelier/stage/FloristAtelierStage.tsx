@@ -13,20 +13,20 @@ import { resolveAsset } from "@/lib/assets";
 import type { AssetManifest, MediaRef } from "@/lib/types";
 import type { ImmersiveStageProps } from "@/components/wow/sections";
 import { ImmersiveStageHost, type StageProgramFactory } from "@/components/wow/webgl/stage";
-import type { FlowerstimStageContent, SplitHeading, TextBlock } from "./content-types";
-import { createFlowerstimProgram, type FlowerstimDom } from "./program";
-import { FlowerstimFallback } from "./FlowerstimFallback";
+import type { FloristAtelierStageContent, SplitHeading, TextBlock } from "./content-types";
+import { createFloristAtelierProgram, type FloristAtelierDom } from "./program";
+import { FloristAtelierFallback } from "./FloristAtelierFallback";
 import styles from "./stage.module.css";
 import "../assets/fonts/fonts.css";
 
 /**
- * Flowerstim immersive-stage — реализация варианта "flowerstim" секции
+ * Immersive-stage цветочного ателье — реализация варианта "atelier" секции
  * `immersive-stage`, зарегистрированная через `SiteConfig.sectionVariants`.
  * DOM-слой ниже — прототип 1:1 (разметка, inline-стили, порядок слоёв);
  * видимостью слоёв и выносками управляет программа сцены через refs.
  */
 
-export type FlowerstimStageProps = ImmersiveStageProps<FlowerstimStageContent>;
+export type FloristAtelierStageProps = ImmersiveStageProps<FloristAtelierStageContent>;
 
 const MONO = "'IBM Plex Mono',monospace";
 const SERIF = "var(--fs-serif)";
@@ -204,7 +204,7 @@ const SPACERS: [string, string][] = [
   ["End", "100vh"],
 ];
 
-export function FlowerstimStage({ stage: c, assets, theme }: FlowerstimStageProps) {
+export function FloristAtelierStage({ stage: c, assets, theme }: FloristAtelierStageProps) {
   // Refs DOM-слоя: видимостью и позицией слоёв управляет программа сцены.
   const kickRef = useRef<HTMLSpanElement>(null);
   const brandRef = useRef<HTMLSpanElement>(null);
@@ -255,7 +255,7 @@ export function FlowerstimStage({ stage: c, assets, theme }: FlowerstimStageProp
       depth: url(c.assets.s04Depth, assets),
     };
     return (ctx) => {
-      const dom: FlowerstimDom = {
+      const dom: FloristAtelierDom = {
         kick: kickRef,
         brand: brandRef,
         cta: ctaRef,
@@ -274,7 +274,7 @@ export function FlowerstimStage({ stage: c, assets, theme }: FlowerstimStageProp
         hudScene: hudSceneRef,
         hudBar: hudBarRef,
       };
-      return createFlowerstimProgram({ content: c, dom, background, grain: true, urls })(ctx);
+      return createFloristAtelierProgram({ content: c, dom, background, grain: true, urls })(ctx);
     };
   }, [c, assets, background]);
 
@@ -295,7 +295,7 @@ export function FlowerstimStage({ stage: c, assets, theme }: FlowerstimStageProp
       program={program}
       className={styles.root}
       style={rootStyle}
-      fallback={<FlowerstimFallback content={c} assets={assets} style={rootStyle} />}
+      fallback={<FloristAtelierFallback content={c} assets={assets} style={rootStyle} />}
     >
       <div style={{ position: "fixed", inset: 0, zIndex: 2, pointerEvents: "none" }}>
         <div

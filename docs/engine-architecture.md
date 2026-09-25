@@ -151,7 +151,7 @@ validation requires it to be the only enabled section and skips the
 hero-first / CTA-last rules for it. The core ships its props contract
 (`ImmersiveStageProps`) but no implementation — camera choreography is
 per site and is composed from the `webgl/stage` and motion primitives.
-First instance: [flowerstim-integration.md](./flowerstim-integration.md).
+First instance: [florist-atelier-integration.md](./florist-atelier-integration.md).
 
 ## Adding a new vertical without touching the core
 

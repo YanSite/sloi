@@ -1,14 +1,14 @@
 import type { CSSProperties } from "react";
 import { resolveAsset } from "@/lib/assets";
 import type { AssetManifest, MediaRef } from "@/lib/types";
-import type { FlowerstimStageContent, SplitHeading } from "./content-types";
+import type { FloristAtelierStageContent, SplitHeading } from "./content-types";
 import styles from "./stage.module.css";
 
 /**
- * Статичная версия Flowerstim для браузеров без WebGL (или при потере
+ * Статичная версия ателье для браузеров без WebGL (или при потере
  * GPU-контекста). Тот же контент, те же фотографии и типографика, но без
  * 3D-камеры, переходов, лупы и beat-навигации — обычный вертикальный
- * скролл. Это осознанный DESIGN GAP (см. docs/flowerstim-integration.md
+ * скролл. Это осознанный DESIGN GAP (см. docs/florist-atelier-integration.md
  * §7): утверждённый дизайн требует WebGL, fallback лишь не оставляет
  * посетителя с пустым экраном.
  */
@@ -56,12 +56,12 @@ function Split({ h }: { h: SplitHeading }) {
   );
 }
 
-export function FlowerstimFallback({
+export function FloristAtelierFallback({
   content: c,
   assets,
   style,
 }: {
-  content: FlowerstimStageContent;
+  content: FloristAtelierStageContent;
   assets: AssetManifest;
   style: CSSProperties;
 }) {
