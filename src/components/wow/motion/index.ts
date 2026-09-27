@@ -8,3 +8,5 @@ export * from "./HorizontalScroll";
 export * from "./Crossfade";
 export * from "./timeline";
 export * from "./beat-controller";
+export * from "./keyframes";
+export * from "./stage-navigator";

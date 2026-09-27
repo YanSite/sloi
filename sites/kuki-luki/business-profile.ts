@@ -1,0 +1,28 @@
+import type { BusinessProfile } from "@/lib/types";
+
+/**
+ * Подтверждённые факты о Куки Луки — и только они. Никаких отзывов,
+ * рейтингов, наград, года основания, истории, промокодов и условий
+ * доставки.
+ *
+ * Цена 390 ₽ подтверждена, но в утверждённом дизайне её нет (заказчик
+ * попросил убрать), поэтому сцена её не показывает; отдельного поля под
+ * цены в BusinessProfile нет.
+ *
+ * `vertical: "restaurant"` — ближайшая вертикаль из VERTICALS; своя
+ * "bakery" потребовала бы правки core.
+ */
+export const kukiLukiBusinessProfile: BusinessProfile = {
+  vertical: "restaurant",
+  name: "Куки Луки",
+  contact: {
+    phone: "+7 (977) 102-18-55",
+    address: "Бутырская ул., 84, Москва",
+  },
+  hours: (["mon", "tue", "wed", "thu", "fri", "sat", "sun"] as const).map((day) => ({
+    day,
+    open: "08:00",
+    close: "00:00",
+  })),
+  products: ["Орео", "Фрамбини", "Киндер"],
+};

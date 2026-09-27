@@ -1,0 +1,51 @@
+/*
+ * Глобальные правила прототипа (body / a / ::selection), перенесённые на
+ * корень сцены, и его hover-состояния. Hover в прототипе применяется
+ * рантаймом как `:hover { … !important }` поверх inline-стилей — здесь
+ * то же самое. `line-height: normal` снимает `html { line-height: 1.5 }`
+ * из Tailwind preflight: в прототипе элементы без явного line-height
+ * идут с UA-дефолтом.
+ */
+.root {
+  font-family: "Geologica", system-ui, sans-serif;
+  line-height: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.root a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.root a:hover {
+  color: #ff3e9a;
+}
+
+.root ::selection {
+  background: #ff3e9a;
+  color: #fff6f9;
+}
+
+.root .hoverMenuCta:hover {
+  background: #ff3e9a !important;
+  color: #16050a !important;
+}
+
+.root .hoverPrimary:hover {
+  background: #16050a !important;
+  color: #fff6f9 !important;
+}
+
+.root .hoverSecondary:hover {
+  background: #fff6f9 !important;
+  color: #16050a !important;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}

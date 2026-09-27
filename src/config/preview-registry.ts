@@ -4,6 +4,7 @@ import { barberSiteConfig } from "@/config/verticals/barber";
 import { demoSiteConfig } from "./__fixtures__/demo-site-config";
 import { abstractTestSiteConfig } from "./__fixtures__/abstract-test-site-config";
 import { floristAtelierSiteConfig } from "@sites/florist-atelier";
+import { kukiLukiSiteConfig } from "@sites/kuki-luki";
 
 export interface PreviewEntry {
   slug: string;
@@ -34,6 +35,9 @@ export interface PreviewEntry {
  * вертикаль: прототип immersive-сайта для цветочных магазинов, собственный
  * SiteConfig поверх Engine, см.
  * docs/florist-atelier-integration.md.
+ *
+ * `kuki-luki` — Site Instance (`sites/kuki-luki`): immersive-сайт
+ * кондитерской на generic layer-stage (`@/components/wow/stage`).
  */
 export const previewRegistry: PreviewEntry[] = [
   { slug: "florist", label: "Florist — Botanical Noir", config: floristSiteConfig },
@@ -49,6 +53,7 @@ export const previewRegistry: PreviewEntry[] = [
     label: "Florist Atelier — immersive-прототип (Site Instance)",
     config: floristAtelierSiteConfig,
   },
+  { slug: "kuki-luki", label: "Куки Луки — immersive (Site Instance)", config: kukiLukiSiteConfig },
 ];
 
 export function getPreviewEntry(slug: string): PreviewEntry | undefined {

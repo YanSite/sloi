@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+html,body{margin:0;padding:0;background:#120407;overscroll-behavior:none}
+body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+a{color:inherit;text-decoration:none}
+a:hover{color:#FF3E9A}
+::selection{background:#FF3E9A;color:#FFF6F9}
+</style>
+</helmet>
+<div ref="{{ rootRef }}" style="position:relative;width:100%;font-family:'Geologica',system-ui,sans-serif;color:#FFF6F9;--ink:#FFF6F9">
+  <div style="height:{{ spacerH }};pointer-events:none"></div>
+
+  <div style="position:fixed;inset:0;overflow:hidden;background:#120407;pointer-events:none">
+
+    <div data-l="bgPink" style="position:absolute;inset:0;background:radial-gradient(ellipse 80% 70% at 62% 40%, #FF69B0 0%, #FF3E9A 38%, #E0288A 70%, #A8145F 100%)"></div>
+
+    <div data-l="title" style="position:absolute;left:50%;top:50%;width:max-content;display:flex;flex-direction:column;align-items:flex-start;font-weight:500;font-size:min(30vw,24vh);line-height:0.84;letter-spacing:-0.055em;color:#FFF6F9;opacity:0;visibility:hidden;will-change:transform,opacity">
+      <span>КУКИ</span>
+      <span>ЛУКИ</span>
+      <span style="display:flex;align-items:center;gap:14px;margin-top:clamp(18px,3vh,32px);font-weight:400;font-size:clamp(10px,0.8vw,12px);line-height:1;letter-spacing:0.22em"><span style="width:32px;height:1px;background:currentColor"></span>OREO · ФРАМБИНИ · KINDER</span>
+    </div>
+    <div data-l="s01meta" style="position:absolute;top:clamp(22px,4.4vh,44px);right:clamp(20px,3.2vw,48px);display:flex;flex-direction:column;align-items:flex-end;gap:8px;color:#FFF6F9;font-weight:400;font-size:10px;letter-spacing:0.22em;line-height:1.4;text-align:right;opacity:0;visibility:hidden">
+      <span>МОСКВА · БУТЫРСКАЯ, 84</span>
+      <span>ЕЖЕДНЕВНО 08:00–00:00</span>
+    </div>
+
+    <div data-l="hero" style="-webkit-mask-image:radial-gradient(closest-side, #000 62%, rgba(0,0,0,0) 100%);mask-image:radial-gradient(closest-side, #000 62%, rgba(0,0,0,0) 100%);position:absolute;left:50%;top:50%;width:max(100vmin,min(130vw,62vh));height:max(100vmin,min(130vw,62vh));color:#FFF6F9;opacity:0;visibility:hidden;will-change:transform,opacity,filter">
+      <div style="position:absolute;left:14%;right:14%;bottom:4%;height:14%;border-radius:50%;background:radial-gradient(ellipse at center, rgba(40,0,14,0.55), rgba(40,0,14,0) 70%);filter:blur(12px)"></div>
+      <image-slot id="a01-hero" shape="rect" fit="contain" src="img/a01.jpg" placeholder="A01 · HIGGSFIELD · Фирменное печенье, вырезанное на прозрачном фоне"></image-slot>
+    </div>
+
+    <div data-l="tagline" style="position:absolute;left:clamp(20px,3.2vw,48px);bottom:clamp(24px,5vh,56px);display:flex;flex-direction:column;gap:4px;font-weight:400;font-size:clamp(12px,0.95vw,14px);letter-spacing:0.2em;line-height:1.5;color:#FFF6F9;opacity:0;visibility:hidden">
+      <span>БОЛЬШИЕ.</span>
+      <span>НАСТОЯЩИЕ.</span>
+      <span>ОЧЕНЬ ВКУСНЫЕ.</span>
+    </div>
+
+    <div data-l="bgDark" style="position:absolute;inset:0;background:radial-gradient(ellipse 55% 50% at 55% 38%, #5C0B28 0%, #2A0610 50%, #0F0305 100%);opacity:0;visibility:hidden">
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 58% 42%, #2E2A2B 0%, #151213 55%, #070606 100%);opacity:{{ bgO0 }};transition:opacity 0.5s ease"></div>
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 58% 42%, #B01F55 0%, #6E0C31 52%, #2E0413 100%);opacity:{{ bgO1 }};transition:opacity 0.5s ease"></div>
+      <div style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 58% 42%, #FBF4EA 0%, #EEDFCB 55%, #CDB696 100%);opacity:{{ bgO2 }};transition:opacity 0.5s ease"></div>
+    </div>
+
+    <div data-l="crack" style="position:absolute;left:50%;top:50%;width:115vw;height:115vh;color:#FFF6F9;background:#3A1A10;opacity:0;visibility:hidden;will-change:transform,opacity,filter">
+      <image-slot id="a02-crack" shape="rect" src="img/a02.jpg" placeholder="A02 · HIGGSFIELD · Макро трещины на печёной поверхности"></image-slot>
+      <video src="https://d8j0ntlcm91z4.cloudfront.net/user_3J2myYE1iqQZp5nkMbRxMy0DiHQ/hf_20260926_113702_16548bc1-9c80-4cfc-ab1c-2360de6f4341.mp4" poster="img/a02.jpg" autoplay="" muted="" loop="" playsinline="" preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none"></video>
+    </div>
+    <div data-l="crackRim" style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 50%, #1A0508 0%, #0A0203 70%);opacity:0;visibility:hidden"></div>
+    <div data-l="interior" style="position:absolute;inset:0;overflow:hidden;opacity:0;visibility:hidden">
+      <div data-l="interiorImg" style="position:absolute;left:50%;top:50%;width:115vw;height:115vh;color:#FFF6F9;background:#2A0E08;will-change:transform,filter">
+        <image-slot id="a03-interior" shape="rect" src="img/a03.jpg" placeholder="A03 · HIGGSFIELD · Разлом изнутри: шоколад, крем, мякиш, розовый контровой свет"></image-slot>
+        <video src="https://d8j0ntlcm91z4.cloudfront.net/user_3J2myYE1iqQZp5nkMbRxMy0DiHQ/hf_20260926_113704_917a607a-0cee-4145-8307-ac482ff938cd.mp4" poster="img/a03.jpg" autoplay="" muted="" loop="" playsinline="" preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none"></video>
+      </div>
+    </div>
+    <div data-l="haze" style="position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%, rgba(255,40,130,0.55), rgba(255,40,130,0) 70%);mix-blend-mode:screen;opacity:0;visibility:hidden"></div>
+    <div data-l="insideText" style="position:absolute;left:clamp(20px,5vw,72px);bottom:clamp(96px,14vh,140px);max-width:min(88vw,760px);display:flex;flex-direction:column;gap:18px;color:#FFF6F9;opacity:0;visibility:hidden;pointer-events:none;text-shadow:0 2px 24px rgba(10,2,3,0.55)">
+      <span style="font-weight:400;font-size:11px;letter-spacing:0.22em">ВНУТРИ</span>
+      <span style="font-weight:500;font-size:clamp(40px,6.4vw,104px);line-height:0.9;letter-spacing:-0.05em;text-wrap:balance">Шоколад в каждом из трёх главных вкусов</span>
+    </div>
+
+    <div data-l="n2" onClick="{{ pick2 }}" style="position:absolute;left:50%;top:50%;display:flex;flex-direction:column;align-items:center;gap:8px;width:max-content;color:#FFF6F9;pointer-events:auto;cursor:pointer;opacity:0;visibility:hidden" onClick="{{ pick2 }}">
+      <span style="font-weight:500;font-size:max(3vw,18px);letter-spacing:-0.03em;line-height:0.9">KINDER</span>
+    </div>
+    <div data-l="p2" onClick="{{ pick2 }}" onPointerEnter="{{ hov2 }}" onPointerLeave="{{ unhov }}" style="position:absolute;left:50%;top:50%;width:max(60vmin,min(80vw,40vh));height:max(60vmin,min(80vw,40vh));color:#FFF6F9;opacity:0;visibility:hidden;will-change:transform,opacity,filter">
+      <div style="position:absolute;inset:0;filter:drop-shadow(0 3vmin 4vmin rgba(20,4,8,0.35))"><img src="img/a07c.webp" alt="Киндер" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;clip-path:inset(20% 0 0 0)"></div>
+    </div>
+    <div data-l="n1" onClick="{{ pick1 }}" style="position:absolute;left:50%;top:50%;display:flex;flex-direction:column;align-items:center;gap:10px;width:max-content;color:#FFF6F9;pointer-events:auto;cursor:pointer;opacity:0;visibility:hidden" onClick="{{ pick1 }}">
+      <span style="font-weight:500;font-size:max(5.4vw,26px);letter-spacing:-0.045em;line-height:0.9">ФРАМБИНИ</span>
+    </div>
+    <div data-l="p1" onClick="{{ pick1 }}" onPointerEnter="{{ hov1 }}" onPointerLeave="{{ unhov }}" style="position:absolute;left:50%;top:50%;width:max(60vmin,min(80vw,40vh));height:max(60vmin,min(80vw,40vh));color:#FFF6F9;opacity:0;visibility:hidden;will-change:transform,opacity,filter">
+      <img src="img/a06c.webp" alt="Фрамбини" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 3vmin 4vmin rgba(20,4,8,0.45))">
+    </div>
+    <div data-l="n0" onClick="{{ pick0 }}" style="position:absolute;left:50%;top:50%;display:flex;flex-direction:column;align-items:center;gap:12px;width:max-content;color:#FFF6F9;pointer-events:auto;cursor:pointer;opacity:0;visibility:hidden" onClick="{{ pick0 }}">
+      <span style="font-weight:500;font-size:max(13vw,58px);letter-spacing:-0.055em;line-height:0.84">OREO</span>
+    </div>
+    <div data-l="p0" onClick="{{ pick0 }}" onPointerEnter="{{ hov0 }}" onPointerLeave="{{ unhov }}" style="position:absolute;left:50%;top:50%;width:max(60vmin,min(80vw,40vh));height:max(60vmin,min(80vw,40vh));color:#FFF6F9;opacity:0;visibility:hidden;will-change:transform,opacity,filter">
+      <img src="img/a05c.webp" alt="Орео" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 3vmin 4vmin rgba(0,0,0,0.55))">
+    </div>
+
+    <div data-l="whole" style="position:absolute;left:50%;top:50%;width:max(min(86vw,300px),min(34vw,440px));display:flex;flex-direction:column;gap:18px;color:var(--ink);transition:color 0.4s;opacity:0;visibility:hidden">
+      <span style="font-weight:400;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.7">{{ selIdx }} / 03</span>
+      <span style="font-weight:500;font-size:clamp(44px,5.6vw,84px);line-height:0.88;letter-spacing:-0.05em">{{ selTitle }}</span>
+      <span style="font-weight:300;font-size:clamp(14px,1.05vw,16px);line-height:1.55;text-wrap:pretty">{{ selDesc }}</span>
+    </div>
+
+    <div data-l="tx0" style="position:absolute;left:50%;top:50%;width:115vw;height:115vh;color:#FFF6F9;background:#241009;opacity:0;visibility:hidden;will-change:transform,opacity,filter">
+      <image-slot id="a08-oreo-texture" shape="rect" src="img/a08.jpg" placeholder="A08 · HIGGSFIELD · Oreo: макро текстуры, дробленое Орео в тесте"></image-slot>
+    </div>
+    <div data-l="tx1" style="position:absolute;left:50%;top:50%;width:115vw;height:115vh;color:#FFF6F9;background:#241009;opacity:0;visibility:hidden;will-change:transform,opacity,filter">
+      <image-slot id="a09-frambini-texture" shape="rect" src="img/a09.jpg" placeholder="A09 · HIGGSFIELD · Фрамбини: макро текстуры, молочный шоколад в тесте"></image-slot>
+    </div>
+    <div data-l="tx2" style="position:absolute;left:50%;top:50%;width:115vw;height:115vh;color:#FFF6F9;background:#3A220F;opacity:0;visibility:hidden;will-change:transform,opacity,filter">
+      <image-slot id="a10-kinder-texture" shape="rect" src="img/a10.jpg" placeholder="A10 · HIGGSFIELD · Kinder: макро текстуры песочного теста"></image-slot>
+    </div>
+    <div data-l="fl0" style="position:absolute;left:50%;top:50%;width:115vw;height:115vh;color:#FFF6F9;background:#2A1A16;opacity:0;visibility:hidden;will-change:transform,opacity,filter">
+      <image-slot id="a11-oreo-filling" shape="rect" src="img/a11.jpg" placeholder="A11 · HIGGSFIELD · Oreo: макро крема из творожного сыра и печенья Орео"></image-slot>
+    </div>
+    <div data-l="fl1" style="position:absolute;left:50%;top:50%;width:115vw;height:115vh;color:#FFF6F9;background:#3A0F1C;opacity:0;visibility:hidden;will-change:transform,opacity,filter">
+      <image-slot id="a12-frambini-filling" shape="rect" src="img/a12.jpg" placeholder="A12 · HIGGSFIELD · Фрамбини: макро малинового крем-чиза и сублимированной малины"></image-slot>
+    </div>
+    <div data-l="fl2" style="position:absolute;left:50%;top:50%;width:115vw;height:115vh;color:#FFF6F9;background:#2E1609;opacity:0;visibility:hidden;will-change:transform,opacity,filter">
+      <image-slot id="a13-kinder-filling" shape="rect" src="img/a13.jpg" placeholder="A13 · HIGGSFIELD · Kinder: макро шоколада Киндер и молочного шоколада"></image-slot>
+    </div>
+
+    <sc-for list="{{ annos }}" as="a" hint-placeholder-count="0">
+      <div data-ai="{{ $index }}" style="position:absolute;left:0;top:0;opacity:0;visibility:hidden">
+        <div style="position:absolute;left:-3px;top:-3px;width:6px;height:6px;border-radius:50%;background:#FFF6F9;box-shadow:0 0 0 6px rgba(244,234,226,0.14)"></div>
+        <div data-line="" style="position:absolute;left:0;top:0;width:72px;height:1px;background:rgba(244,234,226,0.75);transform-origin:0 50%;transform:rotate(-28deg)"></div>
+        <div data-lab="" style="position:absolute;left:66px;top:-52px;width:max-content;max-width:min(230px,44vw);padding:9px 12px;background:rgba(14,3,5,0.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#FFF6F9;font-weight:400;font-size:11px;line-height:1.4;letter-spacing:0.16em;text-transform:uppercase;text-wrap:balance">{{ a.label }}</div>
+      </div>
+    </sc-for>
+
+    <div data-l="states" style="position:absolute;right:clamp(18px,3.2vw,48px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:flex-end;gap:14px;color:var(--ink);transition:color 0.4s;font-weight:400;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;opacity:0;visibility:hidden">
+      <span data-st="0" style="display:flex;gap:10px;align-items:center;transition:opacity 0.3s">Целиком <span style="width:18px;height:1px;background:currentColor"></span> 01</span>
+      <span data-st="1" style="display:flex;gap:10px;align-items:center;transition:opacity 0.3s">Текстура <span style="width:18px;height:1px;background:currentColor"></span> 02</span>
+      <span data-st="2" style="display:flex;gap:10px;align-items:center;transition:opacity 0.3s">Начинка <span style="width:18px;height:1px;background:currentColor"></span> 03</span>
+    </div>
+
+    <div data-veil="" style="position:absolute;inset:0;background:#16050A;opacity:0;pointer-events:none"></div>
+
+    <div data-l="menu" style="position:absolute;left:50%;top:50%;width:100vw;height:100vh;overflow:auto;background:#F3EAE2;color:#16050A;opacity:0;visibility:hidden">
+      <div style="box-sizing:border-box;min-height:100%;padding:clamp(72px,11vh,110px) clamp(20px,5vw,80px) clamp(28px,5vh,56px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(28px,5vw,96px);align-content:center">
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <span style="font-weight:400;font-size:11px;letter-spacing:0.2em;text-transform:uppercase">Меню</span>
+          <span style="font-weight:500;font-size:clamp(48px,7vw,112px);line-height:0.86;letter-spacing:-0.055em">Три главных вкуса</span>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;padding-top:14px">
+            <a href="{{ menuUrl }}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:12px;padding:18px 26px;min-height:44px;box-sizing:border-box;border-radius:999px;background:#16050A;color:#F3EAE2;font-weight:400;font-size:12px;letter-spacing:0.2em" style-hover="background:#FF3E9A;color:#16050A">ПОСМОТРЕТЬ ВСЁ МЕНЮ <span style="letter-spacing:0">↗</span></a>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column">
+          <sc-for list="{{ menu }}" as="m" hint-placeholder-count="3">
+            <div style="display:grid;grid-template-columns:clamp(64px,7vw,104px) minmax(0,1fr) auto;gap:clamp(14px,1.6vw,24px);align-items:center;padding:clamp(14px,2.2vh,22px) 0;border-top:1px solid rgba(22,5,10,0.9)">
+              <div style="width:clamp(64px,7vw,104px);height:clamp(64px,7vw,104px);color:#16050A">
+                <image-slot id="{{ m.slot }}" src="{{ m.src }}" shape="rect" placeholder="{{ m.ph }}"></image-slot>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+                <span style="font-weight:500;font-size:clamp(22px,2.2vw,34px);line-height:0.95;letter-spacing:-0.04em">{{ m.title }}</span>
+                <span style="font-weight:300;font-size:13px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ m.desc }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+
+    <div data-l="s06" style="position:absolute;left:0;right:0;bottom:0;padding:clamp(20px,3.2vw,48px) clamp(20px,3.2vw,48px) clamp(44px,5vw,64px);display:flex;flex-wrap:wrap;gap:clamp(16px,2vw,32px);align-items:flex-end;color:#FFF6F9;opacity:0;visibility:hidden">
+      <div style="flex:1 1 420px;min-width:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:clamp(16px,2vw,32px);align-items:end">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-weight:400;font-size:10px;letter-spacing:0.2em;text-transform:uppercase">Адрес</span>
+        <span style="font-weight:400;font-size:clamp(15px,1.25vw,19px);letter-spacing:0.02em">Бутырская ул., 84</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-weight:400;font-size:10px;letter-spacing:0.2em;text-transform:uppercase">Часы</span>
+        <span style="font-weight:400;font-size:clamp(15px,1.25vw,19px);letter-spacing:0.02em">08:00–00:00</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <span style="font-weight:400;font-size:10px;letter-spacing:0.2em;text-transform:uppercase">Телефон</span>
+        <a href="tel:+79771021855" style="font-weight:400;font-size:clamp(15px,1.25vw,19px);letter-spacing:0.02em">+7 (977) 102-18-55</a>
+      </div>
+      </div>
+      <div style="flex:none;display:flex;flex-wrap:nowrap;gap:8px">
+        <a href="tel:+79771021855" style="display:flex;align-items:center;justify-content:center;gap:12px;padding:18px 30px;min-height:44px;box-sizing:border-box;border-radius:999px;background:#FFF6F9;color:#16050A;font-weight:400;font-size:12px;letter-spacing:0.22em" style-hover="background:#16050A;color:#FFF6F9">ЗАКАЗАТЬ <span style="letter-spacing:0">→</span></a>
+        <a href="{{ menuUrl }}" target="_blank" rel="noopener" style="display:flex;align-items:center;padding:18px 22px;min-height:44px;box-sizing:border-box;border-radius:999px;border:1px solid #FFF6F9;font-weight:400;font-size:12px;letter-spacing:0.22em" style-hover="background:#FFF6F9;color:#16050A">МЕНЮ</a>
+      </div>
+    </div>
+
+    <div data-grain="" style="position:absolute;inset:-60px;opacity:0.13;mix-blend-mode:overlay;background-image:url(&quot;data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div style="position:absolute;inset:0;background:radial-gradient(130% 100% at 50% 45%, rgba(0,0,0,0) 55%, rgba(20,0,8,0.38) 100%)"></div>
+  </div>
+
+  <div style="position:fixed;left:0;right:0;top:0;padding:clamp(18px,2.6vw,36px) clamp(20px,3.2vw,48px);display:flex;justify-content:space-between;align-items:flex-start;gap:16px;pointer-events:none;color:var(--ink);transition:color 0.4s">
+    <div style="display:flex;flex-direction:column;gap:14px">
+      <span data-l="brand" style="font-weight:500;font-size:12px;letter-spacing:0.24em;opacity:0;visibility:hidden">КУКИ ЛУКИ</span>
+      <sc-if value="{{ production }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:4px;max-width:min(360px,62vw);font-weight:400;font-size:9px;line-height:1.5;letter-spacing:0.14em;text-transform:uppercase;opacity:0.8">
+          <span data-scene="" style="font-weight:500">S01 · THE CRAVE</span>
+          <span data-sceneprod="">Higgsfield: A01 · Engine: свет, параллакс, типографика</span>
+        </div>
+      </sc-if>
+    </div>
+    <a data-l="order" href="tel:+79771021855" style="font-weight:400;font-size:11px;letter-spacing:0.22em;padding:12px 0;pointer-events:auto;opacity:0;visibility:hidden">ЗАКАЗАТЬ</a>
+  </div>
+
+  <div style="position:fixed;left:0;right:0;bottom:0;padding:clamp(18px,2.6vw,36px) clamp(20px,3.2vw,48px);display:flex;justify-content:space-between;align-items:flex-end;gap:16px;pointer-events:none;color:var(--ink);transition:color 0.4s">
+    <div style="margin-left:auto;display:flex;align-items:center;gap:20px;padding-bottom:10px">
+      <div data-l="hint" style="display:flex;align-items:center;gap:12px;font-weight:400;font-size:10px;letter-spacing:0.22em;opacity:0;visibility:hidden">ЛИСТАЙТЕ <span style="width:40px;height:1px;background:currentColor"></span></div>
+      <span data-count="" style="font-weight:400;font-size:10px;letter-spacing:0.22em">01 / 13</span>
+    </div>
+    <div style="position:absolute;right:clamp(20px,3.2vw,48px);bottom:clamp(12px,1.6vw,22px);width:120px;height:1px">
+      <div style="position:absolute;inset:0;background:currentColor;opacity:0.25"></div>
+      <div data-prog="" style="position:absolute;inset:0;background:currentColor;transform-origin:0 50%;transform:scaleX(0)"></div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;assets&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Производство&quot;},&quot;production&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Производство&quot;},&quot;parallax&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:1,&quot;min&quot;:0,&quot;max&quot;:2,&quot;step&quot;:0.1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Движение&quot;},&quot;pace&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.75,&quot;min&quot;:0.4,&quot;max&quot;:2,&quot;step&quot;:0.05,&quot;unit&quot;:&quot;с&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Движение&quot;},&quot;menuUrl&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;https://yandex.ru/maps/org/kuki_luki/&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Ссылки&quot;}}">
+class Component extends DCLogic {
+  state = { sel: 0 };
+  rootRef = React.createRef();
+
+  PRODUCTS = [
+    { name: 'OREO', title: 'Орео', desc: 'Шоколадное печенье, замешанное с белым шоколадом, дробленым печеньем орео внутри, украшено кремом из творожного сыра с белым шоколадом и оригинальным печеньем орео.',
+      tex: ['Шоколадное тесто с дробленым печеньем Орео', 58, 42],
+      fill: [['Крем из творожного сыра с белым шоколадом', 40, 42], ['Оригинальное печенье Орео', 62, 30], ['Белый шоколад', 34, 64]] },
+    { name: 'ФРАМБИНИ', title: 'Фрамбини', desc: 'Шоколадное печенье с кусочками молочного шоколада внутри, малиновый крем-чиз с сублимированной малиной и фрамбини с каплей шоколада посередине.',
+      tex: ['Шоколадное тесто, кусочки молочного шоколада', 56, 44],
+      fill: [['Малиновый крем-чиз', 40, 40], ['Сублимированная малина', 64, 32], ['Фрамбини с каплей шоколада', 56, 62]] },
+    { name: 'KINDER', title: 'Киндер', desc: 'Песочное печенье, замешанное с шоколадом Киндер.',
+      tex: ['Песочное тесто с шоколадом Киндер', 56, 44],
+      fill: [['Шоколад Киндер', 42, 38], ['Молочный шоколад', 64, 54], ['Белый шоколад', 34, 64]] },
+  ];
+  SCENES = [
+    [0, 'S01 · THE CRAVE', 'Higgsfield: A01 · Engine: свет, параллакс, типографика'],
+    [0.12, 'S02 · THE CRACK', 'Higgsfield: A02 A03 A04 · Engine: маска трещины, фокус, дымка'],
+    [0.34, 'S03 · THREE DESIRES', 'Higgsfield: A05 A06 A07 · Engine: глубина, перевод фокуса, дымка'],
+    [0.53, 'S04 · PRODUCT OBSESSION', 'Higgsfield: A05–A13 · Engine: переходы, фокус, аннотации'],
+    [0.77, 'S05 · MENU', 'Higgsfield: A14–A16 · Engine: DOM-слой'],
+    [0.89, 'S06 · VISIT / ORDER', 'Higgsfield: A01 · Engine: свет, типографика, CTA'],
+  ];
+
+  componentDidMount() {
+    this.pS = 0; this.cur = {}; this.hov = -1; this.ptr = { x: 0, y: 0 }; this.ptrS = { x: 0, y: 0 }; this.t = 0;
+    this.reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const root = this.rootRef.current;
+    this.els = {}; root.querySelectorAll('[data-l]').forEach(el => { this.els[el.dataset.l] = el; });
+    this.grain = root.querySelector('[data-grain]'); this.veil = root.querySelector('[data-veil]'); this.prog = root.querySelector('[data-prog]');
+    this.stEls = [...root.querySelectorAll('[data-st]')];
+    this.crackSeed(); this.build();
+    this.onMove = e => { this.ptr.x = e.clientX / innerWidth * 2 - 1; this.ptr.y = e.clientY / innerHeight * 2 - 1; };
+    this.onResize = () => this.build();
+    addEventListener('pointermove', this.onMove, { passive: true }); addEventListener('resize', this.onResize);
+    this.startVideos = () => document.querySelectorAll('video').forEach(v => { v.muted = true; v.defaultMuted = true; v.playsInline = true; if (v.paused) v.play().catch(() => {}); });
+    this.startVideos(); this.vidT = setInterval(this.startVideos, 1500);
+    const pre = []; document.querySelectorAll('image-slot[src], img[src]').forEach(s => { const im = new Image(); im.decoding = 'async'; im.src = s.getAttribute('src'); im.decode().catch(() => {}); pre.push(im); }); this._pre = pre;
+    this.beat = 0; this.anim = null; this.lastWheel = 0; this.armed = true; this.acc = 0;
+    document.documentElement.style.overflow = 'hidden'; document.body.style.overflow = 'hidden';
+    const menuScrolls = (t, dir) => { const m = this.els.menu; if (!m || !(t instanceof Node) || !m.contains(t) || this.BEATS[this.beat].p !== 0.83) return false; return dir > 0 ? m.scrollTop + m.clientHeight < m.scrollHeight - 2 : m.scrollTop > 0; };
+    this.onWheel = e => {
+      const now = performance.now(), gap = now - this.lastWheel; this.lastWheel = now;
+      const dy = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      if (menuScrolls(e.target, Math.sign(dy))) return;
+      e.preventDefault();
+      const ad = Math.abs(dy), la = this.lastAbs || 0; this.lastAbs = ad;
+      if (ad < la) this.decay = (this.decay || 0) + 1;
+      const ck = this.BEATS[this.beat].s != null;
+      const rise = ck ? (this.decay >= 2 && ad > Math.max(la * 1.6 + 4, 10) && now - (this.lastStepT || 0) > 200)
+                      : (this.decay >= 4 && ad > Math.max(la * 2.5, 24) && now - (this.lastStepT || 0) > 350);
+      if (gap > (ck ? 110 : 160) || rise) { this.armed = true; this.acc = 0; this.decay = 0; }
+      const late = this.anim && (performance.now() - this.anim.t0) > this.anim.dur * 0.45;
+      if (!this.armed) return;
+      if (this.dip || this.slide || (this.anim && !late)) { if (now - (this.lastStepT || 0) > (ck ? 200 : 350)) this.queued = Math.sign(dy); this.armed = false; this.decay = 0; this.lastStepT = now; return; }
+      this.acc += dy; if (Math.abs(this.acc) > 12) { this.armed = false; this.acc = 0; this.decay = 0; this.lastStepT = now; this.step(Math.sign(dy)); }
+    };
+    this.onTouchStart = e => { const t = e.touches[0]; this.ty = t.clientY; this.tx = t.clientX; };
+    this.onTouchMove = e => { if (!menuScrolls(e.target, Math.sign(this.ty - e.touches[0].clientY))) e.preventDefault(); };
+    this.onTouchEnd = e => {
+      const t = e.changedTouches[0], dy = this.ty - t.clientY, dx = this.tx - t.clientX;
+      if (menuScrolls(e.target, Math.sign(dy))) return;
+      if (Math.abs(dy) > 40 && Math.abs(dy) > Math.abs(dx)) this.step(Math.sign(dy));
+    };
+    this.onKey = e => {
+      const k = e.key; if (['ArrowDown', 'PageDown', ' '].includes(k)) { e.preventDefault(); this.step(1); } else if (['ArrowUp', 'PageUp'].includes(k)) { e.preventDefault(); this.step(-1); } else if (k === 'Home') this.go(0); else if (k === 'End') this.go(this.BEATS.length - 1);
+    };
+    addEventListener('wheel', this.onWheel, { passive: false });
+    addEventListener('touchstart', this.onTouchStart, { passive: true }); addEventListener('touchmove', this.onTouchMove, { passive: false }); addEventListener('touchend', this.onTouchEnd, { passive: true });
+    addEventListener('keydown', this.onKey);
+    this.last = performance.now(); this.loop = this.loop.bind(this); this.raf = requestAnimationFrame(this.loop);
+  }
+  componentWillUnmount() {
+    cancelAnimationFrame(this.raf); clearInterval(this.vidT); removeEventListener('pointermove', this.onMove); removeEventListener('resize', this.onResize);
+    removeEventListener('wheel', this.onWheel); removeEventListener('touchstart', this.onTouchStart); removeEventListener('touchmove', this.onTouchMove); removeEventListener('touchend', this.onTouchEnd); removeEventListener('keydown', this.onKey);
+    document.documentElement.style.overflow = ''; document.body.style.overflow = '';
+  }
+
+  BEATS = [{ p: 0 }, { p: 0.33 }, ...[0, 1, 2].flatMap(s => [{ p: 0.57, s }, { p: 0.65, s }, { p: 0.735, s }]), { p: 0.83 }, { p: 0.96 }];
+  step(dir) { if (this.dip || this.slide) { this.queued = dir; return; } this.go(Math.max(0, Math.min(this.BEATS.length - 1, this.beat + dir))); }
+  go(i) {
+    if ((i === this.beat && !this.anim) || this.dip || this.slide) return;
+    const B = this.BEATS[i], cur = this.BEATS[this.beat], base = (this.props.pace ?? 0.75) * 1000;
+    const dir = Math.sign(i - this.beat) || 1;
+    this.beat = i;
+    if (B.s != null && cur.s != null && B.s !== cur.s) { this.anim = null; this.slide = { t0: performance.now(), dur: base * 1.25, B, dir, swapped: false }; return; }
+    if ((cur.p === 0.33 && B.p === 0.57) || (cur.p === 0.57 && B.p === 0.33 && cur.s != null)) { this.anim = null; this.dip = { t0: performance.now(), dur: base * 1.1, B, swapped: false }; return; }
+    if (B.s != null && B.s !== this.state.sel) this.sel = B.s, this.setState({ sel: B.s });
+    const from = this.pS, to = B.p;
+    this.anim = { from, to, t0: performance.now(), dur: base * (1 + Math.min(0.6, Math.abs(to - from) * 1.5)) };
+  }
+  componentDidUpdate(pp, ps) { if (ps.sel !== this.state.sel) this.annoEls = null; }
+
+  sm(a, b, x) { let t = (x - a) / (b - a); t = t < 0 ? 0 : t > 1 ? 1 : t; return t * t * (3 - 2 * t); }
+
+  crackSeed() {
+    let s = 17; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+    this.cpts = []; const N = 26;
+    for (let i = 0; i <= N; i++) { const x = -8 + i / N * 116; this.cpts.push({ x, y: 36 + x * 0.26 + (r() - 0.5) * 7, a: 0.35 + r() * 1.1, b: 0.35 + r() * 1.1 }); }
+  }
+  crackPoly(w) {
+    const top = [], bot = [];
+    this.cpts.forEach(p => { top.push(`${p.x.toFixed(2)}% ${(p.y - w * p.a * 30).toFixed(2)}%`); bot.unshift(`${p.x.toFixed(2)}% ${(p.y + w * p.b * 30).toFixed(2)}%`); });
+    return `polygon(${top.concat(bot).join(',')})`;
+  }
+
+  build() {
+    const m = this.mob = innerWidth / innerHeight < 0.8;
+    const D = (d, mb) => (m && mb ? mb : d);
+    const K = {};
+    K.bgPink = { o: [[0, 1], [0.16, 1], [0.2, 0], [0.87, 0], [0.9, 1]] };
+    K.s01meta = { o: [[0, 1], [0.07, 1], [0.11, 0]] };
+    K.bgDark = { o: [[0.3, 0], [0.36, 1], [0.76, 1], [0.8, 0]] };
+    K.title = { d: 8, kf: D(
+      [[0, { x: -27, y: -4, s: 1, o: 1 }], [0.08, { x: -28, y: -5, s: 1.03 }], [0.13, { x: -31, s: 1.08, o: 0 }], [0.87, { x: -27, y: -10, s: 0.96, o: 0 }], [0.92, { x: -27, y: -10, s: 1, o: 1 }], [1, { s: 1.01 }]],
+      [[0, { x: -8, y: -28, s: 1, o: 1 }], [0.08, { y: -29, s: 1.03 }], [0.13, { s: 1.08, o: 0 }], [0.87, { x: -8, y: -28, s: 0.96, o: 0 }], [0.92, { y: -28, s: 1, o: 1 }]]) };
+    K.hero = { d: 18, breathe: 1, kf: D(
+      [[0, { x: 21, y: 4, s: 0.9, o: 1 }], [0.1, { x: 18, y: 4, s: 1.2 }], [0.155, { x: -8, y: -12, s: 3.6, b: 0 }], [0.185, { x: -20, y: -24, s: 5, o: 0, b: 6 }], [0.86, { x: 21, y: 30, s: 0.72, o: 0, b: 0 }], [0.915, { x: 21, y: -4, s: 0.78, o: 1 }], [1, { y: -5, s: 0.8 }]],
+      [[0, { x: 6, y: 16, s: 1, o: 1 }], [0.1, { x: 5, y: 13, s: 1.3 }], [0.155, { x: -10, y: -6, s: 3.4, b: 0 }], [0.185, { x: -20, y: -14, s: 5, o: 0, b: 6 }], [0.86, { x: 0, y: 30, s: 0.6, o: 0, b: 0 }], [0.915, { x: 0, y: 6, s: 0.6, o: 1 }], [1, { y: 5, s: 0.62 }]]) };
+    K.tagline = { o: [[0, 1], [0.06, 1], [0.08, 0]] };
+    K.hint = { o: [[0, 1], [0.04, 1], [0.06, 0]] };
+    K.brand = { o: [[0.06, 0], [0.09, 1], [0.87, 1], [0.9, 0]] };
+    K.order = { o: [[0.06, 0], [0.09, 1], [0.88, 1], [0.91, 0]] };
+    K.crack = { d: 10, kf: [[0.14, { s: 0.85, o: 0, b: 14 }], [0.19, { s: 1, o: 1, b: 0 }], [0.235, { s: 1.7, b: 1 }], [0.265, { s: 3.2, b: 12, o: 0 }]] };
+    K.crackRim = { o: [[0.215, 0], [0.25, 0.92], [0.285, 0]] };
+    K.interior = { o: [[0.245, 0], [0.275, 1], [0.35, 1], [0.375, 0]] };
+    K.interiorImg = { d: 10, nest: 'interior', kf: [[0.245, { s: 1.45, b: 18 }], [0.29, { s: 1.12, b: 3 }], [0.33, { s: 1.0, b: 0 }], [0.375, { s: 1.9, b: 14 }]] };
+    K.haze = { o: [[0.26, 0], [0.32, 0.55], [0.37, 0]] };
+    K.insideText = { o: [[0.3, 0], [0.325, 1], [0.345, 1], [0.365, 0]] };
+    const S3 = D(
+      [[[0.34, { x: -30, y: 18, s: 1.7, o: 0, b: 10 }], [0.39, { x: -24, y: 13, s: 1.4, o: 1, b: 0 }], [0.43, { x: -25, y: 13, s: 1.42, b: 0 }], [0.455, { b: 9 }], [0.5, { x: -27, y: 14, s: 1.46, b: 12 }]],
+       [[0.34, { x: 12, y: -2, s: 0.6, o: 0, b: 8 }], [0.39, { x: 12, y: -3, s: 0.72, o: 1, b: 4 }], [0.43, { b: 4 }], [0.455, { b: 0 }], [0.475, { b: 0 }], [0.495, { b: 4 }], [0.5, { x: 12, y: -3, s: 0.74, b: 4 }]],
+       [[0.34, { x: 34, y: -18, s: 0.32, o: 0, b: 6, h: 1 }], [0.39, { x: 33, y: -17, s: 0.38, o: 1, b: 4, h: 1 }], [0.465, { b: 4, h: 0.9 }], [0.485, { b: 0, h: 0.35 }], [0.5, { x: 33, y: -17, s: 0.4, b: 0, h: 0.35 }]]],
+      [[[0.34, { x: -18, y: 26, s: 1.5, o: 0, b: 10 }], [0.39, { x: -14, y: 22, s: 1.3, o: 1, b: 0 }], [0.43, { b: 0 }], [0.455, { b: 9 }], [0.5, { x: -15, y: 23, s: 1.34, b: 12 }]],
+       [[0.34, { x: 18, y: -2, s: 0.6, o: 0, b: 8 }], [0.39, { x: 18, y: -2, s: 0.7, o: 1, b: 4 }], [0.43, { b: 4 }], [0.455, { b: 0 }], [0.475, { b: 0 }], [0.495, { b: 4 }], [0.5, { s: 0.72, b: 4 }]],
+       [[0.34, { x: -12, y: -26, s: 0.36, o: 0, b: 6, h: 1 }], [0.39, { x: -12, y: -25, s: 0.42, o: 1, b: 4, h: 1 }], [0.465, { b: 4, h: 0.9 }], [0.485, { b: 0, h: 0.35 }], [0.5, { s: 0.44, b: 0, h: 0.35 }]]]);
+    const selTail = D([[0.545, { x: 14, y: 3, s: 1.08, b: 0, o: 1, h: 0 }], [0.59, { x: 14, y: 3, s: 1.13 }], [0.62, { x: 8, y: 0, s: 3.2, b: 10, o: 0 }]],
+      [[0.545, { x: 0, y: 14, s: 1.0, b: 0, o: 1, h: 0 }], [0.59, { y: 14, s: 1.05 }], [0.62, { y: 6, s: 2.8, b: 10, o: 0 }]]);
+    const otherTail = [[[0.535, { x: -46, y: 22, s: 1.6, o: 0, b: 14 }]], [[0.535, { x: 30, y: -8, s: 0.6, o: 0, b: 10 }]], [[0.535, { x: 44, y: -26, s: 0.3, o: 0 }]]];
+    const depth = [26, 14, 6];
+    const nameOff = D([[2, -34], [0, -24], [0, -15]], [[4, -30], [0, -17], [0, -11]]);
+    for (let i = 0; i < 3; i++) {
+      K['p' + i] = { d: depth[i], breathe: 0.4, prod: i, kfSel: this.prep(S3[i].concat(selTail)), kfOther: this.prep(S3[i].concat(otherTail[i])) };
+      K['n' + i] = { d: depth[i] * 0.7, name: i, off: nameOff[i] };
+    }
+    K.whole = { d: 4, kf: D([[0.545, { x: -28, y: 0, o: 0 }], [0.565, { o: 1 }], [0.6, { o: 1 }], [0.615, { o: 0 }]], [[0.545, { x: 0, y: -24, o: 0 }], [0.565, { o: 1 }], [0.6, { o: 1 }], [0.615, { o: 0 }]]) };
+    for (let i = 0; i < 3; i++) {
+      K['tx' + i] = { d: 10, selOnly: i, kf: [[0.6, { s: 0.9, o: 0, b: 14 }], [0.625, { s: 1, o: 1, b: 0 }], [0.675, { s: 1.12 }], [0.7, { s: 1.18, o: 0, b: 6 }]] };
+      K['fl' + i] = { d: 10, selOnly: i, kf: [[0.675, { s: 1.25, o: 0, b: 16 }], [0.705, { s: 1.1, o: 1, b: 0 }], [0.755, { s: 1.0 }], [0.79, { s: 0.97, o: 0 }]] };
+    }
+    K.states = { o: [[0.535, 0], [0.555, 1], [0.76, 1], [0.775, 0]] };
+    K.menu = { kf: [[0.765, { y: 100, o: 1 }], [0.8, { y: 0 }], [0.87, { y: 0 }], [0.9, { y: -100 }]], int: 1 };
+    K.s06 = { o: [[0.9, 0], [0.93, 1]], int: 1 };
+    for (const k in K) { if (K[k].kf) K[k].kf = this.prep(K[k].kf); }
+    this.K = K;
+  }
+
+  prep(kf) {
+    let prev = { x: 0, y: 0, s: 1, o: 1, b: 0, h: 0 };
+    return kf.map(([p, v]) => { prev = Object.assign({}, prev, v); return [p, prev]; });
+  }
+  at(kf, p) {
+    if (p <= kf[0][0]) return kf[0][1];
+    const n = kf.length - 1; if (p >= kf[n][0]) return kf[n][1];
+    let i = 0; while (p > kf[i + 1][0]) i++;
+    const a = kf[i], b = kf[i + 1], t0 = (p - a[0]) / (b[0] - a[0]), t = t0 * t0 * (3 - 2 * t0), o = {};
+    for (const k in a[1]) o[k] = a[1][k] + (b[1][k] - a[1][k]) * t;
+    return o;
+  }
+  atO(kf, p) {
+    if (p <= kf[0][0]) return kf[0][1];
+    const n = kf.length - 1; if (p >= kf[n][0]) return kf[n][1];
+    let i = 0; while (p > kf[i + 1][0]) i++;
+    const t = this.sm(kf[i][0], kf[i + 1][0], p); return kf[i][1] + (kf[i + 1][1] - kf[i][1]) * t;
+  }
+
+  select(i) {
+    this.go(this.BEATS.findIndex(b => b.p === 0.57 && b.s === i));
+  }
+
+  loop(now) {
+    this.raf = requestAnimationFrame(this.loop);
+    const dt = Math.min(0.05, (now - this.last) / 1000); this.last = now; this.t += dt;
+    const dbg = window.__klP != null;
+    if (dbg) this.pS = window.__klP;
+    else if (this.slide) {
+      const d = this.slide, t = Math.min(1, (now - d.t0) / d.dur);
+      if (t >= 0.5 && !d.swapped) { d.swapped = true; this.setState({ sel: d.B.s }); this.state.sel = d.B.s; this.pS = d.B.p; this.cur = {}; }
+      const a = t < 0.5 ? Math.pow(t / 0.5, 3) : Math.pow(1 - (t - 0.5) / 0.5, 3);
+      this.shift = (t < 0.5 ? -1 : 1) * d.dir * a * 105;
+      if (t >= 1) { this.slide = null; this.shift = 0; if (this.queued) { const q = this.queued; this.queued = 0; this.step(q); } }
+    }
+    else if (this.dip) {
+      const d = this.dip, t = Math.min(1, (now - d.t0) / d.dur);
+      if (t >= 0.5 && !d.swapped) { d.swapped = true; if (d.B.s != null) this.setState({ sel: d.B.s }); this.state.sel = d.B.s ?? this.state.sel; this.pS = d.B.p; this.cur = {}; }
+      const v = t < 0.5 ? this.sm(0, 0.5, t) : 1 - this.sm(0.5, 1, t);
+      if (this.veil) this.veil.style.opacity = v.toFixed(3);
+      if (t >= 1) { this.dip = null; if (this.veil) this.veil.style.opacity = '0'; if (this.queued) { const q = this.queued; this.queued = 0; this.step(q); } }
+    }
+    else if (this.anim) {
+      const a = this.anim, t = Math.min(1, (now - a.t0) / a.dur), e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      this.pS = a.from + (a.to - a.from) * e;
+      if (t >= 1) { this.anim = null; if (this.queued) { const q = this.queued; this.queued = 0; this.step(q); } }
+    }
+    const p = this.pS, K = this.K, E = this.els, sel = this.state.sel, sm = this.sm;
+    const par = this.reduced ? 0 : (this.props.parallax ?? 1), assets = this.props.assets ?? true;
+    const kp = 1 - Math.exp(-dt * 4); this.ptrS.x += (this.ptr.x - this.ptrS.x) * kp; this.ptrS.y += (this.ptr.y - this.ptrS.y) * kp;
+    const dk = dbg ? 1 : 1 - Math.exp(-dt * 10), W = innerWidth / 100, H = innerHeight / 100;
+    const vals = {};
+    for (const k in K) {
+      const L = K[k], el = E[k]; if (!el) continue;
+      let v;
+      if (L.name != null) {
+        const pv = vals['p' + L.name]; if (!pv) continue;
+        v = { x: pv.x + L.off[0], y: pv.y + L.off[1] * (this.mob ? 1 : 1), s: 1, o: pv.o * (1 - sm(0.495, 0.525, p)), b: pv.b * 0.7, h: pv.h };
+      } else if (L.prod != null) v = Object.assign({}, this.at(L.prod === sel ? L.kfSel : L.kfOther, p));
+      else if (L.kf) v = Object.assign({}, this.at(L.kf, p));
+      else v = { o: this.atO(L.o, p) };
+      if (L.selOnly != null) v.o *= L.selOnly === sel ? 1 : 0;
+      const c = this.cur[k] || (this.cur[k] = Object.assign({}, v));
+      for (const q in v) c[q] = c[q] == null ? v[q] : c[q] + (v[q] - c[q]) * dk;
+      vals[k] = c;
+      if (L.nest) { if (!(E[L.nest] && E[L.nest]._vis)) continue; }
+      else {
+        const vis = c.o > 0.004, vv = vis ? 'visible' : 'hidden';
+        el._vis = vis; if (el.style.visibility !== vv) el.style.visibility = vv;
+        if (!vis) continue;
+        el.style.opacity = c.o.toFixed(3);
+      }
+      if (L.kf || L.prod != null || L.name != null) {
+        let x = (c.x + (this.shift || 0) * (L.d ? 1 + L.d / 60 : 1)) * W, y = c.y * H;
+        if (L.d) { x += this.ptrS.x * L.d * par; y += this.ptrS.y * L.d * 0.6 * par; }
+        if (L.breathe && !this.reduced) y += Math.sin(this.t * 0.6 + (L.prod || 0) * 2) * 0.35 * H * L.breathe;
+        const hv = L.prod != null && this.hov === L.prod && p > 0.37 && p < 0.53 ? 1 : 0;
+        this.hovS = this.hovS || [0, 0, 0]; if (L.prod != null) { this.hovS[L.prod] += (hv - this.hovS[L.prod]) * (1 - Math.exp(-dt * 8)); y -= this.hovS[L.prod] * 1.6 * H; }
+        el.style.transform = `translate(-50%,-50%) translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) scale(${(c.s != null ? c.s : 1).toFixed(4)})`;
+        const hl = L.prod != null ? this.hovS[L.prod] : 0;
+        const bq = Math.min(8, Math.round(c.b)); const f = (bq >= 1 ? `blur(${bq}px) ` : '') + (c.h > 0.01 ? `contrast(${(1 - c.h * 0.32).toFixed(3)}) brightness(${(1 - c.h * 0.12).toFixed(3)}) ` : '') + (hl > 0.01 ? `brightness(${(1 + hl * 0.08).toFixed(3)})` : '');
+        const fv = f.trim() || 'none'; if (el.style.filter !== fv) el.style.filter = fv;
+      }
+      const slotEl = el._slot === undefined ? (el._slot = el.querySelector('image-slot')) : el._slot;
+      const pe = L.int ? (c.o > 0.5 ? 'auto' : 'none') : slotEl ? (assets && c.o > 0.5 ? 'auto' : 'none') : null;
+      if (pe && el.style.pointerEvents !== pe) el.style.pointerEvents = pe;
+    }
+    const S3 = p > 0.37 && p < 0.53;
+    for (let i = 0; i < 3; i++) { const el = E['p' + i]; if (!assets && el) { const pe = S3 ? 'auto' : 'none'; if (el.style.pointerEvents !== pe) { el.style.pointerEvents = pe; el.style.cursor = 'pointer'; } } }
+    this.updateHud(p, sel);
+    if (this.grain) this.grain.style.transform = `translate(${(Math.random() * 60 - 30).toFixed(0)}px,${(Math.random() * 60 - 30).toFixed(0)}px)`;
+  }
+
+  updateHud(p, sel) {
+    const root = this.rootRef.current, sm = this.sm;
+    const ink = (p > 0.775 && p < 0.885) || (sel === 2 && p > 0.53 && p < 0.62) ? '#16050A' : '#FFF6F9';
+    if (ink !== this._ink) { this._ink = ink; root.style.setProperty('--ink', ink); }
+    if (this.prog) this.prog.style.transform = `scaleX(${p.toFixed(4)})`;
+    if (this._beat !== this.beat) { this._beat = this.beat; const c = root.querySelector('[data-count]'); if (c) c.textContent = String(this.beat + 1).padStart(2, '0') + ' / ' + String(this.BEATS.length).padStart(2, '0'); }
+    let sc = this.SCENES[0]; this.SCENES.forEach(s => { if (p >= s[0]) sc = s; });
+    if (sc !== this._sc) { this._sc = sc; const a = root.querySelector('[data-scene]'), b = root.querySelector('[data-sceneprod]'); if (a) a.textContent = sc[1]; if (b) b.textContent = sc[2]; }
+    const st = p < 0.61 ? 0 : p < 0.69 ? 1 : 2;
+    if (st !== this._st) { this._st = st; this.stEls.forEach((el, i) => { el.style.opacity = i === st ? '1' : '0.35'; }); }
+    if (!this.annoEls) this.annoEls = [...root.querySelectorAll('[data-ai]')].map(el => ({ el, line: el.querySelector('[data-line]'), lab: el.querySelector('[data-lab]'), set: false }));
+    const list = this.annoList(sel);
+    this.annoEls.forEach((a, i) => {
+      const d = list[i]; if (!d) return;
+      if (!a.set) {
+        a.set = true; a.el.style.left = d.x + '%'; a.el.style.top = d.y + '%';
+        const flip = d.x > 55; a.line.style.transform = flip ? 'rotate(-152deg)' : 'rotate(-28deg)';
+        Object.assign(a.lab.style, flip ? { left: 'auto', right: '66px', textAlign: 'right' } : { left: '66px', right: 'auto', textAlign: 'left' });
+      }
+      const o = d.tex ? sm(0.635, 0.65, p) * (1 - sm(0.67, 0.685, p)) : sm(0.715 + d.k * 0.008, 0.73 + d.k * 0.008, p) * (1 - sm(0.752, 0.766, p));
+      a.el.style.opacity = o.toFixed(3); a.el.style.visibility = o < 0.01 ? 'hidden' : 'visible';
+    });
+  }
+
+  annoList(sel) {
+    const P = this.PRODUCTS[sel];
+    return [{ label: P.tex[0], x: P.tex[1], y: P.tex[2], tex: true, k: 0 }].concat(P.fill.map((f, k) => ({ label: f[0], x: f[1], y: f[2], tex: false, k })));
+  }
+
+  renderVals() {
+    const s = this.state, P = this.PRODUCTS[s.sel];
+    const len = '100vh';
+    const pick = i => () => { if (!(this.props.assets ?? true) || this.pS > 0.5 || true) this.select(i); };
+    return {
+      rootRef: this.rootRef, spacerH: len, production: this.props.production ?? true,
+      selIdx: String(s.sel + 1).padStart(2, '0'), selTitle: P.title, selDesc: P.desc,
+      bgO0: s.sel === 0 ? 1 : 0, bgO1: s.sel === 1 ? 1 : 0, bgO2: s.sel === 2 ? 1 : 0,
+      annos: this.annoList(s.sel),
+      products: this.PRODUCTS.map((p, i) => ({ name: p.name, pick: () => this.select(i), bg: i === s.sel ? '#FFF6F9' : 'transparent', fg: i === s.sel ? '#16050A' : '#FFF6F9' })),
+      menu: this.PRODUCTS.map((p, i) => ({ title: p.title, desc: p.desc, slot: ['a14-menu-oreo', 'a15-menu-frambini', 'a16-menu-kinder'][i], ph: ['A14', 'A15', 'A16'][i] + ' · Пэкшот', src: 'img/a' + (14 + i) + '.jpg' })),
+      pick0: () => this.select(0), pick1: () => this.select(1), pick2: () => this.select(2),
+      hov0: () => { this.hov = 0; }, hov1: () => { this.hov = 1; }, hov2: () => { this.hov = 2; }, unhov: () => { this.hov = -1; },
+      menuUrl: this.props.menuUrl || 'https://yandex.ru/maps/org/kuki_luki/',
+    };
+  }
+}
+</script>
+</body>
+</html>
