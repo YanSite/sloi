@@ -61,6 +61,8 @@ export interface StageNavigatorFrame {
   veil: number;
   /** Кадр прыжка dip/slide: сглаживание слоёв нужно сбросить. */
   snapped: boolean;
+  /** Диапазон прогресса текущего tween [от, до] или null — чтобы заранее подготовить слои на пути. */
+  span: [number, number] | null;
 }
 
 interface Tween {
@@ -209,6 +211,7 @@ export class StageNavigator {
       shiftVw: this.shiftVw,
       veil: this.veil,
       snapped,
+      span: this.tween ? [this.tween.from, this.tween.to] : null,
     };
   }
 

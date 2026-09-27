@@ -46,6 +46,14 @@ interface PreparedLayer {
 }
 
 const BREATHE_VH = 0.35;
+/** Сколько точек диапазона tween проверяется, чтобы найти слои, которые появятся по пути. */
+const WARM_SAMPLES = 48;
+/**
+ * Opacity прогреваемого слоя. Не 0: слои с нулевой opacity Chrome не
+ * растеризует вовсе, считая их невидимыми. 0.002 глазу незаметно, но
+ * заставляет браузер отрисовать тайлы заранее.
+ */
+const WARM_OPACITY = "0.002";
 const MAX_BLUR_PX = 8;
 const FIELDS = ["x", "y", "s", "o", "b", "h"] as const;
 
@@ -66,6 +74,9 @@ export class LayerStage {
   private grain: HTMLElement | null;
   private veil: HTMLElement | null;
   private veilValue = -1;
+  /** Слои, которые понадобятся в текущем tween: видимы (с нулевой opacity) с его начала. */
+  private warm = new Set<string>();
+  private warmSpan: [number, number] | null = null;
   private ptr = { x: 0, y: 0 };
   private ptrS = { x: 0, y: 0 };
   private last = 0;
@@ -106,6 +117,40 @@ export class LayerStage {
     this.ptr.y = (clientY / window.innerHeight) * 2 - 1;
   }
 
+  /**
+   * Слой, скрытый через `visibility: hidden`, браузер не растеризует. Если
+   * он становится видимым посреди перехода — да ещё крупным, размытым и
+   * под маской, — тайлы не успевают отрисоваться, и на их месте мелькает
+   * фон сцены (тёмные полосы). Поэтому в начале каждого tween все слои,
+   * которые появятся на его пути, включаются заранее с почти нулевой opacity: браузер
+   * дорисовывает их, пока они невидимы. После tween набор очищается.
+   */
+  private prewarm(span: [number, number] | null, variant: number): void {
+    if (
+      span === this.warmSpan ||
+      (span && this.warmSpan && span[0] === this.warmSpan[0] && span[1] === this.warmSpan[1])
+    )
+      return;
+    this.warmSpan = span;
+    this.warm.clear();
+    if (!span) return;
+    for (const { spec, keyframes } of this.layers) {
+      if (spec.nestedIn || (spec.variant != null && spec.variant !== variant)) continue;
+      for (let i = 0; i <= WARM_SAMPLES; i++) {
+        const p = span[0] + ((span[1] - span[0]) * i) / WARM_SAMPLES;
+        const o = keyframes
+          ? sampleKeyframes(keyframes, p).o
+          : spec.opacity
+            ? sampleTrack(spec.opacity, p)
+            : 0;
+        if (o > 0.004) {
+          this.warm.add(spec.id);
+          break;
+        }
+      }
+    }
+  }
+
   frame(now: number): LayerStageFrame {
     const dt = this.last ? Math.min(0.05, (now - this.last) / 1000) : 0;
     this.last = now;
@@ -115,6 +160,7 @@ export class LayerStage {
     const debugP = typeof window.__stageP === "number" ? window.__stageP : null;
     const p = debugP ?? nav.p;
     if (nav.snapped) this.cur = {};
+    this.prewarm(nav.span, nav.variant);
 
     const { reducedMotion } = this.opts;
     const parallax = reducedMotion ? 0 : (this.opts.parallax ?? 1);
@@ -124,7 +170,8 @@ export class LayerStage {
     const dk = debugP != null ? 1 : 1 - Math.exp(-dt * this.choreo.followDamping);
     const W = window.innerWidth / 100;
     const H = window.innerHeight / 100;
-    const visibleById = new Map<string, boolean>();
+    /** Для вложенных слоёв: виден ли родитель (включая прогрев) и показан ли он на самом деле. */
+    const parentState = new Map<string, { visible: boolean; shown: boolean }>();
 
     for (const layer of this.layers) {
       const { spec, el } = layer;
@@ -142,17 +189,21 @@ export class LayerStage {
         c[k] = prev == null ? target : prev + (target - prev) * dk;
       }
 
+      let shown: boolean;
       if (spec.nestedIn) {
-        if (!visibleById.get(spec.nestedIn)) continue;
+        const parent = parentState.get(spec.nestedIn);
+        if (!parent?.visible) continue;
+        shown = parent.shown;
       } else {
-        const visible = c.o > 0.004;
-        visibleById.set(spec.id, visible);
+        shown = c.o > 0.004;
+        const visible = shown || this.warm.has(spec.id);
+        parentState.set(spec.id, { visible, shown });
         if (visible !== layer.visible) {
           layer.visible = visible;
           el.style.visibility = visible ? "visible" : "hidden";
         }
         if (!visible) continue;
-        el.style.opacity = c.o.toFixed(3);
+        el.style.opacity = shown ? c.o.toFixed(3) : WARM_OPACITY;
       }
 
       if (layer.keyframes) {
@@ -166,7 +217,11 @@ export class LayerStage {
         if (spec.breathe && !reducedMotion) {
           y += Math.sin(this.t * 0.6 + (spec.breathePhase ?? 0)) * BREATHE_VH * H * spec.breathe;
         }
-        el.style.transform = `translate(-50%,-50%) translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) scale(${(c.s ?? 1).toFixed(4)})`;
+        // Пока слой прогревается невидимым, он держится в масштабе ≤ 1: браузер
+        // растеризует его небольшим (will-change: transform фиксирует масштаб
+        // растра), а не сразу в ×3–5, что переполняет видеопамять.
+        const scale = shown ? (c.s ?? 1) : Math.min(c.s ?? 1, 1);
+        el.style.transform = `translate(-50%,-50%) translate3d(${x.toFixed(1)}px,${y.toFixed(1)}px,0) scale(${scale.toFixed(4)})`;
         const blur = Math.min(MAX_BLUR_PX, Math.round(c.b ?? 0));
         const haze = c.h ?? 0;
         const filter =
