@@ -1,5 +1,5 @@
 import type { AssetFile, AssetManifest, AssetManifestEntry } from "@/lib/types";
-import signatureCookie from "./assets/media/signature-cookie.jpg";
+import signatureCookie from "./assets/media/signature-cookie.webp";
 import crackMacro from "./assets/media/crack-macro.jpg";
 import interiorMacro from "./assets/media/interior-macro.jpg";
 import oreoPortrait from "./assets/media/oreo-portrait.webp";
@@ -119,7 +119,8 @@ const flavorAssets = FLAVORS.flatMap(({ id, name, desc, files }): AssetManifestE
 export const kukiLukiAssetManifest: AssetManifest = [
   {
     asset_id: "signature-cookie",
-    purpose: "S01 / S06 — главное печенье на розовой студии (без вырезки, края растушёваны маской)",
+    purpose:
+      "S01 / S06 — главное печенье на розовой студии. Производная от сгенерированного JPG: растушёвка краёв и тень прототипа запечены в альфа-канал WebP (CSS-маска на крупном масштабе давала артефакты растеризации)",
     type: "image",
     source: "higgsfield",
     prompt:

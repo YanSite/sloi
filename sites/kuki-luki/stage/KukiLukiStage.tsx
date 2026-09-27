@@ -335,11 +335,15 @@ export function KukiLukiStage({ stage: c, assets }: KukiLukiStageProps) {
           ))}
         </div>
 
+        {/*
+          Растушёвка краёв (radial-gradient closest-side 62% → 100%) и тень
+          прототипа запечены в альфа-канал signature-cookie.webp: CSS-маска
+          и размытая тень внутри слоя заставляли Chrome перерастеризовывать
+          его на каждом масштабе (×0.9…×5), и печенье рисовалось кусками.
+        */}
         <div
           data-l="hero"
           style={{
-            WebkitMaskImage: "radial-gradient(closest-side, #000 62%, rgba(0,0,0,0) 100%)",
-            maskImage: "radial-gradient(closest-side, #000 62%, rgba(0,0,0,0) 100%)",
             position: "absolute",
             left: "50%",
             top: "50%",
@@ -350,19 +354,6 @@ export function KukiLukiStage({ stage: c, assets }: KukiLukiStageProps) {
             ...HIDDEN,
           }}
         >
-          <div
-            style={{
-              position: "absolute",
-              left: "14%",
-              right: "14%",
-              bottom: "4%",
-              height: "14%",
-              borderRadius: "50%",
-              background:
-                "radial-gradient(ellipse at center, rgba(40,0,14,0.55), rgba(40,0,14,0) 70%)",
-              filter: "blur(12px)",
-            }}
-          />
           <Media media={c.media.signatureCookie} assets={assets} fit="contain" />
         </div>
 
