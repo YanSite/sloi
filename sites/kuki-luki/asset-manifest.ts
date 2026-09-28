@@ -2,18 +2,18 @@ import type { AssetFile, AssetManifest, AssetManifestEntry } from "@/lib/types";
 import signatureCookie from "./assets/media/signature-cookie.webp";
 import crackMacro from "./assets/media/crack-macro.jpg";
 import interiorMacro from "./assets/media/interior-macro.jpg";
-import oreoPortrait from "./assets/media/oreo-portrait.webp";
-import oreoTexture from "./assets/media/oreo-texture.jpg";
-import oreoFilling from "./assets/media/oreo-filling.jpg";
-import oreoPackshot from "./assets/media/oreo-packshot.jpg";
+import creamPortrait from "./assets/media/cream-portrait.webp";
+import creamTexture from "./assets/media/cream-texture.jpg";
+import creamFilling from "./assets/media/cream-filling.jpg";
+import creamPackshot from "./assets/media/cream-packshot.jpg";
 import frambiniPortrait from "./assets/media/frambini-portrait.webp";
 import frambiniTexture from "./assets/media/frambini-texture.jpg";
 import frambiniFilling from "./assets/media/frambini-filling.jpg";
 import frambiniPackshot from "./assets/media/frambini-packshot.jpg";
-import kinderPortrait from "./assets/media/kinder-portrait.webp";
-import kinderTexture from "./assets/media/kinder-texture.jpg";
-import kinderFilling from "./assets/media/kinder-filling.jpg";
-import kinderPackshot from "./assets/media/kinder-packshot.jpg";
+import bambiniPortrait from "./assets/media/bambini-portrait.webp";
+import bambiniTexture from "./assets/media/bambini-texture.jpg";
+import bambiniFilling from "./assets/media/bambini-filling.jpg";
+import bambiniPackshot from "./assets/media/bambini-packshot.jpg";
 
 /**
  * Asset manifest Куки Луки. Изображения — копия
@@ -22,6 +22,12 @@ import kinderPackshot from "./assets/media/kinder-packshot.jpg";
  * размеры от сборщика). Видео скачаны с CDN Higgsfield в
  * `public/sites/kuki-luki/` (H.264, 1284×716, 5 с, петля). Компоненты
  * получают файлы только через `resolveAsset`.
+ *
+ * Чистота прав: cream-portrait, cream-filling и cream-packshot
+ * отредактированы в Higgsfield (GPT Image 2.5, 2026-09-28): надпись и
+ * эмблема чужого бренда на сэндвич-печенье заменены нейтральным узором.
+ * На frambini-filling шоколадная капля с острым кончиком (похожая на
+ * чужой объёмный знак) заменена круглой. Остальные ассеты без логотипов.
  *
  * ВАЖНО: генерация шла по текстовым описаниям, а не по фото реальных
  * печений, — перед релизом нужна пересъёмка по фото продукта.
@@ -35,14 +41,14 @@ const VIDEO_DIR = "/sites/kuki-luki";
 
 const FLAVORS = [
   {
-    id: "oreo",
-    name: "Орео",
-    desc: "Oreo-style chocolate sandwich cookie pieces, cream cheese and white chocolate frosting, one whole sandwich cookie on top",
+    id: "cream",
+    name: "Куки-н-Крим",
+    desc: "chocolate sandwich cookie pieces, cream cheese and white chocolate frosting, one whole sandwich cookie on top",
     files: {
-      portrait: oreoPortrait,
-      texture: oreoTexture,
-      filling: oreoFilling,
-      packshot: oreoPackshot,
+      portrait: creamPortrait,
+      texture: creamTexture,
+      filling: creamFilling,
+      packshot: creamPackshot,
     },
   },
   {
@@ -57,14 +63,14 @@ const FLAVORS = [
     },
   },
   {
-    id: "kinder",
-    name: "Киндер",
+    id: "bambini",
+    name: "Бамбини",
     desc: "golden shortbread with pieces of milk chocolate bar with white milky filling, milk chocolate drizzle",
     files: {
-      portrait: kinderPortrait,
-      texture: kinderTexture,
-      filling: kinderFilling,
-      packshot: kinderPackshot,
+      portrait: bambiniPortrait,
+      texture: bambiniTexture,
+      filling: bambiniFilling,
+      packshot: bambiniPackshot,
     },
   },
 ];

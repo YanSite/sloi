@@ -80,7 +80,7 @@ const PILL: CSSProperties = {
   fontWeight: 400,
   fontSize: 12,
 };
-/** Студии вкусов: Орео почти чёрная, Фрамбини малиновая, Киндер молочная. */
+/** Студии вкусов: Куки-н-Крим почти чёрная, Фрамбини малиновая, Бамбини молочная. */
 const FLAVOR_STUDIOS = [
   "radial-gradient(ellipse 60% 55% at 58% 42%, #2E2A2B 0%, #151213 55%, #070606 100%)",
   "radial-gradient(ellipse 60% 55% at 58% 42%, #B01F55 0%, #6E0C31 52%, #2E0413 100%)",
@@ -92,13 +92,13 @@ const MACRO_UNDERLAY = [
   ["#241009", "#3A0F1C"],
   ["#3A220F", "#2E1609"],
 ];
-/** Тени вырезок — на обёртке: у Киндера сам img обрезан сверху, и тень должна идти по обрезанному силуэту. */
+/** Тени вырезок — на обёртке: у Бамбини сам img обрезан сверху, и тень должна идти по обрезанному силуэту. */
 const FLAVOR_SHADOW = [
   "drop-shadow(0 3vmin 4vmin rgba(0,0,0,0.55))",
   "drop-shadow(0 3vmin 4vmin rgba(20,4,8,0.45))",
   "drop-shadow(0 3vmin 4vmin rgba(20,4,8,0.35))",
 ];
-/** Вырезка Киндера: верхние 20% кадра обрезаны (там край второго печенья). */
+/** Вырезка Бамбини: верхние 20% кадра обрезаны (там край второго печенья). */
 const FLAVOR_CLIP = [undefined, undefined, "inset(20% 0 0 0)"];
 const GRAIN_SVG =
   "url(\"data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
@@ -471,7 +471,7 @@ export function KukiLukiStage({ stage: c, assets }: KukiLukiStageProps) {
           </span>
         </div>
 
-        {/* Вырезки вкусов в порядке прототипа: Киндер снизу, Орео сверху. */}
+        {/* Вырезки вкусов в порядке прототипа: Бамбини снизу, Куки-н-Крим сверху. */}
         {[2, 1, 0].map((i) => (
           <div key={i} data-l={`p${i}`} style={PORTRAIT}>
             <div style={{ position: "absolute", inset: 0, filter: FLAVOR_SHADOW[i] }}>
@@ -517,6 +517,8 @@ export function KukiLukiStage({ stage: c, assets }: KukiLukiStageProps) {
               fontSize: "clamp(44px,5.6vw,84px)",
               lineHeight: 0.88,
               letterSpacing: "-0.05em",
+              // «Куки-н-Крим» не должен переноситься по дефису.
+              whiteSpace: "nowrap",
             }}
           >
             {flavor.title}

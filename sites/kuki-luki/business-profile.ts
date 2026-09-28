@@ -9,6 +9,9 @@ import type { BusinessProfile } from "@/lib/types";
  * попросил убрать), поэтому сцена её не показывает; отдельного поля под
  * цены в BusinessProfile нет.
  *
+ * Названия вкусов — публичные, без чужих товарных знаков; в меню
+ * заказчика они называются «Орео» и «Киндер» (см. content.ts).
+ *
  * `vertical: "restaurant"` — ближайшая вертикаль из VERTICALS; своя
  * "bakery" потребовала бы правки core.
  */
@@ -24,5 +27,5 @@ export const kukiLukiBusinessProfile: BusinessProfile = {
     open: "08:00",
     close: "00:00",
   })),
-  products: ["Орео", "Фрамбини", "Киндер"],
+  products: ["Куки-н-Крим", "Фрамбини", "Бамбини"],
 };
