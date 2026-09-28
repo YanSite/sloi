@@ -32,6 +32,16 @@ const RISE = [
   { decays: 2, factor: 1.6, add: 4, min: 10, cooldownMs: 200 },
 ] as const;
 
+/**
+ * Период событий трекпада, ms. Дельта колеса нормализуется к нему — то
+ * есть сравнивается скорость, а не размер события: события, склеенные
+ * браузером после задержки, дают большую дельту за больший интервал и не
+ * выглядят «подъёмом».
+ */
+const FRAME_MS = 16;
+/** Интервал, дальше которого нормализация не растягивается (пауза — это уже граница жеста). */
+const MAX_NORMALIZE_MS = 100;
+
 const FORWARD_KEYS = ["ArrowDown", "PageDown", " "];
 const BACKWARD_KEYS = ["ArrowUp", "PageUp"];
 
@@ -222,7 +232,12 @@ export class StageNavigator {
   attach(): () => void {
     const inp = this.input;
     const onWheel = (e: WheelEvent) => {
-      const now = performance.now();
+      // Время создания события системой, а не момент обработки. Пока
+      // страница подтормаживает на тяжёлом переходе, события инерции
+      // доставляются с задержкой, но их timeStamp идёт ровно — задержка
+      // обработки не принимается за паузу между жестами (иначе хвост
+      // одного свайпа давал второй и третий шаг).
+      const now = e.timeStamp > 0 ? e.timeStamp : performance.now();
       const gap = now - this.lastWheel;
       this.lastWheel = now;
       const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1;
@@ -230,7 +245,7 @@ export class StageNavigator {
       if (this.scrollsInside(e.target, Math.sign(dy))) return;
       e.preventDefault();
 
-      const ad = Math.abs(dy);
+      const ad = (Math.abs(dy) * FRAME_MS) / Math.min(MAX_NORMALIZE_MS, Math.max(FRAME_MS, gap));
       const la = this.lastAbs;
       this.lastAbs = ad;
       if (ad < la) this.decay++;
