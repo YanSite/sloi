@@ -1,0 +1,72 @@
+/*
+ * Глобальные правила прототипа (body/a), перенесённые на корень сцены,
+ * и его hover-состояния. Hover в прототипе применяется рантаймом как
+ * `:hover { … !important }` поверх inline-стилей — здесь то же самое.
+ * `line-height: normal` снимает `html { line-height: 1.5 }` из Tailwind
+ * preflight: в прототипе элементы без явного line-height идут с UA-дефолтом.
+ */
+.root {
+  color: var(--fs-text);
+  font-family: var(--fs-sans);
+  line-height: normal;
+  -webkit-font-smoothing: antialiased;
+}
+
+.root a {
+  color: var(--fs-link);
+  text-underline-offset: 4px;
+}
+
+.root a:hover {
+  color: var(--fs-text);
+}
+
+.hoverFill:hover {
+  background: var(--fs-accent) !important;
+}
+
+.hoverAccent:hover {
+  color: var(--fs-accent) !important;
+  border-bottom-color: var(--fs-accent) !important;
+}
+
+.hoverSolid:hover {
+  border-style: solid !important;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+/*
+ * На узком экране шапка не вмещает кикер «Магазин цветов · Город», плашку
+ * часов и CTA в одну строку — плашка переносилась и наезжала на надпись
+ * слева. Часы работы остаются в финальном кадре.
+ */
+@media (max-width: 520px) {
+  .hideNarrow {
+    display: none;
+  }
+}
+
+/*
+ * ≤460px: колонка оффера под заголовком по левому краю (поле как у
+ * заголовка) и поднята ближе к уровню глаз. -44px компенсирует padding
+ * радиальной подложки. Inline-позиция прототипа перекрывается !important.
+ */
+@media (max-width: 460px) {
+  .heroNarrow {
+    left: calc(clamp(18px, 4vw, 64px) - 44px) !important;
+    right: auto !important;
+    bottom: calc(150px - 44px) !important;
+  }
+
+  /* Ссылка «Премиум-букеты» в интро S04 на телефоне скрыта (решение владельца). */
+  .hidePhone {
+    display: none !important;
+  }
+}

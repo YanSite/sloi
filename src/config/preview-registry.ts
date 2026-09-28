@@ -5,6 +5,7 @@ import { demoSiteConfig } from "./__fixtures__/demo-site-config";
 import { abstractTestSiteConfig } from "./__fixtures__/abstract-test-site-config";
 import { floristAtelierSiteConfig } from "@sites/florist-atelier";
 import { kukiLukiSiteConfig } from "@sites/kuki-luki";
+import { estemoSiteConfig } from "@sites/estemo";
 
 export interface PreviewEntry {
   slug: string;
@@ -38,6 +39,9 @@ export interface PreviewEntry {
  *
  * `kuki-luki` — Site Instance (`sites/kuki-luki`): immersive-сайт
  * кондитерской на generic layer-stage (`@/components/wow/stage`).
+ *
+ * `estemo` — Site Instance (`sites/estemo`): прототип florist-atelier,
+ * наполненный данными магазина цветов «Эстэмó» (Москва).
  */
 export const previewRegistry: PreviewEntry[] = [
   { slug: "florist", label: "Florist — Botanical Noir", config: floristSiteConfig },
@@ -54,6 +58,7 @@ export const previewRegistry: PreviewEntry[] = [
     config: floristAtelierSiteConfig,
   },
   { slug: "kuki-luki", label: "Куки Луки — immersive (Site Instance)", config: kukiLukiSiteConfig },
+  { slug: "estemo", label: "Эстэмó — immersive (Site Instance)", config: estemoSiteConfig },
 ];
 
 export function getPreviewEntry(slug: string): PreviewEntry | undefined {
