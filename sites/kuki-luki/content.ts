@@ -6,10 +6,11 @@ import type { KukiLukiStageContent } from "./stage/content-types";
  * Копирайт Куки Луки — дословно из утверждённого прототипа. Телефон
  * берётся из business-profile.ts, чтобы номер жил в одном месте.
  *
- * Чужие товарные знаки (OREO — Mondelez, KINDER — Ferrero) на сайте не
- * используются ни в названиях, ни в составе: вкусы названы по-своему
- * («Куки-н-Крим» — от общепринятого cookies'n'cream, «Бамбини» — «дети»
- * по-итальянски, в пару к «Фрамбини»), ингредиенты описаны без брендов.
+ * ВНИМАНИЕ: «Орео» / «Киндер» и OREO / KINDER — чужие товарные знаки
+ * (Mondelez, Ferrero). Оставлены по решению заказчика для презентации;
+ * перед публичным запуском — согласовать с юристом. Безопасный вариант
+ * («Куки-н-Крим» / «Бамбини», составы без брендов) — коммит 180153f.
+ * Фото уже без логотипов.
  *
  * Цены не показываются: 390 ₽ подтверждены, но из дизайна убраны по
  * решению заказчика.
@@ -29,7 +30,7 @@ const stage: KukiLukiStageContent = {
     interior: { assetId: "interior-macro", alt: "" },
     interiorVideo: { assetId: "interior-macro-video" },
   },
-  title: { lines: ["КУКИ", "ЛУКИ"], sub: "КУКИ-Н-КРИМ · ФРАМБИНИ · БАМБИНИ" },
+  title: { lines: ["КУКИ", "ЛУКИ"], sub: "OREO · ФРАМБИНИ · KINDER" },
   meta: ["МОСКВА · БУТЫРСКАЯ, 84", "ЕЖЕДНЕВНО 08:00–00:00"],
   tagline: ["БОЛЬШИЕ.", "НАСТОЯЩИЕ.", "ОЧЕНЬ ВКУСНЫЕ."],
   hint: "ЛИСТАЙТЕ",
@@ -38,17 +39,17 @@ const stage: KukiLukiStageContent = {
   interlude: { eyebrow: "ВНУТРИ", headline: "Шоколад в каждом из трёх главных вкусов" },
   flavors: [
     {
-      title: "Куки-н-Крим",
+      title: "Орео",
       description:
-        "Шоколадное печенье, замешанное с белым шоколадом и дроблёным шоколадным сэндвич-печеньем, украшено кремом из творожного сыра с белым шоколадом и целым сэндвич-печеньем.",
-      whole: { assetId: "cream-portrait", alt: "Куки-н-Крим" },
+        "Шоколадное печенье, замешанное с белым шоколадом, дробленым печеньем орео внутри, украшено кремом из творожного сыра с белым шоколадом и оригинальным печеньем орео.",
+      whole: { assetId: "cream-portrait", alt: "Орео" },
       texture: { assetId: "cream-texture", alt: "" },
       filling: { assetId: "cream-filling", alt: "" },
-      packshot: { assetId: "cream-packshot", alt: "Печенье Куки-н-Крим" },
-      textureNote: { label: "Шоколадное тесто с дроблёным сэндвич-печеньем", x: 58, y: 42 },
+      packshot: { assetId: "cream-packshot", alt: "Печенье Орео" },
+      textureNote: { label: "Шоколадное тесто с дробленым печеньем Орео", x: 58, y: 42 },
       fillingNotes: [
         { label: "Крем из творожного сыра с белым шоколадом", x: 40, y: 42 },
-        { label: "Шоколадное сэндвич-печенье", x: 62, y: 30 },
+        { label: "Оригинальное печенье Орео", x: 62, y: 30 },
         { label: "Белый шоколад", x: 34, y: 64 },
       ],
     },
@@ -68,15 +69,15 @@ const stage: KukiLukiStageContent = {
       ],
     },
     {
-      title: "Бамбини",
-      description: "Песочное печенье, замешанное с молочным шоколадом с молочной начинкой.",
-      whole: { assetId: "bambini-portrait", alt: "Бамбини" },
+      title: "Киндер",
+      description: "Песочное печенье, замешанное с шоколадом Киндер.",
+      whole: { assetId: "bambini-portrait", alt: "Киндер" },
       texture: { assetId: "bambini-texture", alt: "" },
       filling: { assetId: "bambini-filling", alt: "" },
-      packshot: { assetId: "bambini-packshot", alt: "Печенье Бамбини" },
-      textureNote: { label: "Песочное тесто с молочным шоколадом", x: 56, y: 44 },
+      packshot: { assetId: "bambini-packshot", alt: "Печенье Киндер" },
+      textureNote: { label: "Песочное тесто с шоколадом Киндер", x: 56, y: 44 },
       fillingNotes: [
-        { label: "Шоколад с молочной начинкой", x: 42, y: 38 },
+        { label: "Шоколад Киндер", x: 42, y: 38 },
         { label: "Молочный шоколад", x: 64, y: 54 },
         { label: "Белый шоколад", x: 34, y: 64 },
       ],

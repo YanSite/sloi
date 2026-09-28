@@ -15,7 +15,7 @@ export const kukiLukiExperience: Template = {
       enabled: true,
       variant: "kuki-luki",
       notes:
-        "S01 Crave → S02 Внутри → S04 Куки-н-Крим / Фрамбини / Бамбини × 3 кадра → S05 Меню → S06 Visit / Order",
+        "S01 Crave → S02 Внутри → S04 Орео / Фрамбини / Киндер × 3 кадра → S05 Меню → S06 Visit / Order",
     },
   ],
 };
