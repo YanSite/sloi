@@ -1,0 +1,10 @@
+{
+  "name": "ecp-qa",
+  "private": true,
+  "description": "Проверки сайта «Есть что показать»: щели у краёв кадра, эталонные снимки",
+  "scripts": {
+    "gaps": "node gapcheck.js 1440x900,1280x720,1920x1080,390x844,375x667,430x932 ../../reference/prototype/index.html && python3 gapcheck.py",
+    "screens": "node screens.js ../../reference/prototype/index.html ../../tmp/screens"
+  },
+  "devDependencies": { "playwright": "^1.47.0" }
+}

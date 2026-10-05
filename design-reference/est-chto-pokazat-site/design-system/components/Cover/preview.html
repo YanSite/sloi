@@ -1,0 +1,48 @@
+<!-- @dsCard height=288 -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Обложка</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600&display=swap">
+<style>
+  html, body { margin: 0; background: var(--bg); }
+  .cv { position: relative; width: 960px; height: 288px; overflow: hidden; background: var(--bg); font-family: var(--font-sans); }
+  .cv svg { position: absolute; left: 0; top: 0; }
+  .deep { fill: var(--depth-blue); }
+  .violet { fill: var(--depth-violet); }
+  .signal { fill: var(--signal-blue); }
+  .raised { fill: var(--bg-raised); }
+  .grid { stroke: var(--line-grid); stroke-width: 1; }
+  .persp { stroke: var(--signal-blue-light); stroke-width: 1; opacity: 0.7; }
+  .cv__text { position: absolute; left: 40px; bottom: 36px; width: 420px; }
+  .cv__name { margin: 0; font-size: 84px; line-height: 0.95; font-weight: 300; letter-spacing: -0.035em; color: var(--ink); }
+  .cv__tag { margin: 16px 0 0 0; font-size: 14px; line-height: 20px; color: var(--ink-subtle); }
+</style>
+</head>
+<body>
+<div class="cv">
+  <svg width="960" height="288" viewBox="0 0 960 288" aria-hidden="true">
+    <!--
+      blocks: depth-blue slab 352×288 (x 608–960, bleeds top/bottom/right); depth-violet 192×96 (x 768–960, y 192–288); signal-blue 64×8 band (x 544–608, y 48); bg-raised 64×240 (x 544–608, y 48–288). radius-0 everywhere.
+      arrangement: one tall slab bleeding off the right with satellites stepping down to the left — the quiet graphite ground gives way to depth, as at the turn.
+      pattern: "a literal motif → built from the system's own lines": 5 grid verticals (line-grid) on the ground, and 5 perspective lines (signal-blue-light) converging into the slab — the grid unfolding into space, which is this brand's turn.
+      steps: band and column width 64 = space-8, rules pitch 32 = space-6, offset 48 = space-7; radius-0.
+    -->
+    <line class="grid" x1="496" y1="0" x2="496" y2="288"></line>
+    <line class="grid" x1="520" y1="0" x2="520" y2="288"></line>
+    <rect class="raised" x="544" y="48" width="64" height="240"></rect>
+    <rect class="signal" x="544" y="48" width="64" height="8"></rect>
+    <rect class="deep" x="608" y="0" width="352" height="288"></rect>
+    <rect class="violet" x="768" y="192" width="192" height="96"></rect>
+    <line class="persp" x1="608" y1="0" x2="816" y2="168"></line>
+    <line class="persp" x1="704" y1="0" x2="816" y2="168"></line>
+    <line class="persp" x1="928" y1="0" x2="816" y2="168"></line>
+    <line class="persp" x1="608" y1="288" x2="816" y2="168"></line>
+    <line class="persp" x1="960" y1="240" x2="816" y2="168"></line>
+  </svg>
+  <div class="cv__text">
+    <p class="cv__name">Есть что показать</p>
+    <p class="cv__tag">Делаем видимым то, что у вас уже есть</p>
+  </div>
+</div>
+</body>
+</html>

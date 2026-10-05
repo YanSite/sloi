@@ -1,0 +1,94 @@
+/* Есть что показать — токены «Точность» (как в прототипе v31).
+   Тихий мир (01–03, форма) — графит. Второй акт (05–07) — тёплый свет вечернего города.
+   Синий «проявленный» мир из исходной дизайн-системы остался только в моменте чертежа на повороте (04). */
+
+@font-face { font-family: "Geologica"; src: url("/fonts/Geologica-Light.woff2") format("woff2"); font-weight: 300; font-display: swap; }
+@font-face { font-family: "Geologica"; src: url("/fonts/Geologica-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Geologica"; src: url("/fonts/Geologica-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Geologica"; src: url("/fonts/Geologica-SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+/* Cormorant Garamond 400/500/600 + italic 400/500 — только внутри макетов сайтов в телефоне */
+
+:root {
+  /* Тихий мир */
+  --bg: #111214;
+  --bg-raised: #17181B;
+  --line: #2A2D33;
+  --ink: #F4F5F7;
+  --ink-muted: #A4A8B0;
+  --ink-subtle: #8A8E97;
+  --ink-faint: #7C808A;
+  --accent: #4F7BFF;          /* одна отметка на экран: подчёркивание слова, номер активного шага */
+  --control-border: #6C7079;
+  --focus: #8FA8FF;
+  --error: #FF8A66;
+  --inverse-bg: #F4F5F7;
+  --inverse-bg-hover: #DCDEE3;
+  --inverse-ink: #111214;
+
+  /* Второй акт (после поворота) — тёплый */
+  --r-bg-raised: #1E1915;
+  --r-line: rgba(255, 236, 214, 0.2);
+  --r-ink-muted: #DCD3C8;
+  --r-ink-subtle: #B9AD9F;
+  --r-ink-faint: #9C9083;
+  --r-accent: #F2C27D;        /* тёплый свет */
+  --r-inverse-bg: #F5EEE4;
+  --r-inverse-bg-hover: #E8DDCF;
+  --r-inverse-ink: #17130F;
+
+  /* Чертёж на повороте (единственное место синего «проявленного» мира) */
+  --bp-line: #CFDAFF;
+  --bp-glow: rgba(143, 168, 255, 0.7);
+  --bp-tint: #0B1A55;
+
+  /* Тёплые огни / свечение карточки */
+  --glow-warm: rgba(242, 150, 60, 0.35);
+  --glow-warm-line: rgba(242, 183, 102, 0.5);
+
+  /* Типографика */
+  --font: Geologica, "Helvetica Neue", Arial, sans-serif;
+  --font-serif-mock: "Cormorant Garamond", Georgia, serif;
+  --st: clamp(30px, 5.1vh, 44px);          /* высказывание (statement) */
+  --h2: clamp(26px, 3.9vh, 32px);
+  --h3: 20px;  --h3-lh: 26px;
+  --body: 15px; --body-lh: 22px;
+  --small: 14px; --small-lh: 20px;
+  --cap: 11px;                              /* капитель-метки: 500, uppercase, letter-spacing 0.12em */
+
+  /* Сетка и отступы */
+  --gutter: 24px;
+  --col-gap: 16px;
+  --max: 1200px;
+  --pad-top: 120px;  --pad-bottom: 84px;   /* .screen > .wrap */
+  --radius: 2px;                            /* кнопки, поля; карточки в телефоне — свои радиусы */
+
+  /* Движение */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --ease-turn: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-dive: cubic-bezier(0.55, 0, 0.75, 0.3);
+  --ease-thru: cubic-bezier(0.6, 0, 0.85, 0.35);
+}
+
+@media (min-width: 900px) {
+  :root {
+    --gutter: 48px;
+    --col-gap: 24px;
+    --st: clamp(48px, 7.4vh, 72px);
+    --h2: clamp(36px, 5.2vh, 48px);
+    --h3: 24px; --h3-lh: 30px;
+    --pad-top: 140px; --pad-bottom: 96px;
+  }
+}
+
+/* Экраны второго акта получают тёплые значения */
+.warm {
+  --line: var(--r-line);
+  --ink-muted: var(--r-ink-muted);
+  --ink-subtle: var(--r-ink-subtle);
+  --ink-faint: var(--r-ink-faint);
+  --accent: var(--r-accent);
+  --inverse-bg: var(--r-inverse-bg);
+  --inverse-bg-hover: var(--r-inverse-bg-hover);
+  --inverse-ink: var(--r-inverse-ink);
+}

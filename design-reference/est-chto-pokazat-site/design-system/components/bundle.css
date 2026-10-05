@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600&display=swap');
+
+/* Есть что показать — «Точность». Базовые компоненты. Префикс ecp-. */
+
+.ecp-root, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 22px;
+  -webkit-font-smoothing: antialiased;
+}
+.ecp-root *, .ecp-root *::before, .ecp-root *::after { box-sizing: border-box; }
+
+/* ---------- Метка, индекс ---------- */
+.ecp-caption {
+  font-size: 11px; line-height: 14px; font-weight: 500;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink-subtle);
+}
+.ecp-index { font-size: 11px; line-height: 14px; font-weight: 500; letter-spacing: 0.12em; color: var(--ink-faint); }
+
+/* ---------- Отметка внимания ---------- */
+.ecp-mark {
+  display: inline-block;
+  padding-bottom: 4px;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 1px;
+  transition: background-size var(--duration-base) var(--ease-precise) 240ms;
+}
+.ecp-mark--pending { background-size: 0 1px; }
+
+/* ---------- Знак ---------- */
+.ecp-logo {
+  display: inline-flex; align-items: stretch; gap: 10px;
+  color: var(--ink); text-decoration: none;
+}
+.ecp-logo__rule { width: 1px; background: currentColor; }
+.ecp-logo--revealed .ecp-logo__rule { background: var(--accent); }
+.ecp-logo__word {
+  font-size: 12px; line-height: 13.5px; font-weight: 600;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.ecp-logo--inline .ecp-logo__word br { display: none; }
+.ecp-logo--inline .ecp-logo__word { line-height: 14px; }
+
+/* ---------- Кнопка ---------- */
+.ecp-btn {
+  display: inline-flex; align-items: center; justify-content: space-between; gap: 16px;
+  min-height: 56px; padding: 0 20px;
+  border: var(--border-hairline) solid transparent; border-radius: var(--radius-1);
+  font-family: var(--font-sans); font-size: 15px; line-height: 20px; font-weight: 500;
+  text-decoration: none; cursor: pointer;
+  transition: background-color var(--duration-instant) var(--ease-precise),
+              border-color var(--duration-instant) var(--ease-precise),
+              color var(--duration-instant) var(--ease-precise);
+}
+.ecp-btn svg { flex: none; transition: transform var(--duration-short) var(--ease-precise); }
+.ecp-btn:hover svg { transform: translateX(4px); }
+.ecp-btn:focus-visible { outline: var(--border-focus) solid var(--focus); outline-offset: 2px; }
+.ecp-btn--primary { background: var(--inverse-bg); color: var(--inverse-ink); }
+.ecp-btn--primary:hover, .ecp-btn--primary:active { background: var(--inverse-bg-hover); }
+.ecp-btn--secondary { background: transparent; color: var(--ink); border-color: var(--control-border); }
+.ecp-btn--secondary:hover { border-color: var(--ink); }
+.ecp-btn--text { min-height: 44px; padding: 0; color: var(--ink); justify-content: flex-start; }
+.ecp-btn--text span { border-bottom: var(--border-hairline) solid var(--line); padding-bottom: 2px; }
+.ecp-btn--text:hover span { border-bottom-color: var(--accent); }
+.ecp-btn--block { display: flex; width: 100%; }
+.ecp-btn[disabled], .ecp-btn[aria-disabled="true"] { cursor: default; background: transparent; color: var(--ink-faint); border-color: var(--line); }
+.ecp-btn[disabled] svg { transform: none; }
+
+/* ---------- Навигация ---------- */
+.ecp-nav {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 22px 24px 0 24px;
+}
+.ecp-nav__toggle {
+  width: 44px; height: 44px; margin: -6px -10px 0 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: none; border: 0; color: var(--ink); cursor: pointer; border-radius: var(--radius-1);
+}
+.ecp-nav__toggle svg { transition: transform var(--duration-short) var(--ease-precise); }
+.ecp-nav__toggle[aria-expanded="true"] svg { transform: rotate(45deg); }
+.ecp-nav__toggle:focus-visible { outline: var(--border-focus) solid var(--focus); outline-offset: 2px; }
+.ecp-nav__links { display: none; gap: 32px; list-style: none; margin: 0; padding: 0; }
+.ecp-menu {
+  list-style: none; margin: 0; padding: 0 24px;
+  background: var(--bg-raised);
+}
+.ecp-menu li { border-top: var(--border-hairline) solid var(--line); }
+.ecp-menu li:last-child { border-bottom: var(--border-hairline) solid var(--line); }
+.ecp-menu a {
+  display: grid; grid-template-columns: 56px minmax(0, 1fr); align-items: baseline;
+  min-height: 64px; padding: 20px 0;
+  color: var(--ink); text-decoration: none;
+  font-size: 20px; line-height: 26px; font-weight: 400; letter-spacing: -0.02em;
+}
+.ecp-menu a .ecp-index { color: var(--ink-subtle); }
+.ecp-menu a:hover .ecp-index, .ecp-menu a[aria-current="true"] .ecp-index { color: var(--accent); }
+.ecp-menu a:focus-visible { outline: var(--border-focus) solid var(--focus); outline-offset: -2px; }
+.ecp-navlink { color: var(--ink); text-decoration: none; font-size: 14px; line-height: 20px; padding: 12px 0; border-bottom: var(--border-hairline) solid transparent; }
+.ecp-navlink:hover { border-bottom-color: var(--accent); }
+@media (min-width: 900px) {
+  .ecp-nav { padding: 28px 48px 0 48px; align-items: center; }
+  .ecp-nav__links { display: flex; }
+  .ecp-nav__toggle { display: none; }
+}
+
+/* ---------- Поле формы ---------- */
+.ecp-field { display: flex; flex-direction: column; gap: 8px; }
+.ecp-field__label { font-size: 11px; line-height: 14px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+.ecp-field__optional { color: var(--ink-subtle); letter-spacing: 0.04em; text-transform: none; font-weight: 400; }
+.ecp-field__input {
+  width: 100%; min-height: 52px; padding: 14px 16px;
+  background: transparent; color: var(--ink);
+  border: var(--border-hairline) solid var(--control-border); border-radius: var(--radius-1);
+  font-family: var(--font-sans); font-size: 16px; line-height: 22px;
+  transition: border-color var(--duration-instant) var(--ease-precise);
+}
+.ecp-field__input::placeholder { color: var(--ink-faint); }
+.ecp-field__input:hover { border-color: var(--ink-subtle); }
+.ecp-field__input:focus { outline: var(--border-focus) solid var(--focus); outline-offset: 2px; border-color: var(--ink); }
+textarea.ecp-field__input { min-height: 112px; resize: vertical; }
+.ecp-field__hint { font-size: 14px; line-height: 20px; color: var(--ink-subtle); }
+.ecp-field__error { display: none; font-size: 14px; line-height: 20px; color: var(--error); }
+.ecp-field--error .ecp-field__input { border-color: var(--error); }
+.ecp-field--error .ecp-field__error { display: block; }
+
+.ecp-choice { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: var(--border-hairline) solid var(--control-border); border-radius: var(--radius-1); }
+.ecp-choice label { position: relative; display: flex; align-items: center; justify-content: center; min-height: 48px; font-size: 14px; color: var(--ink-muted); cursor: pointer; border-left: var(--border-hairline) solid var(--control-border); }
+.ecp-choice label:first-child { border-left: 0; }
+.ecp-choice input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+.ecp-choice label:has(input:checked) { background: var(--bg-raised); color: var(--ink); box-shadow: inset 0 -1px 0 var(--accent); }
+.ecp-choice label:has(input:focus-visible) { outline: var(--border-focus) solid var(--focus); outline-offset: 2px; z-index: 1; }
+
+.ecp-check { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 12px; align-items: start; font-size: 14px; line-height: 20px; color: var(--ink-muted); cursor: pointer; }
+.ecp-check input {
+  appearance: none; -webkit-appearance: none; margin: 0; width: 20px; height: 20px;
+  border: var(--border-hairline) solid var(--control-border); border-radius: var(--radius-1);
+  display: grid; place-items: center; cursor: pointer; background: transparent;
+}
+.ecp-check input::after { content: ""; width: 8px; height: 8px; border-radius: var(--radius-full); background: var(--accent); transform: scale(0); transition: transform var(--duration-instant) var(--ease-precise); }
+.ecp-check input:checked { border-color: var(--ink); }
+.ecp-check input:checked::after { transform: scale(1); }
+.ecp-check input:focus-visible { outline: var(--border-focus) solid var(--focus); outline-offset: 2px; }
+.ecp-check a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+
+/* ---------- Карточка кейса ---------- */
+.ecp-case { display: flex; flex-direction: column; border-top: var(--border-hairline) solid var(--line); color: var(--ink); text-decoration: none; }
+.ecp-case__meta { display: flex; justify-content: space-between; padding: 12px 0 16px 0; }
+.ecp-case__media {
+  position: relative; aspect-ratio: 4 / 5; overflow: hidden;
+  background: var(--bg-raised); border-radius: var(--radius-0);
+  display: flex; align-items: center; justify-content: center;
+}
+.ecp-case__media img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--duration-base) var(--ease-precise); }
+.ecp-case:hover .ecp-case__media img { transform: scale(1.02); }
+.ecp-case__placeholder { font-size: 13px; color: var(--ink-subtle); }
+.ecp-case__title { margin: 20px 0 0 0; font-size: 20px; line-height: 26px; font-weight: 400; letter-spacing: -0.02em; }
+.ecp-case__story { list-style: none; margin: 16px 0 0 0; padding: 0; display: flex; flex-direction: column; }
+.ecp-case__story li { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 0; padding: 12px 0; border-top: var(--border-hairline) solid var(--line); }
+.ecp-case__story .ecp-caption { padding-top: 3px; }
+.ecp-case__story p { margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted); }
+.ecp-case__more { display: inline-flex; align-items: center; gap: 12px; margin-top: 16px; min-height: 44px; font-size: 15px; font-weight: 500; color: var(--ink); }
+.ecp-case__more span { border-bottom: var(--border-hairline) solid var(--line); padding-bottom: 2px; }
+.ecp-case:hover .ecp-case__more span { border-bottom-color: var(--accent); }
+.ecp-case:focus-visible { outline: var(--border-focus) solid var(--focus); outline-offset: 4px; }
+
+/* ---------- Уменьшение движения ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ecp-root *, .ecp-root *::before, .ecp-root *::after { transition-duration: 1ms !important; animation-duration: 1ms !important; }
+  .ecp-btn:hover svg, .ecp-case:hover .ecp-case__media img { transform: none; }
+}

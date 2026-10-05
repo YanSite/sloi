@@ -1,0 +1,41 @@
+<!-- @dsCard group="Форма" height=860 width=390 subtitle="Поле · ошибка · текст · канал связи · согласие" -->
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><title>Поле формы — превью</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600&display=swap">
+</head>
+<body class="ecp-root">
+<form style="width: 390px; padding: 24px; display: flex; flex-direction: column; gap: 24px" onsubmit="return false">
+  <div class="ecp-field">
+    <label class="ecp-field__label" for="f-name">Как к вам обращаться</label>
+    <input class="ecp-field__input" id="f-name" name="name" type="text" autocomplete="name" value="Анна">
+  </div>
+  <div class="ecp-field ecp-field--error">
+    <label class="ecp-field__label" for="f-biz">Ваш бизнес и ссылка</label>
+    <input class="ecp-field__input" id="f-biz" name="business" type="text" placeholder="Название, сайт или соцсети" aria-describedby="f-biz-err" aria-invalid="true">
+    <div class="ecp-field__error" id="f-biz-err">Напишите название или ссылку — так мы сможем посмотреть на ваш бизнес.</div>
+  </div>
+  <div class="ecp-field">
+    <label class="ecp-field__label" for="f-q">Что хотите обсудить <span class="ecp-field__optional">— необязательно</span></label>
+    <textarea class="ecp-field__input" id="f-q" name="question" aria-describedby="f-q-hint"></textarea>
+    <div class="ecp-field__hint" id="f-q-hint">Пара слов о бизнесе или о том, что сейчас происходит: открытие, переезд, новый продукт.</div>
+  </div>
+  <fieldset class="ecp-field" style="border: 0; margin: 0; padding: 0">
+    <legend class="ecp-field__label" style="padding: 0; margin-bottom: 8px">Где удобнее ответить</legend>
+    <div class="ecp-choice">
+      <label><input type="radio" name="channel" value="telegram" checked>Telegram</label>
+      <label><input type="radio" name="channel" value="email">Почта</label>
+      <label><input type="radio" name="channel" value="phone">Телефон</label>
+    </div>
+  </fieldset>
+  <div class="ecp-field">
+    <label class="ecp-field__label" for="f-contact">Ваш Telegram</label>
+    <input class="ecp-field__input" id="f-contact" name="contact" type="text" placeholder="@username">
+  </div>
+  <label class="ecp-check">
+    <input type="checkbox" name="consent">
+    <span>Соглашаюсь на обработку персональных данных и с <a href="#privacy">политикой конфиденциальности</a></span>
+  </label>
+</form>
+</body>
+</html>
