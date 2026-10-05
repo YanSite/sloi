@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useRef,
   useSyncExternalStore,
   type ReactNode,
 } from "react";
@@ -65,4 +66,83 @@ export function useMotionCapability(): MotionCapability {
     enabled: siteEnabled && !reducedMotion,
     simplify: coarsePointer,
   };
+}
+
+/**
+ * DEVICE TIER — нужна ли облегчённая версия тяжёлых сцен: слабое
+ * устройство или медленная сеть. Смысл сцены сохраняется, уходят только
+ * дорогие эффекты; что именно облегчить — решает сайт.
+ *
+ * Сигналы (все — подсказки браузера, где они есть; Safari их не отдаёт,
+ * и там `lite` остаётся false): режим экономии трафика, сеть 2g/3g,
+ * `deviceMemory` и `hardwareConcurrency` не выше порогов.
+ */
+export interface DeviceTier {
+  lite: boolean;
+  /** Какие сигналы сработали — для отладки и QA. */
+  reasons: string[];
+}
+
+export interface DeviceTierThresholds {
+  /** Память устройства, ГБ, при которой и ниже — облегчённая версия. */
+  maxMemoryGb?: number;
+  /** Число логических ядер, при котором и ниже — облегчённая версия. */
+  maxCores?: number;
+  /** `effectiveType` сети, считающиеся медленными. */
+  slowNetworks?: string[];
+}
+
+const DEFAULT_TIER: Required<DeviceTierThresholds> = {
+  maxMemoryGb: 2,
+  maxCores: 2,
+  slowNetworks: ["slow-2g", "2g", "3g"],
+};
+
+interface NetworkInformationLike extends EventTarget {
+  saveData?: boolean;
+  effectiveType?: string;
+}
+
+function connection(): NetworkInformationLike | undefined {
+  return (navigator as Navigator & { connection?: NetworkInformationLike }).connection;
+}
+
+/** Уровень устройства прямо сейчас (только в браузере). */
+export function getDeviceTier(thresholds: DeviceTierThresholds = {}): DeviceTier {
+  const t = { ...DEFAULT_TIER, ...thresholds };
+  const reasons: string[] = [];
+  const net = connection();
+  if (net?.saveData) reasons.push("save-data");
+  if (net?.effectiveType && t.slowNetworks.includes(net.effectiveType))
+    reasons.push(`network-${net.effectiveType}`);
+  const memory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory;
+  if (memory !== undefined && memory <= t.maxMemoryGb) reasons.push(`memory-${memory}`);
+  const cores = navigator.hardwareConcurrency;
+  if (cores && cores <= t.maxCores) reasons.push(`cores-${cores}`);
+  return { lite: reasons.length > 0, reasons };
+}
+
+const SERVER_TIER: DeviceTier = { lite: false, reasons: [] };
+
+/**
+ * Хук над `getDeviceTier`: на сервере и до гидратации — не облегчённая
+ * версия; при смене сети (`connection.change`) пересчитывается.
+ */
+export function useDeviceTier(thresholds?: DeviceTierThresholds): DeviceTier {
+  const key = JSON.stringify(thresholds ?? {});
+  const cache = useRef<{ key: string; value: DeviceTier } | null>(null);
+  const subscribe = useCallback((callback: () => void) => {
+    const net = connection();
+    net?.addEventListener("change", callback);
+    return () => net?.removeEventListener("change", callback);
+  }, []);
+  const getSnapshot = useCallback(() => {
+    const next = getDeviceTier(JSON.parse(key) as DeviceTierThresholds);
+    const prev = cache.current;
+    if (prev && prev.key === key && prev.value.reasons.join() === next.reasons.join())
+      return prev.value;
+    cache.current = { key, value: next };
+    return next;
+  }, [key]);
+  return useSyncExternalStore(subscribe, getSnapshot, () => SERVER_TIER);
 }
