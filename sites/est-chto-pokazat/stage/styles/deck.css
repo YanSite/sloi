@@ -1309,3 +1309,18 @@ html:has(.ecp) body {
   transition: opacity 200ms linear !important;
   transform: none !important;
 }
+
+/*
+ * Лёгкая первая отрисовка (`.cold` до первого простоя, см. deck.ts):
+ * невидимые на 01 слои не участвуют в стилях и раскладке.
+ */
+.ecp.cold .screen:not(.s1),
+.ecp.cold .c3d,
+.ecp.cold .reveal,
+.ecp.cold .product,
+.ecp.cold .acts,
+.ecp.cold .mac,
+.ecp.cold .sheet,
+.ecp.cold .menu {
+  display: none;
+}

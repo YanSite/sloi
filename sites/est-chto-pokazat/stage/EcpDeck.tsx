@@ -82,7 +82,7 @@ export function EcpDeck({ stage, media }: EcpDeckProps) {
   }, [lite]);
 
   return (
-    <div ref={rootRef} className="ecp hint-on" data-film="hand" style={filmVars(media)}>
+    <div ref={rootRef} className="ecp hint-on cold" data-film="hand" style={filmVars(media)}>
       <noscript>
         <style>{NO_JS_CSS}</style>
       </noscript>

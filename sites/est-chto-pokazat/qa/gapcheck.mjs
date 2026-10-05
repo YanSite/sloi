@@ -13,13 +13,23 @@ const OUT = process.env.GC_DIR || "tmp/gc";
 const touch = (w) => w < 900;
 mkdirSync(OUT, { recursive: true });
 
+// Режим: GC_MODE=rm — prefers-reduced-motion; GC_MODE=lite — облегчённая версия (2 ядра, как слабое устройство).
+const MODE = process.env.GC_MODE || "";
 const b = await chromium.launch();
+const prepare = async (p) => {
+  if (MODE === "rm") await p.emulateMedia({ reducedMotion: "reduce" });
+  if (MODE === "lite")
+    await p.addInitScript(() =>
+      Object.defineProperty(navigator, "hardwareConcurrency", { get: () => 2 }),
+    );
+};
 for (const [w, h] of sizes) {
   const p = await b.newPage({
     viewport: { width: w, height: h },
     hasTouch: touch(w),
     isMobile: touch(w),
   });
+  await prepare(p);
   await p.goto(url, { waitUntil: "networkidle" });
   const snap = async (n) => {
     await p.waitForTimeout(500);

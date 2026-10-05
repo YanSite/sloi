@@ -20,7 +20,16 @@ const SCREENS = [
   ["07-form-sheet", "sheet", 1200],
 ];
 
+// Режим: GC_MODE=rm — prefers-reduced-motion; GC_MODE=lite — облегчённая версия (2 ядра, как слабое устройство).
+const MODE = process.env.GC_MODE || "";
 const b = await chromium.launch();
+const prepare = async (p) => {
+  if (MODE === "rm") await p.emulateMedia({ reducedMotion: "reduce" });
+  if (MODE === "lite")
+    await p.addInitScript(() =>
+      Object.defineProperty(navigator, "hardwareConcurrency", { get: () => 2 }),
+    );
+};
 for (const [w, h, dpr, tag] of [
   [390, 844, 2, "mobile"],
   [1440, 900, 1, "desktop"],
@@ -32,6 +41,7 @@ for (const [w, h, dpr, tag] of [
     hasTouch: mobile,
     isMobile: mobile,
   });
+  await prepare(p);
   await p.goto(url, { waitUntil: "networkidle" });
   for (const [name, step, wait] of SCREENS) {
     if (step === "step") await p.keyboard.press("ArrowDown");

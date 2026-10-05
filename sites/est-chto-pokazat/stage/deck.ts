@@ -1,4 +1,5 @@
 import { StageNavigator } from "@/components/wow/motion";
+import { whenIdle } from "@/lib/assets";
 import type { EcpStageContent, ScreenIndex } from "./content-types";
 import { bindLeadForm, focusFirstField } from "./form/form";
 
@@ -129,8 +130,10 @@ export class DeckController {
   attach(): () => void {
     this.root.classList.toggle("rm", this.reduced);
     this.cleanups.push(this.nav.attach());
+    this.cleanups.push(whenIdle(() => this.warm()));
 
     this.on(this.root, "click", (e) => {
+      this.warm();
       const t = e.target instanceof Element ? e.target : null;
       const go = t?.closest<HTMLElement>("[data-go]");
       if (go) {
@@ -197,8 +200,21 @@ export class DeckController {
     this.sceneFor(this.cur);
   }
 
+  /**
+   * Первая отрисовка лёгкая: пока на корне `.cold`, невидимые слои (поле
+   * карточек, поворот, второй акт, экраны 02–07) — `display: none` и не
+   * участвуют в стилях и раскладке. Включаются в простое после загрузки
+   * или сразу при первом действии посетителя — в том же скрытом состоянии.
+   */
+  private warm(): void {
+    if (!this.root.classList.contains("cold")) return;
+    this.root.classList.remove("cold");
+    this.film?.layout?.();
+  }
+
   /** Шаг от пользователя до навигации: true — поглощён. */
   private intercept(dir: number): boolean {
+    this.warm();
     if (this.skipIntro && dir > 0) {
       this.skipIntro();
       this.lock(LOCK_SKIP_MS);
@@ -228,6 +244,7 @@ export class DeckController {
   }
 
   private goTo(i: number, dirNum: number): void {
+    this.warm();
     const dir = dirNum > 0 ? "next" : "prev";
     const from = this.screens[this.cur];
     const to = this.screens[i];
