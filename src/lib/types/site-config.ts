@@ -35,4 +35,19 @@ export interface SiteConfig {
    * переопределить нельзя: совпадение слага — ошибка валидации.
    */
   sectionVariants?: SiteSectionVariants;
+  /**
+   * Мета страницы: `<title>`, описание и превью ссылки в мессенджерах.
+   * Без неё страница получает мету корневого layout.
+   */
+  meta?: SiteMeta;
+}
+
+/** Мета страницы сайта и превью ссылки (Open Graph). */
+export interface SiteMeta {
+  title: string;
+  description?: string;
+  /** Картинка превью ссылки; без неё превью — только заголовок и описание. */
+  ogImage?: { url: string; width: number; height: number; alt: string };
+  /** Локаль Open Graph, например "ru_RU". */
+  locale?: string;
 }

@@ -58,6 +58,25 @@ export interface StageNavigatorOptions {
   scrollable?: { element: () => HTMLElement | null; atBeatP: number };
   /** Вызывается при смене активного варианта (для перерисовки контента). */
   onVariantChange?: (variant: number) => void;
+  /**
+   * Режим колоды: переход к биту мгновенный (без tween прогресса) — сайт
+   * сам анимирует экраны по `onBeatChange`. Распознавание жестов прежнее.
+   */
+  discrete?: boolean;
+  /**
+   * Перехват шага от пользователя (колесо / свайп / клавиши и шаг из
+   * очереди) до навигации: вернул true — шаг поглощён. Так сайт делает
+   * шаги внутри экрана (сменить состояние кадра, пропустить вступление)
+   * и собственную блокировку после перехода. `go()` не перехватывается.
+   */
+  intercept?: (dir: number) => boolean;
+  /**
+   * Пока возвращает true, навигатор не трогает ввод: не гасит прокрутку
+   * и не шагает (открыта форма или меню со своим скроллом и полями).
+   */
+  paused?: () => boolean;
+  /** Смена активного бита: новый индекс и направление (1 / −1). */
+  onBeatChange?: (beat: number, dir: number) => void;
 }
 
 /** Состояние кадра, которое навигатор отдаёт рантайму сцены. */
@@ -125,6 +144,7 @@ export class StageNavigator {
 
   /** Шаг на один бит вперёд (1) или назад (−1); во время dip/slide — в очередь. */
   step(dir: number): void {
+    if (this.opts.intercept?.(dir)) return;
     if (this.dip || this.slide) {
       this.queued = dir;
       return;
@@ -141,7 +161,17 @@ export class StageNavigator {
     const dir = Math.sign(index - this.beat) || 1;
     const base = this.opts.baseDurationMs;
     const now = performance.now();
+    const changed = index !== this.beat;
     this.beat = index;
+
+    if (this.opts.discrete) {
+      this.tween = null;
+      if (target.variant != null) this.setVariant(target.variant);
+      this.p = target.p;
+      if (changed) this.opts.onBeatChange?.(index, dir);
+      return;
+    }
+    if (changed) this.opts.onBeatChange?.(index, dir);
 
     for (const rule of this.opts.transitions) {
       if (
@@ -231,7 +261,9 @@ export class StageNavigator {
    */
   attach(): () => void {
     const inp = this.input;
+    const paused = () => this.opts.paused?.() ?? false;
     const onWheel = (e: WheelEvent) => {
+      if (paused()) return;
       // Время создания события системой, а не момент обработки. Пока
       // страница подтормаживает на тяжёлом переходе, события инерции
       // доставляются с задержкой, но их timeStamp идёт ровно — задержка
@@ -275,10 +307,11 @@ export class StageNavigator {
       }
     };
     const onTouchStart = (e: TouchEvent) => {
-      this.touch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      this.touch = paused() ? null : { x: e.touches[0].clientX, y: e.touches[0].clientY };
     };
     const onTouchMove = (e: TouchEvent) => {
-      const dy = (this.touch?.y ?? 0) - e.touches[0].clientY;
+      if (!this.touch) return;
+      const dy = this.touch.y - e.touches[0].clientY;
       if (!this.scrollsInside(e.target, Math.sign(dy))) e.preventDefault();
     };
     const onTouchEnd = (e: TouchEvent) => {
@@ -292,6 +325,7 @@ export class StageNavigator {
         this.step(Math.sign(dy));
     };
     const onKey = (e: KeyboardEvent) => {
+      if (paused()) return;
       if (FORWARD_KEYS.includes(e.key)) {
         e.preventDefault();
         this.step(1);

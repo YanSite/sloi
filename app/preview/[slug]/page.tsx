@@ -1,9 +1,31 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PageRenderer } from "@/lib/render";
 import { getPreviewEntry, previewRegistry } from "@/config/preview-registry";
 
 export function generateStaticParams() {
   return previewRegistry.map((entry) => ({ slug: entry.slug }));
+}
+
+// Мета страницы из SiteConfig.meta: заголовок, описание, превью ссылки.
+// Без неё — мета корневого layout.
+export async function generateMetadata({
+  params,
+}: PageProps<"/preview/[slug]">): Promise<Metadata> {
+  const { slug } = await params;
+  const meta = getPreviewEntry(slug)?.config.meta;
+  if (!meta) return {};
+  return {
+    title: meta.title,
+    description: meta.description,
+    openGraph: {
+      type: "website",
+      title: meta.title,
+      description: meta.description,
+      locale: meta.locale,
+      images: meta.ogImage && [meta.ogImage],
+    },
+  };
 }
 
 // Рендерит любой зарегистрированный SiteConfig по slug — универсальная
