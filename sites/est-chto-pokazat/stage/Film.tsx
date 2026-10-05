@@ -20,12 +20,28 @@ const PLANE_ME = PLANE_COLS * 6 + 3;
 const FEED = 10;
 const FEED_OURS = 3;
 
-function Img({ m, className, priority }: { m: MediaFile; className?: string; priority?: boolean }) {
+/** Самая крупная версия файла (WebP): фото, которые на экране шире оригинала. */
+const largest = (m: MediaFile) => m.set[m.set.length - 1]?.url ?? m.src;
+
+function Img({
+  m,
+  className,
+  priority,
+  sizes,
+}: {
+  m: MediaFile;
+  className?: string;
+  priority?: boolean;
+  /** Есть `sizes` — браузер выбирает версию сам; иначе самая крупная. */
+  sizes?: string;
+}) {
   return (
     // eslint-disable-next-line @next/next/no-img-element -- слой сцены: размеры и кадр задаёт CSS сцены, обёртка next/image мешает
     <img
       className={className}
-      src={m.src}
+      src={sizes ? m.src : largest(m)}
+      srcSet={sizes ? m.srcSet : undefined}
+      sizes={sizes}
       width={m.width}
       height={m.height}
       alt={m.alt}
@@ -98,7 +114,7 @@ export function Film({ media }: { media: ResolvedMedia }) {
       <div className="fscrim" />
       <div className="hand">
         <picture>
-          <source media="(min-width: 900px)" srcSet={media.phoneLandscape.src} />
+          <source media="(min-width: 900px)" srcSet={largest(media.phoneLandscape)} />
           <Img m={media.phonePortrait} className="hand-img" priority />
         </picture>
         <div className="hscrim" />
@@ -108,7 +124,7 @@ export function Film({ media }: { media: ResolvedMedia }) {
           <div className="feed">
             {Array.from({ length: FEED }, (_, k) => (
               <div key={k} className={k === FEED_OURS ? "card ours" : "card"}>
-                <div className="th">{k === FEED_OURS && <Img m={poster} />}</div>
+                <div className="th">{k === FEED_OURS && <Img m={poster} sizes="40vw" />}</div>
                 <div className="ln">
                   <Lines />
                 </div>
@@ -121,7 +137,7 @@ export function Film({ media }: { media: ResolvedMedia }) {
         <div className="plane">
           {Array.from({ length: PLANE_COLS * PLANE_ROWS }, (_, k) => (
             <div key={k} className={k === PLANE_ME ? "card3 me" : "card3"}>
-              <div className="t">{k === PLANE_ME && <Img m={poster} />}</div>
+              <div className="t">{k === PLANE_ME && <Img m={poster} sizes="80px" />}</div>
               <div className="l">
                 <Lines />
               </div>
@@ -136,7 +152,7 @@ export function Film({ media }: { media: ResolvedMedia }) {
         <div className="hcard">
           <i className="hc-glare" />
           <div className="hc-th" data-card-photo>
-            <Img m={poster} />
+            <Img m={poster} sizes="(min-width: 900px) 420px, 82vw" />
           </div>
           <div className="hc-ln">
             <b />
@@ -151,4 +167,7 @@ export function Film({ media }: { media: ResolvedMedia }) {
 
 /** Фоны из CSS: размытая копия фото руки под ним (моб.), фото улицы для вырезок сайта в телефоне (04). */
 export const filmVars = (media: ResolvedMedia) =>
-  v({ "--phone-v": `url(${media.phonePortrait.src})`, "--street": `url(${media.street.src})` });
+  v({
+    "--phone-v": `url(${largest(media.phonePortrait)})`,
+    "--street": `url(${largest(media.street)})`,
+  });

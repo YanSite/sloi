@@ -31,7 +31,9 @@ for (const [w, h] of sizes) {
       const top = Math.min(...marks.map((m) => m.top));
       const hits = [];
       document.querySelectorAll(".ecp .screen.active .wrap *").forEach((el) => {
-        if (el.children.length && !el.matches("p, li, h1, h2, h3, button, a")) return;
+        // Витрина проекта — графика: учитывается корпус телефона, а не его экран и стены коридора.
+        if (el.closest(".dev") && !el.matches(".phone")) return;
+        if (el.children.length && !el.matches("p, li, h1, h2, h3, button, a, .phone")) return;
         const cs = getComputedStyle(el);
         if (cs.visibility === "hidden" || cs.display === "none" || Number(cs.opacity) === 0) return;
         const rc = el.getBoundingClientRect();

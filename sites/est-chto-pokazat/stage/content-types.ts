@@ -24,6 +24,27 @@ export type Sign = { first: RichText; second: string };
 
 export type StoryRow = { cap: string; text: string };
 
+/** Экран сайта-концепта в телефоне: цветочный магазин — страница с букетом. */
+export type FlowerSite = {
+  kind: "flowers";
+  brand: string;
+  cta: string;
+  title: [string, string];
+  lead: string;
+  note: string;
+};
+
+/** Кафе-пекарня — три кадра сайта, сменяются «пролётом сквозь печенье». */
+export type BakerySite = {
+  kind: "bakery";
+  warm: string[];
+  dessertIndex: string;
+  dessert: string[];
+  hours: string;
+  order: string;
+  route: string;
+};
+
 export type CaseScreen = {
   /** Подпись над блоком и заголовок — только у первого проекта. */
   heading?: string;
@@ -31,6 +52,7 @@ export type CaseScreen = {
   tag: string;
   title: string;
   story: StoryRow[];
+  site: FlowerSite | BakerySite;
   draft: true;
 };
 
@@ -51,8 +73,19 @@ export type TurnDemo = {
 
 export type Step = { cap: string; title: string; text: string };
 
-/** Файл медиа, уже разрешённый на сервере: только то, что нужно разметке. */
-export type MediaFile = { src: string; width: number; height: number; alt: string };
+/**
+ * Файл медиа, уже разрешённый на сервере: только то, что нужно разметке.
+ * `set` — версии оптимизатора изображений (WebP) по ширинам, от меньшей
+ * к большей; `srcSet` — то же строкой для `<img>`.
+ */
+export type MediaFile = {
+  src: string;
+  width: number;
+  height: number;
+  alt: string;
+  set: { w: number; url: string }[];
+  srcSet: string;
+};
 
 export type EcpStageContent = {
   brand: {
@@ -105,8 +138,20 @@ export type EcpStageContent = {
     poster: MediaRef;
     phonePortrait: MediaRef;
     phoneLandscape: MediaRef;
+    flowersMacro: MediaRef;
+    flowersBouquet: MediaRef;
+    flowersWorld: MediaRef;
+    flowersSlides: MediaRef[];
+    bakeryMacro: MediaRef;
+    bakeryCookie: MediaRef;
+    bakeryDessert: MediaRef;
+    bakerySlides: MediaRef[];
   };
 };
 
-/** Медиа сцены по ключам `EcpStageContent.media`. */
-export type ResolvedMedia = Record<keyof EcpStageContent["media"], MediaFile>;
+/** Медиа сцены по ключам `EcpStageContent.media` (списки — списками). */
+export type ResolvedMedia = {
+  [K in keyof EcpStageContent["media"]]: EcpStageContent["media"][K] extends MediaRef[]
+    ? MediaFile[]
+    : MediaFile;
+};

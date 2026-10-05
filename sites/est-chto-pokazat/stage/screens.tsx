@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import type { CaseScreen, EcpStageContent } from "./content-types";
 import { Rich, splitWords } from "./text";
+import { Showcase } from "./cases/Showcase";
 
 /**
  * Экраны колоды 01–07 (8 штук: оба проекта — блок 05). Разметка и
@@ -104,8 +105,24 @@ export function Screens({ c }: { c: EcpStageContent }) {
         </div>
       </section>
 
-      <CaseSection cls="s5" act="flow" project={flowers} capTitle={c.cases.capTitle} index="05" />
-      <CaseSection cls="s6" act="cook" project={bakery} capTitle={c.cases.capTitle} index="05" />
+      <CaseSection
+        cls="s5"
+        act="flow"
+        project={flowers}
+        capTitle={c.cases.capTitle}
+        index="05"
+        macro="flowersMacro"
+        macroPos="50% 56%"
+      />
+      <CaseSection
+        cls="s6"
+        act="cook"
+        project={bakery}
+        capTitle={c.cases.capTitle}
+        index="05"
+        macro="bakeryMacro"
+        macroPos="50% 50%"
+      />
 
       <section className="screen s7 warm" data-block="06" data-act="city">
         <div className="wrap">
@@ -197,12 +214,17 @@ function CaseSection({
   project,
   capTitle,
   index,
+  macro,
+  macroPos,
 }: {
   cls: string;
   act: string;
   project: CaseScreen;
   capTitle: string;
   index: string;
+  /** Ключ медиа макро-кадра вступления и точка, к которой идёт пролёт. */
+  macro: string;
+  macroPos: string;
 }) {
   return (
     <section
@@ -210,6 +232,10 @@ function CaseSection({
       data-block={index}
       data-world="revealed"
       data-act={act}
+      data-mac={macro}
+      data-mac-pos={macroPos}
+      data-mac-cap={`${project.label} · ${project.tag}`}
+      data-mac-title={project.title}
     >
       <div className="wrap">
         <div className="topline">
@@ -226,8 +252,7 @@ function CaseSection({
           </h2>
         )}
         <div className="cs">
-          {/* Витрина проекта (коридор слайдов и телефон) — слой проектов, шаг 3. */}
-          <div className="dev" />
+          <Showcase project={project} />
           <div className="ctext">
             <div className="meta a" style={v({ "--i": 6 })}>
               <span className="cap">{project.label}</span>

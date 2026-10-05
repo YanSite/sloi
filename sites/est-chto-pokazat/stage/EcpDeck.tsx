@@ -9,6 +9,9 @@ import { Screens } from "./screens";
 import { Film, filmVars } from "./Film";
 import { Turn } from "./turn/Turn";
 import { TurnScene } from "./turn/turn-scene";
+import { Acts, Macro } from "./cases/Acts";
+import { HeavyMedia } from "./cases/heavy";
+import { pickUrl } from "./media";
 
 /**
  * Колода «Есть что показать» (клиентская часть). Разметка приходит с
@@ -41,17 +44,31 @@ export function EcpDeck({ stage, media }: EcpDeckProps) {
     const { reduced, lite } = initial.current;
     root.classList.toggle("lite", lite);
     const turn = new TurnScene(root, { lite });
-    const deck = new DeckController(root, stage.foot, { reduced, film: turn });
+    const heavy = new HeavyMedia(root, media);
+    const deck = new DeckController(root, stage.foot, {
+      reduced,
+      lite,
+      film: turn,
+      cases: {
+        macroUrl: (key) => {
+          const m = media[key as keyof typeof media];
+          return m && !Array.isArray(m) ? pickUrl(m, window.innerWidth) : "";
+        },
+        ensureMedia: () => heavy.ensure(),
+      },
+    });
+    heavy.schedule();
     turnRef.current = turn;
     deckRef.current = deck;
     const detach = deck.attach();
     return () => {
       detach();
       turn.dispose();
+      heavy.dispose();
       deckRef.current = null;
       turnRef.current = null;
     };
-  }, [stage]);
+  }, [stage, media]);
 
   useEffect(() => {
     deckRef.current?.setReduced(!enabled);
@@ -60,6 +77,7 @@ export function EcpDeck({ stage, media }: EcpDeckProps) {
   useEffect(() => {
     rootRef.current?.classList.toggle("lite", lite);
     turnRef.current?.setLite(lite);
+    deckRef.current?.setLite(lite);
   }, [lite]);
 
   return (
@@ -68,12 +86,14 @@ export function EcpDeck({ stage, media }: EcpDeckProps) {
         <style>{NO_JS_CSS}</style>
       </noscript>
       <Film media={media} />
+      <Acts />
       <Turn street={media.street} demo={stage.s04.demo} />
       <Header c={stage} />
       <Menu c={stage} />
       <main className="deck" data-dir="next">
         <Screens c={stage} />
       </main>
+      <Macro skip={stage.cases.skip} />
       <Foot c={stage} />
     </div>
   );

@@ -36,6 +36,13 @@ const SIGNS_AT = 1100;
 const SIGNS_STEP = 650;
 const STEPS_AT = 900;
 const STEPS_STEP = 800;
+/** Вступление проекта (03_MOTION): пролёт через 1150 мс, макро гаснет к 1100 мс после, `.ready` — к 1800. */
+const MAC_THRU_AT = 1150;
+const MAC_CLEAR_AFTER = 1100;
+const MAC_READY_AFTER = 1800;
+/** Проекты — экраны 4 и 5; у второго фон темнеет синхронно с чёрным кадром в телефоне (`.ckrun`). */
+const CASES = [4, 5];
+const BAKERY = 5;
 
 /** Ввод по docs/02_SCREENS: колесо — накопление > 40, сброс через 220 мс тишины; свайп > 44px. */
 const INPUT = {
@@ -51,9 +58,20 @@ export interface FilmDriver {
   layout?(): void;
 }
 
+/** Проекты (05): кадр вступления и догрузка медиа витрин. */
+export interface CasesDriver {
+  /** URL макро-кадра вступления по ключу медиа из `data-mac`. */
+  macroUrl(key: string): string;
+  /** Подставить медиа витрин, если фоновая догрузка ещё не успела. */
+  ensureMedia(): void;
+}
+
 export interface DeckOptions {
   reduced: boolean;
+  /** Облегчённая версия: проекты без вступления (статичные стены — CSS `.lite`). */
+  lite?: boolean;
   film?: FilmDriver;
+  cases?: CasesDriver;
 }
 
 export class DeckController {
@@ -63,7 +81,10 @@ export class DeckController {
   private readonly foot: EcpStageContent["foot"];
   private readonly nav: StageNavigator;
   private readonly film?: FilmDriver;
+  private readonly cases?: CasesDriver;
+  private readonly mac: HTMLElement | null;
   private reduced: boolean;
+  private lite: boolean;
 
   private cur = 0;
   private s1done = false;
@@ -74,6 +95,8 @@ export class DeckController {
   /** Пропуск вступления проекта: пока задан, шаг вперёд пропускает вступление (шаг 3). */
   private skipIntro: (() => void) | null = null;
   private timers: number[] = [];
+  /** Таймеры вступления проекта — живут дольше `sceneFor` (пролёт не сбрасывается сменой `.ready`). */
+  private flyTimers: number[] = [];
   private cleanups: (() => void)[] = [];
 
   constructor(root: HTMLElement, foot: EcpStageContent["foot"], options: DeckOptions) {
@@ -84,7 +107,10 @@ export class DeckController {
     this.screens = Array.from(this.deck.querySelectorAll<HTMLElement>(".screen"));
     this.foot = foot;
     this.film = options.film;
+    this.cases = options.cases;
+    this.mac = root.querySelector<HTMLElement>(".mac");
     this.reduced = options.reduced;
+    this.lite = options.lite ?? false;
     this.nav = new StageNavigator({
       beats: this.screens.map((_, i) => ({ p: i })),
       transitions: [],
@@ -117,6 +143,10 @@ export class DeckController {
         this.nav.step(1);
         return;
       }
+      if (t?.closest(".mac") && this.skipIntro) {
+        this.skipIntro();
+        return;
+      }
       const menu = t?.closest<HTMLElement>("[data-menu]");
       if (menu) this.setMenu(menu.dataset.menu === "open");
     });
@@ -134,9 +164,14 @@ export class DeckController {
     this.updateChrome();
     return () => {
       this.clearTimers();
+      this.clearFly();
       this.cleanups.forEach((fn) => fn());
       this.cleanups = [];
     };
+  }
+
+  setLite(lite: boolean): void {
+    this.lite = lite;
   }
 
   setReduced(reduced: boolean): void {
@@ -207,7 +242,12 @@ export class DeckController {
     if (i !== 0) root.classList.remove("s1p");
     root.classList.remove("ready");
     this.later(() => root.classList.add("ready"), READY[i] ?? 2500);
-    if (i !== 4 && i !== 5) this.skipIntro = null;
+    if (!CASES.includes(i)) {
+      this.clearFly();
+      if (this.mac) this.mac.className = "mac";
+      this.skipIntro = null;
+      root.classList.remove("ckrun");
+    }
 
     const s1 = this.screens[0];
     if (i === 0) {
@@ -223,9 +263,9 @@ export class DeckController {
       this.setFilm("glow");
     } else if (i === TURN) {
       this.setFilm(this.turned ? "open" : "glow");
-    } else if (i === 4 || i === 5) {
+    } else if (CASES.includes(i)) {
       this.setFilm("calm");
-      this.caseIn(this.screens[i]);
+      this.caseIn(this.screens[i], i);
     } else if (i === 6) {
       this.setFilm("calm");
       this.screens[6].querySelectorAll(".steps li").forEach((li, n) => {
@@ -240,10 +280,62 @@ export class DeckController {
     else delete root.dataset.act;
   }
 
-  /** Проект: без вступления (вступление «макро → пролёт» — шаг 3) — сразу витрина. */
-  private caseIn(sc: HTMLElement): void {
+  /**
+   * Проект: вступление «макро → пролёт насквозь» (только вперёд, не при
+   * «меньше движения» и не в облегчённой версии), затем витрина. Касание
+   * или свайп во время вступления — сразу пролёт.
+   */
+  private caseIn(sc: HTMLElement, i: number): void {
+    this.clearFly();
     this.screens.forEach((x) => x.classList.remove("run", "arrive", "pre"));
-    sc.classList.add("run");
+    this.root.classList.remove("ckrun");
+    this.cases?.ensureMedia();
+    const mac = this.mac;
+    const forward = this.deck.dataset.dir !== "prev";
+    const start = () => {
+      this.skipIntro = null;
+      sc.classList.remove("pre");
+      sc.classList.add("run");
+      if (i === BAKERY) this.root.classList.add("ckrun");
+    };
+    if (!mac || this.reduced || this.lite || !forward) {
+      if (mac) mac.className = "mac";
+      start();
+      return;
+    }
+    sc.classList.add("pre");
+    const img = mac.querySelector<HTMLElement>(".mac-i");
+    const pos = sc.dataset.macPos ?? "50% 50%";
+    if (img) {
+      img.style.backgroundImage = `url("${this.cases?.macroUrl(sc.dataset.mac ?? "") ?? ""}")`;
+      img.style.backgroundPosition = pos;
+      img.style.transformOrigin = pos;
+    }
+    const cap = mac.querySelector(".mac-t .cap");
+    const title = mac.querySelector(".mac-t b");
+    if (cap) cap.textContent = sc.dataset.macCap ?? "";
+    if (title) title.textContent = sc.dataset.macTitle ?? "";
+    let went = false;
+    const go = () => {
+      if (went) return;
+      went = true;
+      this.clearFly();
+      mac.classList.add("thru");
+      sc.classList.add("arrive");
+      start();
+      this.flyTimers.push(window.setTimeout(() => (mac.className = "mac"), MAC_CLEAR_AFTER));
+      this.flyTimers.push(
+        window.setTimeout(() => {
+          sc.classList.remove("arrive");
+          this.root.classList.add("ready");
+        }, MAC_READY_AFTER),
+      );
+    };
+    this.skipIntro = go;
+    mac.className = "mac";
+    void mac.offsetWidth;
+    mac.classList.add("on");
+    this.flyTimers.push(window.setTimeout(go, MAC_THRU_AT));
   }
 
   private setFilm(state: FilmState): void {
@@ -306,6 +398,11 @@ export class DeckController {
 
   private later(fn: () => void, ms: number): void {
     this.timers.push(window.setTimeout(fn, this.reduced ? 0 : ms));
+  }
+
+  private clearFly(): void {
+    this.flyTimers.forEach(clearTimeout);
+    this.flyTimers = [];
   }
 
   private clearTimers(): void {
