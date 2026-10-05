@@ -6,6 +6,7 @@ import { abstractTestSiteConfig } from "./__fixtures__/abstract-test-site-config
 import { floristAtelierSiteConfig } from "@sites/florist-atelier";
 import { kukiLukiSiteConfig } from "@sites/kuki-luki";
 import { estemoSiteConfig } from "@sites/estemo";
+import { ecpSiteConfig } from "@sites/est-chto-pokazat";
 
 export interface PreviewEntry {
   slug: string;
@@ -59,6 +60,11 @@ export const previewRegistry: PreviewEntry[] = [
   },
   { slug: "kuki-luki", label: "Куки Луки — immersive (Site Instance)", config: kukiLukiSiteConfig },
   { slug: "estemo", label: "Эстэмó — immersive (Site Instance)", config: estemoSiteConfig },
+  {
+    slug: "est-chto-pokazat",
+    label: "Есть что показать — сайт агентства (Site Instance)",
+    config: ecpSiteConfig,
+  },
 ];
 
 export function getPreviewEntry(slug: string): PreviewEntry | undefined {

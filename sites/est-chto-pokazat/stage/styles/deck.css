@@ -1,0 +1,1311 @@
+/*
+ * Колода «Есть что показать»: токены, шапка, нижняя строка, меню, точки
+ * справа, типографика, появление экранов и текстовые блоки 01–07.
+ * Порт прототипа v31 (design-reference/est-chto-pokazat-site/reference/
+ * prototype/index.html) с итоговым каскадом его слоёв v19–v32; мёртвые
+ * ветки прототипа (варианты первого экрана 0/4, сетка-«мир», параллакс
+ * за курсором, панель прототипа) не перенесены.
+ *
+ * Всё ограничено корнем `.ecp`: состояние, которое прототип держал на
+ * `<html>` (data-film, data-act, s1p, ready, rm, …), здесь живёт на нём.
+ * Токены — design-system/tokens.css пакета.
+ */
+
+.ecp {
+  --bg: #111214;
+  --bg-raised: #17181b;
+  --line: #2a2d33;
+  --ink: #f4f5f7;
+  --ink-muted: #a4a8b0;
+  --ink-subtle: #8a8e97;
+  --ink-faint: #7c808a;
+  --accent: #4f7bff;
+  --control-border: #6c7079;
+  --focus: #8fa8ff;
+  --error: #ff8a66;
+  --inverse-bg: #f4f5f7;
+  --inverse-bg-hover: #dcdee3;
+  --inverse-ink: #111214;
+  --r-bg-raised: #1e1915;
+  --r-line: rgba(255, 236, 214, 0.2);
+  --r-ink-muted: #dcd3c8;
+  --r-ink-subtle: #b9ad9f;
+  --r-ink-faint: #9c9083;
+  --r-accent: #f2c27d;
+  --r-inverse-bg: #f5eee4;
+  --r-inverse-bg-hover: #e8ddcf;
+  --r-inverse-ink: #17130f;
+  --font: Geologica, "Helvetica Neue", Arial, sans-serif;
+  --font-serif-mock: "Cormorant Garamond", Georgia, serif;
+  --gutter: 24px;
+  --col-gap: 16px;
+  --max: 1200px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --ease-turn: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --st: clamp(30px, 5.1vh, 44px);
+  color-scheme: dark;
+
+  position: relative;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 22px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Фон документа под колодой: при «резинке» прокрутки на iOS не мелькает белый. */
+html:has(.ecp),
+html:has(.ecp) body {
+  background: #111214;
+  color-scheme: dark;
+}
+
+/* Сброс preflight Tailwind (корневой layout) там, где прототип полагался на умолчания браузера. */
+.ecp *,
+.ecp *::before,
+.ecp *::after {
+  box-sizing: border-box;
+}
+.ecp img {
+  max-width: none;
+}
+.ecp a {
+  color: var(--ink);
+}
+.ecp :focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.ecp h1,
+.ecp h2,
+.ecp h3,
+.ecp p {
+  margin: 0;
+}
+.ecp h1,
+.ecp h2 {
+  text-wrap: balance;
+  font-weight: 300;
+}
+.ecp .wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+/* ---------- Шапка ---------- */
+.ecp .logo {
+  display: inline-flex;
+  gap: 10px;
+  align-items: stretch;
+  color: var(--ink);
+  text-decoration: none;
+}
+.ecp .logo__rule {
+  width: 1px;
+  background: currentColor;
+  transition: background-color 480ms var(--ease);
+}
+.ecp .logo__word {
+  font-size: 12px;
+  line-height: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.ecp.revealed-on {
+  --accent: var(--r-accent);
+}
+.ecp.revealed-on .head .logo__rule {
+  background: var(--r-accent);
+}
+.ecp .head {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.ecp .head .wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-block: 22px 0;
+}
+.ecp .toggle {
+  width: 44px;
+  height: 44px;
+  margin: -10px -10px 0 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.ecp .navlinks {
+  display: none;
+  gap: 32px;
+  align-items: center;
+}
+.ecp .navlinks a {
+  font-size: 14px;
+  text-decoration: none;
+  padding: 12px 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color 120ms var(--ease);
+}
+.ecp .navlinks a:hover,
+.ecp .navlinks a[aria-current="true"] {
+  border-bottom-color: var(--accent);
+}
+
+/* ---------- Нижняя строка ---------- */
+.ecp .foot {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  pointer-events: none;
+}
+.ecp .foot .wrap {
+  padding-block: 0 26px;
+}
+/* Верхняя линия над строкой скрыта — не перекрывает контент (02_SCREENS). */
+.ecp .foot .row {
+  border-top: 1px solid transparent;
+  padding: 14px 0 0 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ecp .foot .next,
+.ecp .foot .counter {
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+}
+.ecp .next {
+  pointer-events: auto;
+  background: none;
+  border: 0;
+  padding: 8px 0;
+  margin: -8px 0;
+  color: var(--ink-muted);
+  font: 500 11px/14px var(--font);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+}
+.ecp .next i {
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  background: currentColor;
+  transform-origin: top;
+  animation: ecp-tick 1600ms var(--ease) infinite;
+}
+@keyframes ecp-tick {
+  0% {
+    transform: scaleY(0);
+  }
+  55% {
+    transform: scaleY(1);
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 0;
+  }
+}
+.ecp .next[hidden] {
+  display: none;
+}
+.ecp .counter {
+  display: inline-flex;
+  gap: 6px;
+  font: 500 11px/14px var(--font);
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+.ecp .counter .cur {
+  display: inline-block;
+  overflow: hidden;
+  height: 14px;
+  color: var(--ink);
+}
+.ecp .counter .cur span {
+  display: block;
+}
+.ecp .counter .cur span.roll {
+  animation: ecp-roll 480ms var(--ease) both;
+}
+@keyframes ecp-roll {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+.ecp .ticks {
+  display: none;
+}
+
+/* «Можно дальше»: стрелка оживает, когда сцена договорила. */
+.ecp.ready .foot .next {
+  color: var(--ink);
+}
+.ecp.ready .foot .next i {
+  animation: ecp-tick-go 1400ms var(--ease) infinite;
+  background: var(--accent);
+}
+@keyframes ecp-tick-go {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  50% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  51% {
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+/* ---------- Меню ---------- */
+.ecp .menu {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: var(--bg-raised);
+  display: flex;
+  flex-direction: column;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 240ms var(--ease-exit),
+    visibility 0s 240ms;
+}
+.ecp .menu.open {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 240ms var(--ease),
+    visibility 0s;
+}
+.ecp .menu .wrap.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-block: 22px 0;
+}
+.ecp .menu ul {
+  list-style: none;
+  margin: 15vh 0 0 0;
+  padding: 0;
+}
+.ecp .menu li {
+  border-top: 1px solid var(--line);
+  overflow: hidden;
+}
+.ecp .menu li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.ecp .menu li button {
+  width: 100%;
+  background: none;
+  border: 0;
+  color: var(--ink);
+  text-align: left;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  align-items: baseline;
+  padding: 22px 0;
+  font: 300 28px/32px var(--font);
+  letter-spacing: -0.03em;
+  cursor: pointer;
+  transform: translateY(100%);
+  transition: transform 480ms var(--ease);
+}
+.ecp .menu.open li button {
+  transform: none;
+}
+.ecp .menu li .idx {
+  color: var(--ink-subtle);
+}
+.ecp .menu .tag {
+  margin-top: auto;
+  padding-block: 0 34px;
+  font-size: 12px;
+  color: var(--ink-subtle);
+}
+
+/* ---------- Типографика ---------- */
+.ecp .idx {
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+.ecp .cap {
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.ecp .statement {
+  font-size: var(--st);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-weight: 300;
+}
+.ecp .h2 {
+  font-size: clamp(26px, 3.9vh, 32px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-weight: 300;
+}
+.ecp .h3 {
+  font-size: 20px;
+  line-height: 26px;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+}
+.ecp .dim {
+  color: #b4b8c0;
+}
+.ecp .mark {
+  padding-bottom: 4px;
+  background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 100% / 100% 1px;
+}
+
+/* ---------- Колода ---------- */
+.ecp .deck {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  touch-action: none;
+}
+.ecp .screen {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  visibility: hidden;
+  pointer-events: none;
+}
+.ecp .screen.active,
+.ecp .screen.leaving {
+  visibility: visible;
+}
+.ecp .screen.active {
+  pointer-events: auto;
+}
+.ecp .screen > .wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-block: 120px 84px;
+  position: relative;
+}
+.ecp .topline {
+  border-top: 1px solid rgba(244, 245, 247, 0.18);
+  padding: 12px 0 0 10px;
+  display: flex;
+  justify-content: space-between;
+  transform-origin: left;
+}
+.ecp .s1 .topline,
+.ecp .s2 .topline,
+.ecp .s3 .topline {
+  border-top-color: transparent;
+}
+.ecp .ind {
+  padding-left: 10px;
+}
+.ecp .w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+.ecp .w > span {
+  display: inline-block;
+}
+.ecp .screen.active .a {
+  animation: ecp-a-in 720ms var(--ease) both;
+  animation-delay: calc(180ms + var(--i, 0) * 80ms);
+}
+.ecp .screen.active .topline {
+  animation: ecp-line-in 720ms var(--ease) both;
+  animation-delay: 120ms;
+}
+.ecp .screen.active [data-split] .w > span {
+  animation: ecp-w-in 820ms var(--ease) both;
+  animation-delay: calc(var(--d, 200ms) + var(--w) * 42ms);
+}
+.ecp .screen.active .mark:not(.m4) {
+  animation: ecp-mark-in 600ms var(--ease) both;
+  animation-delay: var(--md, 1100ms);
+}
+.ecp .screen.leaving .a,
+.ecp .screen.leaving [data-split],
+.ecp .screen.leaving .topline,
+.ecp .screen.leaving .later {
+  animation: ecp-a-out 420ms var(--ease-exit) both;
+}
+.ecp [data-dir="prev"] .screen.active .a {
+  animation-name: ecp-a-in-down;
+}
+.ecp [data-dir="prev"] .screen.active [data-split] .w > span {
+  animation-name: ecp-w-in-down;
+}
+@keyframes ecp-a-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes ecp-a-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes ecp-a-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-36px);
+  }
+}
+@keyframes ecp-w-in {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes ecp-w-in-down {
+  from {
+    transform: translateY(-105%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes ecp-line-in {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes ecp-mark-in {
+  from {
+    background-size: 0 1px;
+  }
+  to {
+    background-size: 100% 1px;
+  }
+}
+@keyframes ecp-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- 01 ---------- */
+.ecp .s1 .body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px 0 0 10px;
+}
+.ecp .later {
+  opacity: 0.2;
+  filter: blur(1.5px);
+  transition:
+    opacity 900ms var(--ease),
+    filter 900ms var(--ease),
+    color 900ms var(--ease);
+}
+.ecp .screen.active .later {
+  animation: ecp-dim-in 1200ms var(--ease) both 1100ms;
+}
+@keyframes ecp-dim-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.2;
+  }
+}
+.ecp .s1 h1 {
+  transition:
+    opacity 900ms var(--ease),
+    color 900ms var(--ease);
+}
+/* Первый свайп на 01: вторая строка — яркая, первая уходит в 0.32. */
+.ecp .s1.pulled h1 {
+  opacity: 0.32;
+}
+.ecp .s1.pulled h1 .mark {
+  background-image: linear-gradient(rgba(79, 123, 255, 0.5), rgba(79, 123, 255, 0.5));
+}
+.ecp .screen.s1.pulled .later {
+  opacity: 1;
+  filter: none;
+  color: #f4f5f7;
+  animation: none;
+  transition-delay: 500ms;
+}
+
+/* Подсказка жеста до первого свайпа: на десктопе — «Прокрутите». На мобильном скрыта (вариант «Две реальности»). */
+.ecp .swipehint {
+  position: fixed;
+  left: 50%;
+  bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+  z-index: 31;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 500ms var(--ease);
+}
+.ecp.hint-on .swipehint {
+  opacity: 1;
+  transition-delay: 1800ms;
+}
+.ecp .swipehint .track {
+  position: relative;
+  width: 26px;
+  height: 44px;
+  border: 1px solid rgba(244, 245, 247, 0.55);
+  border-radius: 13px;
+}
+.ecp .swipehint .track::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 30px;
+  width: 4px;
+  height: 4px;
+  margin-left: -2px;
+  border-radius: 999px;
+  background: #f4f5f7;
+  animation: ecp-swipe-dot 1600ms var(--ease) infinite;
+}
+@keyframes ecp-swipe-dot {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  70% {
+    transform: translateY(-20px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+}
+.ecp .swipehint span {
+  font: 500 11px/14px var(--font);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(244, 245, 247, 0.8);
+}
+.ecp .swipehint .m {
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ecp .swipehint .t {
+    display: none;
+  }
+  .ecp .swipehint .m {
+    display: inline;
+  }
+  .ecp .swipehint .track::after {
+    animation-name: ecp-wheel-dot;
+    top: 9px;
+  }
+}
+@keyframes ecp-wheel-dot {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  70% {
+    transform: translateY(14px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(14px);
+    opacity: 0;
+  }
+}
+@media (max-width: 899px) {
+  .ecp .swipehint {
+    display: none;
+  }
+}
+
+/* ---------- 02 ---------- */
+.ecp .signs {
+  list-style: none;
+  margin: clamp(16px, 3vh, 28px) 0 0 0;
+  padding: 0;
+  max-width: 560px;
+}
+.ecp .signs li {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  padding: clamp(8px, 1.4vh, 14px) 0;
+  border-top: 1px solid rgba(244, 245, 247, 0.14);
+}
+.ecp .signs li:last-child {
+  border-bottom: 1px solid rgba(244, 245, 247, 0.14);
+}
+.ecp .signs .idx {
+  padding: 4px 0 0 10px;
+  transition: color 240ms var(--ease);
+}
+.ecp .signs p {
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 300;
+}
+.ecp .signs .second {
+  color: #b4b8c0;
+  opacity: 0;
+  filter: blur(6px);
+  transition:
+    opacity 600ms var(--ease),
+    filter 600ms var(--ease);
+}
+.ecp .signs li.on .second {
+  opacity: 1;
+  filter: blur(0);
+}
+.ecp .signs li.on .idx {
+  color: var(--accent);
+}
+.ecp .signs .mark.m4 {
+  background-size: 0 1px;
+  transition: background-size 600ms var(--ease) 500ms;
+}
+.ecp .signs li.on .mark.m4 {
+  background-size: 100% 1px;
+}
+.ecp .s2 .h2 {
+  margin-top: clamp(14px, 2.4vh, 24px);
+  max-width: 560px;
+}
+
+/* ---------- 03 ---------- */
+.ecp .s3 .body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 28px 0 0 10px;
+  max-width: 640px;
+}
+.ecp .s3 .statement {
+  font-size: clamp(26px, 4vh, 38px);
+}
+
+/* ---------- 04 ---------- */
+.ecp .turn-text {
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 760px;
+}
+.ecp .turn-line {
+  font-size: clamp(32px, 4.8vh, 38px);
+  line-height: 1.06;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+.ecp .turn-after {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 420px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 600ms var(--ease),
+    transform 600ms var(--ease);
+}
+.ecp .turned .turn-after {
+  opacity: 1;
+  transform: none;
+  transition-delay: 3200ms;
+}
+.ecp .turn-after p:first-child {
+  font-size: 17px;
+  line-height: 24px;
+  font-weight: 300;
+}
+.ecp .turn-after p:last-child {
+  color: #d9ddea;
+}
+.ecp .turn-idx {
+  transition: color 480ms var(--ease) 700ms;
+}
+.ecp .turned .turn-idx {
+  color: var(--r-accent);
+}
+
+/* ---------- Второй акт: тёплые токены ---------- */
+.ecp .warm {
+  --line: var(--r-line);
+  --ink-muted: var(--r-ink-muted);
+  --ink-subtle: var(--r-ink-subtle);
+  --ink-faint: var(--r-ink-faint);
+  --accent: var(--r-accent);
+  --inverse-bg: var(--r-inverse-bg);
+  --inverse-bg-hover: var(--r-inverse-bg-hover);
+  --inverse-ink: var(--r-inverse-ink);
+}
+.ecp .warm .topline {
+  border-top-color: var(--r-line);
+}
+.ecp .warm .h2,
+.ecp .warm .statement {
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+}
+.ecp .s7 > .wrap,
+.ecp .s8 > .wrap {
+  justify-content: center;
+}
+
+/* ---------- 05: текст кейса ---------- */
+.ecp .case > .wrap {
+  padding-bottom: 76px;
+}
+.ecp .cs {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin-top: clamp(10px, 2vh, 20px);
+}
+.ecp .cs .dev {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 0 14px;
+}
+.ecp .cs .ctext {
+  flex: none;
+}
+.ecp .cs .meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 10px;
+}
+.ecp .tag {
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(242, 194, 125, 0.45);
+  padding: 5px 7px 4px;
+  border-radius: 2px;
+}
+.ecp .ctitle {
+  margin: 10px 0 0;
+  padding-left: 10px;
+  font-size: clamp(26px, 3.8vh, 34px);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  font-weight: 300;
+}
+/* История видна сразу целиком (волна 110 мс). */
+.ecp .story2 {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+}
+.ecp .story2 li {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr);
+  gap: 0 12px;
+  padding: 9px 0 9px 10px;
+  border-top: 1px solid var(--line);
+  opacity: 0;
+  transform: translateY(10px);
+}
+.ecp .story2 li .cap {
+  padding-top: 3px;
+  color: var(--ink-subtle);
+}
+.ecp .story2 li p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink-muted);
+}
+.ecp .story2 li:last-child .cap {
+  color: var(--accent);
+}
+.ecp .story2 li:last-child p {
+  color: var(--ink);
+}
+.ecp .screen.case.run .story2 li {
+  animation: ecp-a-in 700ms var(--ease) both;
+  animation-delay: calc(350ms + var(--k) * 110ms);
+}
+.ecp .screen.case:not(.pre):not(.run) .story2 li {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- 06 ---------- */
+.ecp .steps {
+  list-style: none;
+  margin: clamp(16px, 3vh, 32px) 0 0 0;
+  padding: 0;
+}
+.ecp .steps li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 95px minmax(0, 1fr);
+  padding: clamp(10px, 1.8vh, 16px) 0;
+  border-top: 1px solid var(--line);
+}
+.ecp .steps li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.ecp .steps .cap {
+  padding: 6px 0 0 10px;
+  color: var(--ink-subtle);
+}
+.ecp .steps .t {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ecp .steps .t span:last-child {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink-muted);
+}
+/* Шаги загораются по очереди: линия-акцент, «Шаг 0X» — акцентом, название — ярким. */
+.ecp .s7 .steps li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -1px;
+  height: 1px;
+  width: 100%;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 900ms var(--ease);
+}
+.ecp .s7 .steps li.on::before {
+  transform: scaleX(1);
+}
+.ecp .s7 .steps li .cap {
+  transition: color 400ms var(--ease);
+}
+.ecp .s7 .steps li.on .cap {
+  color: var(--accent);
+}
+.ecp .s7 .steps .h3 {
+  transition: color 400ms var(--ease);
+  color: var(--ink-muted);
+}
+.ecp .s7 .steps li.on .h3 {
+  color: var(--ink);
+}
+.ecp .credit {
+  margin-top: clamp(14px, 2.4vh, 22px);
+  display: grid;
+  grid-template-columns: 95px minmax(0, 1fr);
+  align-items: start;
+}
+.ecp .credit b {
+  padding-left: 10px;
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  color: var(--accent);
+}
+.ecp .credit span {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink-muted);
+}
+.ecp .btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  min-height: 56px;
+  padding: 0 20px;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  font: 500 15px/20px var(--font);
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 120ms var(--ease);
+}
+.ecp .btn svg {
+  transition: transform 240ms var(--ease);
+}
+.ecp .btn:hover svg {
+  transform: translateX(4px);
+}
+.ecp .btn.primary {
+  background: var(--inverse-bg);
+  color: var(--inverse-ink);
+}
+.ecp .btn.primary:hover {
+  background: var(--inverse-bg-hover);
+}
+.ecp .btn[disabled] {
+  background: transparent;
+  color: var(--ink-faint);
+  border-color: var(--line);
+  cursor: default;
+}
+.ecp .s7 .btn {
+  margin-top: clamp(18px, 3.4vh, 36px);
+}
+.ecp .s7 .topline,
+.ecp .s8 .topline {
+  border-top-color: var(--line);
+}
+
+/* ---------- 07 ---------- */
+.ecp .s8 .final {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 36px 0 0 10px;
+}
+.ecp .s8 .final .second {
+  color: var(--ink-muted);
+}
+.ecp .s8 .cta {
+  margin-top: clamp(28px, 6vh, 64px);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ecp .s8 .cta p {
+  padding-left: 10px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink-subtle);
+}
+.ecp .s8 .legal {
+  margin-top: 28px;
+  padding-left: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  font-size: 12px;
+  color: var(--ink-subtle);
+}
+.ecp .s8 .legal a {
+  color: inherit;
+}
+.ecp .sure {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0 0 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ecp .sure li {
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ink-muted);
+}
+.ecp .sure li i {
+  width: 14px;
+  height: 1px;
+  background: var(--accent);
+  margin-top: 10px;
+}
+/* Кнопка финала мягко пульсирует, когда экран договорил. */
+.ecp.ready .s8 .btn.go {
+  animation: ecp-cta-pulse 2400ms var(--ease) 400ms infinite;
+}
+@keyframes ecp-cta-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(242, 194, 125, 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 14px rgba(242, 194, 125, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(242, 194, 125, 0);
+  }
+}
+
+/* ---------- Невысокие телефоны ---------- */
+@media (max-height: 720px) and (max-width: 899px) {
+  .ecp .screen > .wrap {
+    padding-block: 100px 74px;
+  }
+  .ecp .case > .wrap {
+    padding-bottom: 70px;
+  }
+  .ecp .steps .t span:last-child {
+    display: none;
+  }
+  .ecp .signs p {
+    font-size: 15px;
+    line-height: 20px;
+  }
+  .ecp .ctitle {
+    font-size: 24px;
+  }
+  .ecp .story2 li {
+    padding: 6px 0 6px 10px;
+  }
+  .ecp .story2 li p {
+    font-size: 13px;
+    line-height: 18px;
+  }
+  /* Финал: без наложений на нижнюю строку. */
+  .ecp .s8 .cta > p,
+  .ecp .s8 .legal {
+    display: none;
+  }
+  .ecp .sure {
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .ecp .sure li {
+    font-size: 13px;
+    line-height: 18px;
+  }
+}
+
+/* ---------- Десктоп ---------- */
+@media (min-width: 900px) {
+  .ecp {
+    --gutter: 48px;
+    --col-gap: 24px;
+    --st: clamp(48px, 7.4vh, 72px);
+  }
+  .ecp .navlinks {
+    display: flex;
+  }
+  .ecp .head .toggle {
+    display: none;
+  }
+  .ecp .head .wrap {
+    padding-block: 32px 0;
+    align-items: center;
+  }
+  .ecp .screen > .wrap {
+    padding-block: 140px 96px;
+    justify-content: center;
+  }
+  .ecp .h2 {
+    font-size: clamp(36px, 5.2vh, 48px);
+  }
+  .ecp .h3 {
+    font-size: 24px;
+    line-height: 30px;
+  }
+  .ecp .signs p,
+  .ecp .turn-after p:first-child {
+    font-size: 19px;
+    line-height: 27px;
+  }
+  .ecp .s1 .body,
+  .ecp .s3 .body,
+  .ecp .s2 .content,
+  .ecp .turn-text {
+    max-width: 52%;
+  }
+  .ecp .s3 .statement {
+    font-size: clamp(34px, 5vh, 50px);
+  }
+  .ecp .turn-line {
+    font-size: clamp(46px, 7vh, 68px);
+  }
+  .ecp .g12 {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--col-gap);
+    align-items: start;
+  }
+  .ecp .s7 .g12 > .left {
+    grid-column: 1 / span 4;
+  }
+  .ecp .s7 .g12 > .right {
+    grid-column: 6 / span 7;
+  }
+  .ecp .s7 .steps {
+    margin-top: 0;
+  }
+  .ecp .s7 .btn,
+  .ecp .s8 .btn {
+    max-width: 360px;
+  }
+  .ecp .s8 .g12 .final {
+    grid-column: 1 / span 7;
+  }
+  .ecp .s8 .g12 .cta {
+    grid-column: 9 / span 4;
+    margin-top: 0;
+    align-self: end;
+  }
+  .ecp .cs {
+    flex-direction: row;
+    align-items: stretch;
+    gap: var(--col-gap);
+  }
+  .ecp .cs .dev {
+    flex: 0 0 50%;
+    padding: 0;
+  }
+  .ecp .cs .ctext {
+    flex: 1;
+    align-self: flex-end;
+    max-width: 440px;
+    margin-left: auto;
+    padding-bottom: 8px;
+  }
+  .ecp .ctitle {
+    font-size: clamp(36px, 5.4vh, 52px);
+  }
+  .ecp .story2 li {
+    grid-template-columns: 130px minmax(0, 1fr);
+    padding: 12px 0 12px 10px;
+  }
+  .ecp .story2 li p {
+    font-size: 16px;
+    line-height: 23px;
+  }
+  .ecp .ticks {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 30;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .ecp .ticks button {
+    width: 24px;
+    height: 18px;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .ecp .ticks button span {
+    display: block;
+    height: 1px;
+    width: 10px;
+    background: var(--ink-faint);
+    transition: width 240ms var(--ease);
+  }
+  .ecp .ticks button[aria-current="true"] span {
+    width: 22px;
+    background: var(--accent);
+  }
+}
+
+/* ---------- Меньше движения: переходы — fade 200 мс, смысл тот же ---------- */
+.ecp.rm .screen.active .a,
+.ecp.rm .screen.active [data-split] .w > span,
+.ecp.rm .screen.active .topline {
+  animation: ecp-fade 200ms linear both !important;
+  transform: none;
+}
+.ecp.rm .story2 li {
+  animation: none !important;
+  opacity: 1;
+  transform: none;
+}
+.ecp.rm .swipehint .track::after {
+  animation: none;
+}
+.ecp.rm .later,
+.ecp.rm .turn-after {
+  transition: opacity 200ms linear !important;
+  transform: none !important;
+}
