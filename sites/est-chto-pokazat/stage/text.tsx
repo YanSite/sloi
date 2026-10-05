@@ -33,15 +33,15 @@ type RichProps = { text: RichText; markClass?: string; markStyle?: CSSProperties
 export function splitWords(text: RichText, markStyle?: CSSProperties): ReactNode[] {
   let n = 0;
   const words = (s: string, key: string) =>
-    s.split(/(\s+)/).map((p, i) => {
-      if (!p) return null;
-      if (/^\s+$/.test(p)) return p;
-      return (
+    tokens(s).map((p, i) =>
+      /^\s+$/.test(p) ? (
+        p
+      ) : (
         <span key={`${key}-${i}`} className="w" style={{ "--w": n++ } as CSSProperties}>
           <span>{p}</span>
         </span>
-      );
-    });
+      ),
+    );
   return text.map((part, i) =>
     typeof part === "string" ? (
       words(part, String(i))
@@ -51,4 +51,20 @@ export function splitWords(text: RichText, markStyle?: CSSProperties): ReactNode
       </span>
     ),
   );
+}
+
+/**
+ * Слова и пробелы между ними. Неразрывный пробел остаётся в конце
+ * предыдущего слова: отдельным текстом он при переносе строки становится
+ * видимым отступом в начале следующей.
+ */
+function tokens(s: string): string[] {
+  const out: string[] = [];
+  for (const p of s.split(/(\u00A0+|\s+)/)) {
+    if (!p) continue;
+    if (/^\u00A0+$/.test(p) && out.length && !/^\s+$/.test(out[out.length - 1]))
+      out[out.length - 1] += p;
+    else out.push(p);
+  }
+  return out;
 }

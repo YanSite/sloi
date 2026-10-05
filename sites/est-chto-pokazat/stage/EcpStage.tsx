@@ -4,6 +4,7 @@ import type { EcpStageContent, ResolvedMedia } from "./content-types";
 import { EcpDeck } from "./EcpDeck";
 import "../assets/fonts/fonts.css";
 import "./styles/deck.css";
+import "./styles/film.css";
 
 /**
  * Immersive-stage «Есть что показать» — реализация варианта

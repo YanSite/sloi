@@ -6,6 +6,7 @@ import type { EcpStageContent, ResolvedMedia } from "./content-types";
 import { DeckController } from "./deck";
 import { Foot, Header, Menu } from "./chrome";
 import { Screens } from "./screens";
+import { Film, filmVars } from "./Film";
 
 /**
  * Колода «Есть что показать» (клиентская часть). Разметка приходит с
@@ -21,7 +22,7 @@ export type EcpDeckProps = { stage: EcpStageContent; media: ResolvedMedia };
 const NO_JS_CSS = `.ecp .deck{position:relative;inset:auto;overflow:visible;touch-action:auto}
 .ecp .screen{position:relative;min-height:100vh;visibility:visible;pointer-events:auto}`;
 
-export function EcpDeck({ stage }: EcpDeckProps) {
+export function EcpDeck({ stage, media }: EcpDeckProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const deckRef = useRef<DeckController | null>(null);
   const { enabled } = useMotionCapability();
@@ -47,10 +48,11 @@ export function EcpDeck({ stage }: EcpDeckProps) {
   }, [enabled]);
 
   return (
-    <div ref={rootRef} className="ecp hint-on" data-film="hand">
+    <div ref={rootRef} className="ecp hint-on" data-film="hand" style={filmVars(media)}>
       <noscript>
         <style>{NO_JS_CSS}</style>
       </noscript>
+      <Film media={media} />
       <Header c={stage} />
       <Menu c={stage} />
       <main className="deck" data-dir="next">

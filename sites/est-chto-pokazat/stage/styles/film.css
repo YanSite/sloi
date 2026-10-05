@@ -1,0 +1,959 @@
+/*
+ * Киноплан 01–03 и общая геометрия руки с телефоном (порт прототипа v31,
+ * итоговый каскад слоёв v22–v32). Состояние — `data-film` на `.ecp`:
+ * hand (01) → s1p (01 после первого свайпа) → scroll (02) → glow (03)
+ * → open / done (04, turn.css) → calm (05–06) → street (07).
+ *
+ * Геометрия, которую прототип считал в JS (layoutHand / layoutStill), —
+ * здесь CSS-переменные корня: фото руки cover (моб. — верх экрана телефона
+ * на 45% высоты, запас ×1.06; десктоп — ×1.1), экран телефона в пикселях
+ * фото (моб. 253–509 × 414–951 из 752×1344; десктоп 781–1018 × 116–610
+ * из 1344×752). Тот же прямоугольник экрана использует сайт в телефоне на
+ * повороте — экран и корпус совпадают по построению.
+ */
+
+.ecp {
+  --H: 100vh;
+  /* Фото руки (моб.): ширина = max(W, 1.06·H·752/1344). */
+  --wi: max(100vw, calc(var(--H) * 0.593095));
+  --hand-h: calc(var(--wi) * 1.787234);
+  --hand-x: calc((100vw - var(--wi)) / 2);
+  --hand-y: calc(var(--H) * 0.45 - var(--wi) * 0.550532);
+  --scr-x: calc(var(--hand-x) + var(--wi) * 0.336436);
+  --scr-y: calc(var(--H) * 0.45);
+  --scr-w: calc(var(--wi) * 0.340426);
+  --scr-h: calc(var(--wi) * 0.714096);
+  /* Улица: cover 1344×752, на мобильном кадр чуть левее центра. */
+  --st-w: max(100vw, calc(var(--H) * 1.787234));
+  --st-h: calc(var(--st-w) * 0.559524);
+  --st-x: calc((100vw - var(--st-w)) * 0.48);
+  --st-y: calc((var(--H) - var(--st-h)) / 2);
+  /* 04: наезд камеры на продукт — общий для руки и сайта в телефоне. */
+  --zoom: translateY(4.3vh) scale(1.16);
+}
+@supports (height: 100dvh) {
+  .ecp {
+    --H: 100dvh;
+  }
+}
+@media (min-width: 900px) {
+  .ecp {
+    /* Фото руки (десктоп): cover ×1.1 от 1344×752. */
+    --wi: calc(1.1 * max(100vw, var(--H) * 1.787234));
+    --hand-h: calc(var(--wi) * 0.559524);
+    --hand-x: calc((100vw - var(--wi)) / 2);
+    --hand-y: calc((var(--H) - var(--hand-h)) / 2);
+    --scr-x: calc(var(--hand-x) + var(--wi) * 0.581101);
+    --scr-y: calc(var(--hand-y) + var(--wi) * 0.08631);
+    --scr-w: calc(var(--wi) * 0.176339);
+    --scr-h: calc(var(--wi) * 0.36756);
+    --st-x: calc((100vw - var(--st-w)) / 2);
+    --zoom: translateY(7.5vh) scale(1.14);
+  }
+}
+
+.ecp .film {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ---------- Улица ---------- */
+.ecp .bgv {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform: scale(1.12);
+  transition:
+    filter 1200ms var(--ease),
+    transform 1600ms var(--ease),
+    opacity 900ms var(--ease);
+}
+.ecp .still {
+  position: absolute;
+  left: var(--st-x);
+  top: var(--st-y);
+  width: var(--st-w);
+  height: var(--st-h);
+  animation: ecp-drift 28s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.ecp .still img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+@keyframes ecp-drift {
+  from {
+    transform: scale(1.04) translate(0, 0);
+  }
+  to {
+    transform: scale(1.13) translate(-2.2%, -1.2%);
+  }
+}
+/* Живые огни в окнах: мерцание тёплого света. */
+.ecp .still .glow {
+  position: absolute;
+  border-radius: 50%;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  background: radial-gradient(closest-side, rgba(255, 190, 110, 0.55), rgba(255, 170, 80, 0) 100%);
+  animation: ecp-flick 5s ease-in-out infinite alternate;
+}
+.ecp .still .g1 {
+  left: -2%;
+  top: 28%;
+  width: 28%;
+  height: 48%;
+  animation-duration: 4.6s;
+}
+.ecp .still .g2 {
+  left: 29%;
+  top: 33%;
+  width: 25%;
+  height: 40%;
+  animation-duration: 6.2s;
+  animation-delay: -2s;
+}
+.ecp .still .g3 {
+  left: 57%;
+  top: 36%;
+  width: 19%;
+  height: 30%;
+  animation-duration: 5.3s;
+  animation-delay: -1s;
+}
+.ecp .still .g4 {
+  left: 74%;
+  top: 38%;
+  width: 26%;
+  height: 32%;
+  animation-duration: 7.1s;
+  animation-delay: -3s;
+}
+@keyframes ecp-flick {
+  0% {
+    opacity: 0.15;
+  }
+  40% {
+    opacity: 0.45;
+  }
+  55% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 0.55;
+  }
+}
+/* Блики на мокром асфальте. */
+.ecp .still .wet {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 70%;
+  bottom: 0;
+  mix-blend-mode: screen;
+  opacity: 0.6;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(255, 190, 120, 0) 0px,
+    rgba(255, 190, 120, 0.07) 3px,
+    rgba(255, 190, 120, 0) 9px,
+    rgba(255, 190, 120, 0) 23px
+  );
+  background-size: 200% 100%;
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 40%);
+  mask-image: linear-gradient(180deg, transparent, #000 40%);
+  animation: ecp-wet 9s linear infinite;
+}
+@keyframes ecp-wet {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -46px 0;
+  }
+}
+/* Запас под размытие: фон всегда больше кадра — щели у края нет. */
+.ecp[data-film="street"] .bgv {
+  transform: scale(1.06);
+}
+.ecp[data-film="hand"] .bgv {
+  filter: blur(2px) brightness(0.74) saturate(1.05);
+  transform: scale(1.12);
+}
+.ecp[data-film="scroll"] .bgv,
+.ecp[data-film="glow"] .bgv {
+  filter: blur(14px) brightness(0.32);
+  transform: scale(1.12);
+}
+.ecp[data-film="open"] .bgv,
+.ecp[data-film="done"] .bgv,
+.ecp[data-film="calm"] .bgv {
+  opacity: 0;
+}
+/* 01 «онлайн»: свет гаснет, цвет уходит — мир серый, как карточка в телефоне. */
+.ecp.s1p[data-film="hand"] .bgv {
+  filter: grayscale(1) blur(8px) brightness(0.34);
+  transform: scale(1.14);
+  transition:
+    filter 1300ms var(--ease),
+    transform 1600ms var(--ease),
+    opacity 900ms var(--ease);
+}
+.ecp.s1p .still .glow {
+  opacity: 0 !important;
+  transition: opacity 700ms var(--ease);
+}
+.ecp.s1p .still .glow.g2 {
+  transition-delay: 220ms;
+}
+.ecp.s1p .still .glow.g3 {
+  transition-delay: 440ms;
+}
+.ecp.s1p .still .glow.g4 {
+  transition-delay: 660ms;
+}
+
+.ecp .fscrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 11, 13, 0.82) 0%,
+    rgba(10, 11, 13, 0.45) 38%,
+    rgba(10, 11, 13, 0.12) 62%,
+    rgba(10, 11, 13, 0.5) 100%
+  );
+  transition: opacity 900ms var(--ease);
+}
+.ecp[data-film="calm"] .fscrim {
+  opacity: 0;
+}
+
+/* ---------- Рука с телефоном ---------- */
+.ecp .hand {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transform: scale(1.08);
+  transform-origin: 50% 70%;
+  transition:
+    opacity 1100ms var(--ease),
+    transform 1500ms var(--ease);
+}
+/* Под фото руки — размытая копия того же фото: верхний край не читается как дыра. */
+.ecp .hand::before {
+  content: "";
+  position: absolute;
+  inset: -10% -10% 30% -10%;
+  background: var(--phone-v) 50% 28% / cover no-repeat;
+  filter: blur(26px) brightness(0.62) saturate(1.1);
+  transition: filter 1600ms var(--ease);
+}
+.ecp .hand img {
+  position: absolute;
+  display: block;
+  max-width: none;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 22%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 22%);
+  transition: filter 1600ms var(--ease);
+}
+.ecp .hand .hand-img {
+  left: var(--hand-x);
+  top: var(--hand-y);
+  width: var(--wi);
+  height: var(--hand-h);
+}
+.ecp .hscrim {
+  position: absolute;
+  inset: -22vh -6vw -6vh -6vw;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 11, 13, 0.55) 0%,
+    rgba(10, 11, 13, 0.5) 40%,
+    rgba(10, 11, 13, 0) 62%
+  );
+}
+.ecp[data-film="hand"] .hand {
+  opacity: 1;
+  transform: translateY(4vh);
+}
+/* 01 «онлайн»: телефон чуть подъезжает, рука — в ч/б. */
+.ecp.s1p[data-film="hand"] .hand {
+  transform: translateY(3vh) scale(1.05);
+  transition:
+    opacity 1100ms var(--ease),
+    transform 1400ms var(--ease);
+}
+.ecp.s1p[data-film="hand"] .hand img {
+  filter: grayscale(1) brightness(0.62) contrast(0.92);
+}
+.ecp.s1p[data-film="hand"] .hand::before {
+  filter: blur(26px) grayscale(1) brightness(0.42);
+}
+/* 01 → 02: камера ныряет в экран телефона. */
+.ecp[data-film="scroll"] .hand,
+.ecp[data-film="glow"] .hand {
+  opacity: 0;
+  transform: scale(2.6) translateY(-6%);
+  transition:
+    opacity 700ms var(--ease),
+    transform 1300ms cubic-bezier(0.55, 0, 0.75, 0.3);
+}
+
+/* ---------- Экран телефона: лента одинаковых карточек ---------- */
+.ecp .pscr {
+  position: absolute;
+  left: var(--scr-x);
+  top: var(--scr-y);
+  width: var(--scr-w);
+  height: var(--scr-h);
+  border-radius: calc(var(--scr-w) * 0.11);
+  font-size: calc(var(--scr-w) / 14);
+  --ch: calc(var(--scr-h) * 0.15);
+  overflow: hidden;
+  background: #141518;
+}
+.ecp .pscr .feed {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  top: 2.9em;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 1200ms var(--ease);
+}
+.ecp .pscr .card {
+  flex: none;
+  height: var(--ch);
+  border-radius: 8px;
+  background: #2b2d32;
+  display: grid;
+  grid-template-columns: 34% minmax(0, 1fr);
+  gap: 8%;
+  padding: 8px;
+  transition: height 900ms var(--ease);
+}
+.ecp .pscr .card .th {
+  border-radius: 5px;
+  background: #3a3c42;
+  position: relative;
+  overflow: hidden;
+}
+.ecp .pscr .card .ln {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-top: 3px;
+}
+.ecp .pscr .card .ln i {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
+  background: #44474e;
+}
+.ecp .pscr .card .ln i:nth-child(2) {
+  width: 70%;
+}
+.ecp .pscr .card .ln i:nth-child(3) {
+  width: 45%;
+}
+.ecp .pscr .card.ours .th img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) brightness(0.55) contrast(0.8);
+  transition: filter 1200ms var(--ease);
+}
+.ecp .pscr .card.ours {
+  transition:
+    box-shadow 1200ms var(--ease),
+    background-color 1200ms var(--ease),
+    height 900ms var(--ease);
+}
+/*
+ * 01: карточка этого места крупнее — видно, что это то самое заведение,
+ * только серое. Лента прокручена к ней. Сдвиг 01 — как в эталоне: прототип
+ * считал его, пока высота карточек ещё анимировалась от 76px, поэтому
+ * 3·(76 + 8) − 0.12·h, а не от итоговой высоты (см. DECISIONS.md).
+ */
+.ecp[data-film="hand"] .pscr .feed {
+  transform: translateY(calc(var(--scr-h) * 0.12 - 252px));
+}
+.ecp[data-film="glow"] .pscr .feed {
+  transform: translateY(calc(var(--scr-h) * -0.33 - 24px));
+}
+.ecp[data-film="hand"] .pscr .card.ours {
+  height: calc(var(--ch) * 2.15);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 64% minmax(0, 1fr);
+  gap: 8px;
+}
+.ecp[data-film="hand"] .pscr .card.ours .ln {
+  padding-top: 0;
+}
+.ecp.s1p[data-film="hand"] .pscr .card.ours {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+.ecp.s1p[data-film="hand"] .pscr .card:not(.ours) {
+  opacity: 0.5;
+  transition: opacity 900ms var(--ease);
+}
+.ecp[data-film="scroll"] .pscr .feed {
+  animation: ecp-feed 7s linear infinite;
+}
+@keyframes ecp-feed {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(calc(var(--ch) * -4 - 32px));
+  }
+}
+.ecp[data-film="glow"] .pscr .card.ours .th img {
+  filter: none;
+}
+.ecp[data-film="glow"] .pscr .card.ours {
+  background: #2f2a24;
+  box-shadow:
+    0 0 0 1px rgba(242, 183, 102, 0.4),
+    0 0 30px rgba(242, 150, 60, 0.3);
+}
+
+/* Интерфейс телефона: статус-бар iPhone 15 Pro (остров 4.49×1.32em на 0.39em от верха, время и значки по центру «ушей»), home indicator. */
+.ecp .sbar {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2.25em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Geologica, Arial, sans-serif;
+  color: #f6f4f0;
+  pointer-events: none;
+}
+.ecp .sb-t {
+  position: absolute;
+  left: 0;
+  width: 33.96%;
+  top: 0.65em;
+  height: 2.2em;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+.ecp .sb-isl {
+  position: absolute;
+  left: 50%;
+  top: 0.39em;
+  width: 4.49em;
+  height: 1.32em;
+  margin-left: -2.245em;
+  border-radius: 0.66em;
+  background: #000;
+}
+.ecp .sb-ic {
+  position: absolute;
+  right: 0;
+  width: 33.96%;
+  top: 0.39em;
+  height: 1.32em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.19em;
+}
+.ecp .sb-ic svg {
+  display: block;
+  height: 0.42em;
+  width: auto;
+  fill: currentColor;
+  stroke: currentColor;
+}
+.ecp .sb-ic svg:first-child {
+  height: 0.41em;
+}
+.ecp .sb-bat {
+  position: relative;
+  width: 0.94em;
+  height: 0.46em;
+  border: 1px solid rgba(246, 244, 240, 0.55);
+  border-radius: 0.15em;
+  box-sizing: border-box;
+  padding: 1px;
+}
+.ecp .sb-bat::after {
+  content: "";
+  position: absolute;
+  right: -0.12em;
+  top: 30%;
+  height: 40%;
+  width: 0.07em;
+  background: rgba(246, 244, 240, 0.55);
+  border-radius: 0 1px 1px 0;
+}
+.ecp .sb-bat i {
+  display: block;
+  width: 78%;
+  height: 100%;
+  background: currentColor;
+  border-radius: 0.07em;
+}
+.ecp .hbar {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: 0.42em;
+  width: 36%;
+  margin-left: -18%;
+  height: 0.17em;
+  border-radius: 1em;
+  background: rgba(246, 244, 240, 0.9);
+  pointer-events: none;
+}
+
+/* ---------- 02: поле одинаковых карточек ---------- */
+.ecp .c3d {
+  position: absolute;
+  inset: 0;
+  perspective: 1100px;
+  perspective-origin: 50% 40%;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(1.25);
+  transition:
+    opacity 900ms var(--ease),
+    transform 1500ms var(--ease);
+  pointer-events: none;
+}
+.ecp[data-film="scroll"] .c3d,
+.ecp[data-film="glow"] .c3d {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 900ms var(--ease) 250ms,
+    transform 1600ms var(--ease) 150ms;
+}
+.ecp[data-film="open"] .c3d {
+  opacity: 0;
+  transform: none;
+  transition: opacity 500ms var(--ease) 350ms;
+}
+.ecp .plane {
+  position: absolute;
+  left: 50%;
+  top: 56%;
+  display: grid;
+  grid-template-columns: repeat(7, 230px);
+  gap: 22px;
+  transform: translate(-50%, -50%) rotateX(58deg) rotateZ(-17deg);
+  transform-style: preserve-3d;
+  transition:
+    filter 900ms var(--ease),
+    opacity 900ms var(--ease);
+}
+.ecp[data-film="scroll"] .plane,
+.ecp[data-film="glow"] .plane {
+  animation: ecp-drift3 14s linear infinite;
+}
+@keyframes ecp-drift3 {
+  from {
+    transform: translate(-50%, -50%) rotateX(58deg) rotateZ(-17deg) translateY(0);
+  }
+  to {
+    transform: translate(-50%, -50%) rotateX(58deg) rotateZ(-17deg) translateY(-244px);
+  }
+}
+.ecp .card3 {
+  height: 100px;
+  border-radius: 10px;
+  background: #24262b;
+  display: grid;
+  grid-template-columns: 34% minmax(0, 1fr);
+  gap: 10px;
+  padding: 10px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+.ecp .card3 .t {
+  border-radius: 6px;
+  background: #33363c;
+  position: relative;
+  overflow: hidden;
+}
+.ecp .card3 .t img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) brightness(0.55) contrast(0.8);
+  transition: filter 1000ms var(--ease);
+}
+.ecp .card3 .l {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 4px;
+}
+.ecp .card3 .l i {
+  display: block;
+  height: 7px;
+  border-radius: 4px;
+  background: #3d4047;
+}
+.ecp .card3 .l i:nth-child(2) {
+  width: 70%;
+}
+.ecp .card3 .l i:nth-child(3) {
+  width: 45%;
+}
+.ecp .c3d-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10, 11, 13, 0.94) 0%,
+      rgba(10, 11, 13, 0.78) 40%,
+      rgba(10, 11, 13, 0.12) 68%,
+      rgba(10, 11, 13, 0.4) 100%
+    ),
+    radial-gradient(120% 80% at 50% 60%, rgba(10, 11, 13, 0) 40%, rgba(10, 11, 13, 0.7) 100%);
+}
+
+/* ---------- 03: карточка «вашего места» поднимается из поля, из неё льётся тёплый свет ---------- */
+.ecp[data-film="glow"] .plane {
+  filter: blur(2.5px) brightness(0.42) sepia(0.35);
+}
+.ecp[data-film="glow"] .card3.me {
+  opacity: 0;
+  transition: opacity 300ms var(--ease);
+}
+.ecp .hcard {
+  position: absolute;
+  left: 9vw;
+  width: 82vw;
+  top: 51%;
+  border-radius: 16px;
+  background: #24262b;
+  padding: 10px;
+  opacity: 0;
+  transform: translateY(40px) scale(0.86);
+  transform-style: preserve-3d;
+  overflow: hidden;
+  transition:
+    opacity 700ms var(--ease),
+    transform 1200ms var(--ease),
+    box-shadow 1200ms var(--ease),
+    background-color 1200ms var(--ease);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+.ecp .hc-th {
+  aspect-ratio: 16 / 10;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  background: #33363c;
+}
+.ecp .hc-th img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) brightness(0.55) contrast(0.8);
+  transform-origin: 50% 60%;
+  transition: filter 1400ms var(--ease) 500ms;
+}
+.ecp .hc-ln {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 14px 6px 6px;
+}
+.ecp .hc-ln b {
+  display: block;
+  height: 10px;
+  width: 58%;
+  border-radius: 5px;
+  background: #4a4d55;
+}
+.ecp .hc-ln i {
+  display: block;
+  height: 7px;
+  width: 82%;
+  border-radius: 4px;
+  background: #3d4047;
+}
+.ecp .hc-ln i.s {
+  width: 34%;
+}
+.ecp[data-film="glow"] .hcard {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0ms, 0ms, 600ms, 600ms;
+  background: #2d2823;
+  box-shadow:
+    0 0 0 1px rgba(242, 183, 102, 0.5),
+    0 0 60px rgba(242, 150, 60, 0.35),
+    0 30px 60px rgba(0, 0, 0, 0.5);
+  animation:
+    ecp-hlift 1500ms var(--ease) both,
+    ecp-hfloat 6s ease-in-out 1.6s infinite alternate;
+}
+.ecp[data-film="glow"] .hc-th img {
+  filter: none;
+  animation: ecp-hkb 9s ease-in-out 1.2s infinite alternate;
+}
+.ecp[data-film="open"] .hcard {
+  opacity: 1;
+  transform: none;
+}
+@keyframes ecp-hlift {
+  0% {
+    opacity: 0;
+    transform: translateY(24vh) rotateX(60deg) rotateZ(-17deg) scale(0.42);
+  }
+  25% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes ecp-hfloat {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -8px;
+  }
+}
+@keyframes ecp-hkb {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+.ecp .hc-glare {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    rgba(255, 240, 220, 0) 35%,
+    rgba(255, 240, 220, 0.28) 48%,
+    rgba(255, 240, 220, 0) 60%
+  );
+  background-size: 260% 100%;
+  background-position: 130% 0;
+  opacity: 0;
+}
+.ecp[data-film="glow"] .hc-glare {
+  animation: ecp-glare 1500ms var(--ease) 1100ms both;
+}
+@keyframes ecp-glare {
+  0% {
+    opacity: 1;
+    background-position: 120% 0;
+  }
+  100% {
+    opacity: 1;
+    background-position: -60% 0;
+  }
+}
+.ecp[data-film="glow"] .hc-ln b {
+  background: #8a6f4e;
+  transition: background-color 1200ms var(--ease) 800ms;
+}
+.ecp[data-film="glow"] .hc-ln i {
+  background: #5e5040;
+  transition: background-color 1200ms var(--ease) 900ms;
+}
+.ecp .hlight {
+  position: absolute;
+  left: 50%;
+  top: calc(51% + 22vw);
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.ecp .hl-glow {
+  position: absolute;
+  left: -75vmax;
+  top: -75vmax;
+  width: 150vmax;
+  height: 150vmax;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    rgba(255, 178, 92, 0.34),
+    rgba(255, 150, 70, 0.12) 45%,
+    rgba(255, 150, 70, 0) 72%
+  );
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 1200ms var(--ease),
+    transform 1800ms var(--ease);
+}
+.ecp .hl-rays {
+  position: absolute;
+  left: -70vmax;
+  top: -70vmax;
+  width: 140vmax;
+  height: 140vmax;
+  border-radius: 50%;
+  background: repeating-conic-gradient(
+    from 0deg,
+    rgba(255, 196, 120, 0.12) 0deg 4deg,
+    rgba(255, 196, 120, 0) 4deg 15deg
+  );
+  -webkit-mask-image: radial-gradient(
+    closest-side,
+    #000 8%,
+    rgba(0, 0, 0, 0.5) 35%,
+    transparent 70%
+  );
+  mask-image: radial-gradient(closest-side, #000 8%, rgba(0, 0, 0, 0.5) 35%, transparent 70%);
+  opacity: 0;
+}
+.ecp[data-film="glow"] .hl-glow {
+  opacity: 1;
+  transform: none;
+  transition-delay: 500ms;
+}
+.ecp[data-film="glow"] .hl-rays {
+  opacity: 0.55;
+  transition: opacity 1600ms var(--ease) 900ms;
+  animation: ecp-rays 70s linear infinite;
+}
+@keyframes ecp-rays {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.ecp[data-film="open"] .hlight {
+  opacity: 0;
+  transition: opacity 500ms var(--ease);
+}
+
+@media (max-height: 720px) and (max-width: 899px) {
+  .ecp .hcard {
+    top: 54%;
+    left: 16vw;
+    width: 68vw;
+  }
+  .ecp .hlight {
+    top: calc(54% + 18vw);
+  }
+}
+
+@media (min-width: 900px) {
+  .ecp .fscrim {
+    background: linear-gradient(
+      90deg,
+      rgba(10, 11, 13, 0.82) 0%,
+      rgba(10, 11, 13, 0.45) 50%,
+      rgba(10, 11, 13, 0.08) 80%
+    );
+  }
+  .ecp .hand::before {
+    content: none;
+  }
+  .ecp .hand img {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .ecp .hscrim {
+    background: linear-gradient(
+      90deg,
+      rgba(10, 11, 13, 0.88) 0%,
+      rgba(10, 11, 13, 0.55) 42%,
+      rgba(10, 11, 13, 0) 62%
+    );
+  }
+  /* Десктоп: рука не сдвигается по вертикали (сдвиг открывал полосу сверху). */
+  .ecp[data-film="hand"] .hand {
+    transform: none;
+  }
+  .ecp.s1p[data-film="hand"] .hand {
+    transform: scale(1.06) translateX(-2%);
+  }
+  .ecp.s1p[data-film="hand"] .hscrim {
+    background: linear-gradient(
+      90deg,
+      rgba(10, 11, 13, 0.9) 0%,
+      rgba(10, 11, 13, 0.6) 42%,
+      rgba(10, 11, 13, 0.2) 62%,
+      rgba(10, 11, 13, 0.5) 100%
+    );
+  }
+  .ecp .c3d-scrim {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(10, 11, 13, 0.94) 0%,
+        rgba(10, 11, 13, 0.78) 36%,
+        rgba(10, 11, 13, 0.2) 62%,
+        rgba(10, 11, 13, 0.5) 100%
+      ),
+      radial-gradient(120% 90% at 65% 55%, rgba(10, 11, 13, 0) 40%, rgba(10, 11, 13, 0.7) 100%);
+  }
+  .ecp .plane {
+    left: 62%;
+    top: 52%;
+  }
+  .ecp .hcard {
+    left: auto;
+    right: 9vw;
+    width: 420px;
+    top: 50%;
+    margin-top: -190px;
+  }
+  .ecp .hlight {
+    left: calc(100% - 9vw - 210px);
+    top: 50%;
+  }
+}
+
+/* Меньше движения: без дрейфа, мерцания, полёта поля и «дыхания» карточки; переходы 200 мс. */
+.ecp.rm .bgv,
+.ecp.rm .hand,
+.ecp.rm .pscr .feed {
+  transition-duration: 200ms !important;
+  animation: none !important;
+}
+.ecp.rm .still,
+.ecp.rm .still .glow,
+.ecp.rm .still .wet,
+.ecp.rm .plane,
+.ecp.rm .hcard,
+.ecp.rm .hl-rays,
+.ecp.rm .hc-th img {
+  animation: none !important;
+}
