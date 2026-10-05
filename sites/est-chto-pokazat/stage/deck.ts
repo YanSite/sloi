@@ -1,5 +1,6 @@
 import { StageNavigator } from "@/components/wow/motion";
 import type { EcpStageContent, ScreenIndex } from "./content-types";
+import { bindLeadForm, focusFirstField } from "./form/form";
 
 /**
  * КОНТРОЛЛЕР КОЛОДЫ — порт сценария прототипа v31: один жест — один
@@ -92,6 +93,8 @@ export class DeckController {
   private lockUntil = 0;
   private menuOpen = false;
   private sheetOpen = false;
+  /** Кто открыл форму — туда возвращается фокус. */
+  private sheetFrom: HTMLElement | null = null;
   /** Пропуск вступления проекта: пока задан, шаг вперёд пропускает вступление (шаг 3). */
   private skipIntro: (() => void) | null = null;
   private timers: number[] = [];
@@ -143,6 +146,15 @@ export class DeckController {
         this.nav.step(1);
         return;
       }
+      const sheetBtn = t?.closest<HTMLElement>("[data-sheet]");
+      if (sheetBtn) {
+        this.setSheet(true, sheetBtn);
+        return;
+      }
+      if (t?.closest("[data-close]")) {
+        this.setSheet(false);
+        return;
+      }
       if (t?.closest(".mac") && this.skipIntro) {
         this.skipIntro();
         return;
@@ -152,12 +164,16 @@ export class DeckController {
     });
     this.on(window, "keydown", (e) => {
       if ((e as KeyboardEvent).key !== "Escape") return;
-      if (this.menuOpen) this.setMenu(false);
+      if (this.sheetOpen) this.setSheet(false);
+      else if (this.menuOpen) this.setMenu(false);
     });
     this.on(window, "resize", () => {
       this.film?.layout?.();
       this.sceneFor(this.cur);
     });
+
+    const form = this.root.querySelector<HTMLFormElement>(".sheet form");
+    if (form) this.cleanups.push(bindLeadForm(form));
 
     this.film?.layout?.();
     this.sceneFor(0);
@@ -390,6 +406,30 @@ export class DeckController {
     openBtn.setAttribute("aria-expanded", open ? "true" : "false");
     if (open) menu.querySelector<HTMLElement>('[data-menu="close"]')?.focus();
     else openBtn.focus();
+  }
+
+  /**
+   * Форма в нижней шторке. Пока открыта — колода, шапка и нижняя строка
+   * `inert` (фокус не уходит за шторку), жесты не листают экраны.
+   */
+  private setSheet(open: boolean, from?: HTMLElement): void {
+    const sheet = this.root.querySelector<HTMLElement>(".sheet");
+    if (!sheet) return;
+    this.sheetOpen = open;
+    sheet.classList.toggle("open", open);
+    sheet.setAttribute("aria-hidden", open ? "false" : "true");
+    sheet.inert = !open;
+    this.root.querySelectorAll<HTMLElement>(".deck, .head, .foot, .ticks").forEach((el) => {
+      el.inert = open;
+    });
+    const form = sheet.querySelector<HTMLFormElement>("form");
+    if (open) {
+      this.sheetFrom = from ?? null;
+      if (form) this.timers.push(focusFirstField(form));
+    } else {
+      this.sheetFrom?.focus();
+      this.sheetFrom = null;
+    }
   }
 
   private lock(ms: number): void {

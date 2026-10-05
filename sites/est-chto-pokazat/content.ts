@@ -171,6 +171,62 @@ const stage: EcpStageContent = {
     // Страницы политики пока нет (08_OPEN_QUESTIONS, п. 4) — ссылка-заглушка.
     privacy: { label: "Политика конфиденциальности", href: "#privacy" },
   },
+  // Форма — 06_CONTENT_RU, «Форма»; плейсхолдеры контакта — из прототипа.
+  form: {
+    index: "07",
+    closeAria: "Закрыть форму",
+    title: "Расскажите о своём бизнесе",
+    sub: "Это ни к чему не обязывает.",
+    name: { label: "Как к вам обращаться", error: "Напишите, как к вам обращаться." },
+    business: {
+      label: "Ваш бизнес и ссылка",
+      placeholder: "Название, сайт или соцсети",
+      error: "Напишите название или ссылку — так мы сможем посмотреть на ваш бизнес.",
+    },
+    question: {
+      label: "Что хотите обсудить",
+      optional: "— необязательно",
+      hint: "Например: открытие, переезд, новый продукт.",
+    },
+    channel: {
+      legend: "Где удобнее ответить",
+      options: [
+        {
+          value: "tg",
+          label: "Telegram",
+          field: "Ваш Telegram",
+          placeholder: "@username",
+          type: "text",
+        },
+        {
+          value: "mail",
+          label: "Почта",
+          field: "Ваша почта",
+          placeholder: "name@example.ru",
+          type: "email",
+        },
+        {
+          value: "phone",
+          label: "Телефон",
+          field: "Ваш телефон",
+          placeholder: "+7 …",
+          type: "tel",
+        },
+      ],
+      error: "Оставьте контакт, чтобы мы могли ответить.",
+    },
+    consent: {
+      before: "Соглашаюсь на обработку персональных данных и с ",
+      link: "политикой конфиденциальности",
+      after: "",
+    },
+    submit: "Отправить",
+    // Что обещаем после отправки — не решено (08_OPEN_QUESTIONS, п. 2).
+    done: {
+      title: "Получили.",
+      text: "[текст подтверждения — что обещаем после формы, ещё не решено]",
+    },
+  },
   media: {
     street: { assetId: "street-hero", alt: "" },
     poster: { assetId: "street-poster", alt: "" },

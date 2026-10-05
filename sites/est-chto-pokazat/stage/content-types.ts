@@ -71,6 +71,29 @@ export type TurnDemo = {
   domain: string;
 };
 
+export type ContactChannel = {
+  value: "tg" | "mail" | "phone";
+  label: string;
+  field: string;
+  placeholder: string;
+  type: "text" | "email" | "tel";
+};
+
+export type LeadForm = {
+  index: string;
+  closeAria: string;
+  title: string;
+  sub: string;
+  name: { label: string; error: string };
+  business: { label: string; placeholder: string; error: string };
+  question: { label: string; optional: string; hint: string };
+  channel: { legend: string; options: ContactChannel[]; error: string };
+  /** Согласие: текст до ссылки, ссылка на политику, текст после. */
+  consent: { before: string; link: string; after: string };
+  submit: string;
+  done: { title: string; text: string };
+};
+
 export type Step = { cap: string; title: string; text: string };
 
 /**
@@ -133,6 +156,7 @@ export type EcpStageContent = {
     contacts: string;
     privacy: { label: string; href: string };
   };
+  form: LeadForm;
   media: {
     street: MediaRef;
     poster: MediaRef;

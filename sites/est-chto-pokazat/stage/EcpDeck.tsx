@@ -12,6 +12,7 @@ import { TurnScene } from "./turn/turn-scene";
 import { Acts, Macro } from "./cases/Acts";
 import { HeavyMedia } from "./cases/heavy";
 import { pickUrl } from "./media";
+import { Sheet } from "./form/Sheet";
 
 /**
  * Колода «Есть что показать» (клиентская часть). Разметка приходит с
@@ -95,6 +96,7 @@ export function EcpDeck({ stage, media }: EcpDeckProps) {
       </main>
       <Macro skip={stage.cases.skip} />
       <Foot c={stage} />
+      <Sheet f={stage.form} privacyHref={stage.s07.privacy.href} />
     </div>
   );
 }

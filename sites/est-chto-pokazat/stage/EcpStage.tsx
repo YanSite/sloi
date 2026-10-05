@@ -9,6 +9,7 @@ import "./styles/deck.css";
 import "./styles/film.css";
 import "./styles/turn.css";
 import "./styles/cases.css";
+import "./styles/sheet.css";
 
 /**
  * Immersive-stage «Есть что показать» — реализация варианта
