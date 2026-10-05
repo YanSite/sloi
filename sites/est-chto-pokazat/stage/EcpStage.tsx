@@ -5,6 +5,7 @@ import { EcpDeck } from "./EcpDeck";
 import "../assets/fonts/fonts.css";
 import "./styles/deck.css";
 import "./styles/film.css";
+import "./styles/turn.css";
 
 /**
  * Immersive-stage «Есть что показать» — реализация варианта

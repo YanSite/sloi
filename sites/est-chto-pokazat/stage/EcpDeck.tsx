@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useMotionCapability } from "@/components/wow/motion";
+import { useDeviceTier, useMotionCapability } from "@/components/wow/motion";
 import type { EcpStageContent, ResolvedMedia } from "./content-types";
 import { DeckController } from "./deck";
 import { Foot, Header, Menu } from "./chrome";
 import { Screens } from "./screens";
 import { Film, filmVars } from "./Film";
+import { Turn } from "./turn/Turn";
+import { TurnScene } from "./turn/turn-scene";
 
 /**
  * Колода «Есть что показать» (клиентская часть). Разметка приходит с
@@ -25,21 +27,29 @@ const NO_JS_CSS = `.ecp .deck{position:relative;inset:auto;overflow:visible;touc
 export function EcpDeck({ stage, media }: EcpDeckProps) {
   const rootRef = useRef<HTMLDivElement>(null);
   const deckRef = useRef<DeckController | null>(null);
+  const turnRef = useRef<TurnScene | null>(null);
   const { enabled } = useMotionCapability();
-  const reducedRef = useRef(!enabled);
+  const { lite } = useDeviceTier();
+  const initial = useRef({ reduced: !enabled, lite });
   useEffect(() => {
-    reducedRef.current = !enabled;
+    initial.current = { reduced: !enabled, lite };
   });
 
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
-    const deck = new DeckController(root, stage.foot, { reduced: reducedRef.current });
+    const { reduced, lite } = initial.current;
+    root.classList.toggle("lite", lite);
+    const turn = new TurnScene(root, { lite });
+    const deck = new DeckController(root, stage.foot, { reduced, film: turn });
+    turnRef.current = turn;
     deckRef.current = deck;
     const detach = deck.attach();
     return () => {
       detach();
+      turn.dispose();
       deckRef.current = null;
+      turnRef.current = null;
     };
   }, [stage]);
 
@@ -47,12 +57,18 @@ export function EcpDeck({ stage, media }: EcpDeckProps) {
     deckRef.current?.setReduced(!enabled);
   }, [enabled]);
 
+  useEffect(() => {
+    rootRef.current?.classList.toggle("lite", lite);
+    turnRef.current?.setLite(lite);
+  }, [lite]);
+
   return (
     <div ref={rootRef} className="ecp hint-on" data-film="hand" style={filmVars(media)}>
       <noscript>
         <style>{NO_JS_CSS}</style>
       </noscript>
       <Film media={media} />
+      <Turn street={media.street} demo={stage.s04.demo} />
       <Header c={stage} />
       <Menu c={stage} />
       <main className="deck" data-dir="next">

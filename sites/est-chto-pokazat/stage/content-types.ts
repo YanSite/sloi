@@ -34,6 +34,21 @@ export type CaseScreen = {
   draft: true;
 };
 
+/**
+ * Сайт вымышленного заведения в телефоне на повороте — временное решение
+ * (08_OPEN_QUESTIONS, п. 1, решение №23 стратегии), заменяемый модуль.
+ */
+export type TurnDemo = {
+  name: string;
+  hours: string;
+  title: string;
+  cta: string;
+  gallery: string;
+  todayCap: string;
+  today: string[];
+  domain: string;
+};
+
 export type Step = { cap: string; title: string; text: string };
 
 /** Файл медиа, уже разрешённый на сервере: только то, что нужно разметке. */
@@ -66,7 +81,7 @@ export type EcpStageContent = {
   s01: { title: RichText; sub: string };
   s02: { title: string; signs: Sign[]; draft: true };
   s03: { title: RichText; sub: string; draft: true };
-  s04: { title: string; after: string[] };
+  s04: { title: string; after: string[]; demo: TurnDemo };
   cases: { capTitle: string; skip: string; screens: [CaseScreen, CaseScreen] };
   s06: {
     cap: string;

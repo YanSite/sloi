@@ -149,6 +149,6 @@ export function Film({ media }: { media: ResolvedMedia }) {
   );
 }
 
-/** Фон руки на мобильном — размытая копия того же фото (иначе сверху видна «дыра»). */
+/** Фоны из CSS: размытая копия фото руки под ним (моб.), фото улицы для вырезок сайта в телефоне (04). */
 export const filmVars = (media: ResolvedMedia) =>
-  v({ "--phone-v": `url(${media.phonePortrait.src})` });
+  v({ "--phone-v": `url(${media.phonePortrait.src})`, "--street": `url(${media.street.src})` });

@@ -13,7 +13,9 @@ const plan = (process.argv[4] || "01:0:3000,01b:1:2200,02:2:3600,03:3:3000")
   .map(([name, steps, ms]) => ({ name, steps: Number(steps), ms: Number(ms) }));
 const views = (process.env.VIEWS || "mobile,desktop").split(",");
 const proto =
-  "file://" + resolve("design-reference/est-chto-pokazat-site/reference/prototype/index.html") + "#hero=1";
+  "file://" +
+  resolve("design-reference/est-chto-pokazat-site/reference/prototype/index.html") +
+  "#hero=1";
 mkdirSync(out, { recursive: true });
 
 const b = await chromium.launch();

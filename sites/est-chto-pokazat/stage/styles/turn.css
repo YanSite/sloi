@@ -1,0 +1,472 @@
+/*
+ * Поворот (04): раскрытие улицы в режиме чертежа, каркас и сайт в экране
+ * телефона, проявление руки и наезд камеры на продукт. Порт прототипа
+ * v31 (итоговый каскад v22, v29, v30). Хореография — turn/turn-scene.ts.
+ * Синий — только здесь, в моменте чертежа.
+ */
+
+/* ---------- Раскрытие ---------- */
+.ecp .reveal {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  clip-path: inset(50% 50% 50% 50%);
+  opacity: 0;
+  transition:
+    clip-path 1500ms var(--ease-turn),
+    opacity 400ms var(--ease);
+}
+.ecp .reveal.instant {
+  transition: none;
+}
+.ecp .reveal .v1 {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transition:
+    opacity 1400ms var(--ease),
+    filter 1400ms var(--ease);
+}
+/* Режим чертежа: синий multiply поверх ч/б улицы. */
+.ecp .reveal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, #0b1a55, #0e1338);
+  mix-blend-mode: multiply;
+  opacity: 0;
+  transition: opacity 1400ms var(--ease);
+}
+.ecp .reveal.bp-on::before {
+  opacity: 0.92;
+}
+.ecp .reveal.bp-on .v1 {
+  filter: grayscale(1) brightness(0.55) contrast(1.1);
+}
+.ecp .reveal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 11, 13, 0.78) 0%,
+    rgba(10, 11, 13, 0.35) 45%,
+    rgba(10, 11, 13, 0.6) 100%
+  );
+  opacity: 0;
+  transition: opacity 900ms var(--ease) 600ms;
+}
+.ecp[data-film="open"] .reveal::after {
+  opacity: 1;
+}
+.ecp .bp {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  overflow: visible;
+}
+.ecp .bp path {
+  fill: none;
+  stroke: #cfdaff;
+  stroke-width: 1;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 3px rgba(143, 168, 255, 0.7));
+}
+.ecp .reveal.bp-on .bp path {
+  animation: ecp-draw 1300ms var(--ease) both;
+  animation-delay: calc(300ms + var(--k, 0) * 60ms);
+}
+@keyframes ecp-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.ecp .reveal.bp-out .bp {
+  opacity: 0;
+  transition: opacity 700ms var(--ease);
+}
+
+/* ---------- Продукт: сайт в экране телефона ---------- */
+.ecp .product {
+  position: fixed;
+  z-index: 1;
+  left: var(--scr-x);
+  top: var(--scr-y);
+  width: var(--scr-w);
+  height: var(--scr-h);
+  border-radius: calc(var(--scr-w) * 0.11);
+  font-size: calc(var(--scr-w) / 14);
+  --ph: var(--scr-h);
+  /* Общая точка опоры с рукой: 50% ширины, 70% высоты вьюпорта. */
+  transform-origin: calc(50vw - var(--scr-x)) calc(var(--H) * 0.7 - var(--scr-y));
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: #120f0c;
+  color: #f6efe6;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  transition:
+    opacity 600ms var(--ease),
+    transform 1400ms var(--ease-turn);
+}
+.ecp .product .sbar {
+  background: #120f0c;
+}
+.ecp .product.wire,
+.ecp .product.fill {
+  opacity: 1;
+}
+.ecp .product.wire:not(.fill) {
+  background: rgba(11, 26, 85, 0.35);
+}
+.ecp .p-page {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 2.25em;
+  bottom: 0;
+  overflow: hidden;
+}
+/* Каркас будущего макета. */
+.ecp .p-wire i {
+  position: absolute;
+  border: 1px solid rgba(207, 218, 255, 0.85);
+  transform-origin: left top;
+  animation: none;
+}
+.ecp .product.wire .p-wire i {
+  animation: ecp-wire-in 700ms var(--ease) both;
+}
+.ecp .product.fill .p-wire {
+  opacity: 0;
+  transition: opacity 900ms var(--ease) 400ms;
+}
+@keyframes ecp-wire-in {
+  from {
+    clip-path: inset(0 100% 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+.ecp .p-wire .w1 {
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 58%;
+  animation-delay: 0ms !important;
+}
+.ecp .p-wire .w2 {
+  left: 7%;
+  top: 7%;
+  width: 40%;
+  height: 3.5%;
+  animation-delay: 80ms !important;
+}
+.ecp .p-wire .w3 {
+  left: 7%;
+  top: 40%;
+  width: 75%;
+  height: 9%;
+  animation-delay: 160ms !important;
+}
+.ecp .p-wire .w4 {
+  left: 7%;
+  top: 51%;
+  width: 52%;
+  height: 4.5%;
+  animation-delay: 240ms !important;
+}
+.ecp .p-wire .w5 {
+  left: 7%;
+  top: 65%;
+  width: 41%;
+  height: 16%;
+  animation-delay: 320ms !important;
+}
+.ecp .p-wire .w6 {
+  left: 52%;
+  top: 65%;
+  width: 41%;
+  height: 16%;
+  animation-delay: 400ms !important;
+}
+/* Сайт заполняет каркас и медленно прокручивается. */
+.ecp .pv {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  opacity: 0;
+}
+.ecp .product.fill .pv {
+  opacity: 1;
+  transition: opacity 700ms var(--ease);
+  animation: ecp-pscroll 9s ease-in-out 1.6s infinite alternate;
+}
+@keyframes ecp-pscroll {
+  0%,
+  18% {
+    transform: translateY(0);
+  }
+  82%,
+  100% {
+    transform: translateY(-34%);
+  }
+}
+.ecp .p-hero {
+  position: relative;
+  height: calc(var(--ph, 400px) * 0.58);
+  overflow: hidden;
+}
+.ecp .p-img,
+.ecp .p-ph {
+  background-image: var(--street);
+  background-repeat: no-repeat;
+}
+.ecp .p-img {
+  position: absolute;
+  inset: 0;
+}
+.ecp .p-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(18, 15, 12, 0.55) 0%,
+    rgba(18, 15, 12, 0) 30%,
+    rgba(18, 15, 12, 0.15) 55%,
+    rgba(18, 15, 12, 0.92) 100%
+  );
+}
+.ecp .p-top {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  top: 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ecp .p-logo {
+  font-weight: 600;
+  font-size: 1em;
+  letter-spacing: 0.02em;
+}
+.ecp .p-burger {
+  display: flex;
+  flex-direction: column;
+  gap: 0.22em;
+}
+.ecp .p-burger i {
+  display: block;
+  width: 1.1em;
+  height: 1px;
+  background: #f6efe6;
+}
+.ecp .p-cap {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  bottom: 6%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45em;
+}
+.ecp .p-kick {
+  font-family: Geologica, Arial, sans-serif;
+  font-size: 0.5em;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(246, 239, 230, 0.75);
+}
+.ecp .p-kick.d {
+  color: #c9a27a;
+}
+.ecp .p-cap h4 {
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.55em;
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+}
+.ecp .p-btn {
+  align-self: flex-start;
+  margin-top: 0.3em;
+  font-family: Geologica, Arial, sans-serif;
+  font-size: 0.55em;
+  padding: 0.9em 1.3em;
+  border-radius: 999px;
+  background: #f6efe6;
+  color: #120f0c;
+}
+.ecp .p-sec {
+  padding: 1.1em 7% 0.4em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+}
+.ecp .p-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5em;
+}
+.ecp .p-ph {
+  display: block;
+  aspect-ratio: 4 / 5;
+  border-radius: 0.35em;
+}
+.ecp .p-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.95em;
+}
+.ecp .p-list li {
+  padding: 0.45em 0;
+  border-top: 1px solid rgba(246, 239, 230, 0.14);
+}
+/* Адресная строка Safari. */
+.ecp .p-url {
+  position: absolute;
+  z-index: 5;
+  left: 5%;
+  right: 5%;
+  bottom: 1.15em;
+  height: 2.3em;
+  border-radius: 1.15em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.9em;
+  box-sizing: border-box;
+  background: rgba(38, 34, 30, 0.86);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0.2em 0.8em rgba(0, 0, 0, 0.35);
+  font-family: Geologica, Arial, sans-serif;
+  color: #f6f4f0;
+  opacity: 0;
+  transform: translateY(0.6em);
+}
+.ecp .product.fill .p-url {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 600ms var(--ease) 500ms,
+    transform 600ms var(--ease) 500ms;
+}
+.ecp .u-a {
+  font-size: 0.55em;
+  opacity: 0.85;
+}
+.ecp .u-d {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+  font-size: 0.56em;
+  letter-spacing: 0.01em;
+}
+.ecp .u-d svg {
+  display: block;
+  height: 0.95em;
+  width: auto;
+  fill: currentColor;
+  stroke: currentColor;
+  opacity: 0.7;
+}
+.ecp .u-r svg {
+  display: block;
+  height: 0.62em;
+  width: auto;
+  stroke: currentColor;
+  opacity: 0.85;
+}
+
+/* ---------- Рука и наезд камеры ---------- */
+.ecp[data-film="open"] .hand {
+  opacity: 0;
+  /* Пока рука скрыта, она без анимации встаёт в финальную позицию. */
+  transform: none;
+  transition:
+    opacity 700ms var(--ease),
+    transform 0ms linear 1000ms;
+}
+.ecp[data-film="done"] .hand {
+  opacity: 1;
+  transform: var(--zoom);
+  transition:
+    opacity 1100ms var(--ease),
+    transform 1800ms var(--ease);
+}
+.ecp[data-film="done"] .product {
+  transform: var(--zoom);
+  transition:
+    opacity 600ms var(--ease),
+    transform 1800ms var(--ease);
+}
+/* Улица уходит в тень, светлым остаётся экран. */
+.ecp[data-film="done"] .hscrim {
+  background:
+    radial-gradient(
+      ellipse 34% 30% at 50% 68%,
+      rgba(10, 11, 13, 0) 52%,
+      rgba(10, 11, 13, 0.84) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(10, 11, 13, 0.94) 0%,
+      rgba(10, 11, 13, 0.7) 36%,
+      rgba(10, 11, 13, 0.1) 52%
+    );
+  transition: background 1200ms var(--ease);
+}
+@media (min-width: 900px) {
+  .ecp .reveal::after {
+    background: linear-gradient(
+      90deg,
+      rgba(10, 11, 13, 0.82) 0%,
+      rgba(10, 11, 13, 0.45) 50%,
+      rgba(10, 11, 13, 0.08) 80%
+    );
+  }
+  .ecp[data-film="done"] .hscrim {
+    background:
+      radial-gradient(
+        ellipse 22% 42% at 68% 48%,
+        rgba(10, 11, 13, 0) 55%,
+        rgba(10, 11, 13, 0.66) 100%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(10, 11, 13, 0.88) 0%,
+        rgba(10, 11, 13, 0.5) 40%,
+        rgba(10, 11, 13, 0) 58%
+      );
+  }
+}
+
+/* Меньше движения: финальное состояние, переходы 200 мс. */
+.ecp.rm .reveal,
+.ecp.rm .product,
+.ecp.rm[data-film="done"] .hand,
+.ecp.rm[data-film="done"] .product {
+  transition-duration: 200ms !important;
+  transition-delay: 0ms !important;
+}
+.ecp.rm .bp path,
+.ecp.rm .p-wire i,
+.ecp.rm .pv {
+  animation: none !important;
+}
+.ecp.rm .bp path {
+  stroke-dashoffset: 0;
+}

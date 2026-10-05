@@ -46,7 +46,7 @@ const INPUT = {
 
 /** Сцена, которой колода передаёт смену состояний киноплана (подключается шагами 1–2). */
 export interface FilmDriver {
-  set(state: FilmState, ctx: { turned: boolean; reduced: boolean }): void;
+  set(state: FilmState, ctx: { reduced: boolean }): void;
   /** Пересчёт геометрии на resize. */
   layout?(): void;
 }
@@ -247,7 +247,7 @@ export class DeckController {
   }
 
   private setFilm(state: FilmState): void {
-    if (this.film) this.film.set(state, { turned: this.turned, reduced: this.reduced });
+    if (this.film) this.film.set(state, { reduced: this.reduced });
     else this.root.dataset.film = state;
   }
 
