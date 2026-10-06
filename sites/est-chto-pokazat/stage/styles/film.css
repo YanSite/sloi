@@ -42,7 +42,25 @@
     --wi: calc(1.1 * max(100vw, var(--H) * 1.787234));
     --hand-h: calc(var(--wi) * 0.559524);
     --hand-x: calc((100vw - var(--wi)) / 2);
-    --hand-y: calc((var(--H) - var(--hand-h)) / 2);
+    /*
+     * Зазор под шапкой (решение владельца, 2026-10-06): верх корпуса
+     * телефона — не выше нижнего края шапки + 24px во всех состояниях,
+     * включая подъезд на 01 (scale 1.06 от точки 70% высоты). Фото
+     * опускается ровно настолько, сколько нужно; если верх фото уходит ниже
+     * края кадра, там размытая копия того же фото (`.hand::before`, как в
+     * прототипе на мобильном) — щели нет. Не ниже 8% высоты.
+     * --head-safe: низ шапки (≈80px) + зазор 24; рамка корпуса над экраном
+     * ≈ 4% ширины экрана.
+     */
+    --head-safe: 106px;
+    --hand-y-fit: calc((var(--H) - var(--hand-h)) / 2);
+    --scr-y-need: calc(
+      var(--H) * 0.7 + (var(--head-safe) - var(--H) * 0.7) / 1.06 + var(--wi) * 0.176339 * 0.04
+    );
+    --hand-y: min(
+      calc(var(--H) * 0.08),
+      max(var(--hand-y-fit), calc(var(--scr-y-need) - var(--wi) * 0.08631))
+    );
     --scr-x: calc(var(--hand-x) + var(--wi) * 0.581101);
     --scr-y: calc(var(--hand-y) + var(--wi) * 0.08631);
     --scr-w: calc(var(--wi) * 0.176339);
@@ -883,7 +901,9 @@
     );
   }
   .ecp .hand::before {
-    content: none;
+    inset: -10% -10% 50% -10%;
+    background-image: var(--phone-h);
+    background-position: 50% 20%;
   }
   .ecp .hand img {
     -webkit-mask-image: none;

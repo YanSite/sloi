@@ -165,9 +165,10 @@ export function Film({ media }: { media: ResolvedMedia }) {
   );
 }
 
-/** Фоны из CSS: размытая копия фото руки под ним (моб.), фото улицы для вырезок сайта в телефоне (04). */
+/** Фоны из CSS: размытая копия фото руки под ним, фото улицы для вырезок сайта в телефоне (04). */
 export const filmVars = (media: ResolvedMedia) =>
   v({
     "--phone-v": `url(${largest(media.phonePortrait)})`,
+    "--phone-h": `url(${largest(media.phoneLandscape)})`,
     "--street": `url(${largest(media.street)})`,
   });

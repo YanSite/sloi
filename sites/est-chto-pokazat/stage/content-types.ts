@@ -80,7 +80,6 @@ export type ContactChannel = {
 };
 
 export type LeadForm = {
-  index: string;
   closeAria: string;
   title: string;
   sub: string;

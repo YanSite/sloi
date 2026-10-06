@@ -16,7 +16,10 @@ export function Sheet({ f, privacyHref }: { f: LeadForm; privacyHref: string }) 
       <div className="panel" role="dialog" aria-modal="true" aria-labelledby="ecp-sheet-title">
         <div className="wrap">
           <div className="bar">
-            <span className="idx">{f.index}</span>
+            {/* Заголовок прижат к верху шторки, в строку с крестиком (решение владельца, 2026-10-06). */}
+            <h3 className="h3" id="ecp-sheet-title">
+              {f.title}
+            </h3>
             <button className="close" type="button" data-close aria-label={f.closeAria}>
               <svg
                 width="18"
@@ -35,9 +38,6 @@ export function Sheet({ f, privacyHref }: { f: LeadForm; privacyHref: string }) 
           </div>
           <form className="form" noValidate>
             <div className="intro">
-              <h3 className="h3" id="ecp-sheet-title">
-                {f.title}
-              </h3>
               <p>{f.sub}</p>
             </div>
             <div className="field" data-field="name">
