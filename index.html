@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Слои — кондитерская (концепт)</title>
+<meta name="description" content="Концепт сайта кондитерской: снаружи тихо, внутри — восемь слоёв.">
+<meta name="theme-color" content="#F8E6E0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="image" href="assets/cake-hero.jpg">
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@100..900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#F8E6E0}
+a{color:#4A2A35}a:hover{color:#8E4F63}
+.cta{transition:background .35s ease}
+.cta:hover{background:#6B3D4D;color:#FBF3EE}
+.cta-sm{transition:background .3s ease,color .3s ease}
+.cta-sm:hover{background:rgba(74,42,53,.08)}
+.intro > *{animation:rise 1.1s cubic-bezier(.2,.7,.2,1) both}
+.intro > *:nth-child(2){animation-delay:.15s}
+.intro > *:nth-child(3){animation-delay:.3s}
+@keyframes rise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+.cue{animation:cue 1.8s cubic-bezier(.6,0,.2,1) infinite}
+@keyframes cue{0%{transform:translateY(-14px)}100%{transform:translateY(36px)}}
+@media (prefers-reduced-motion: reduce){.intro > *,.cue{animation:none}}
+.scene-text a{pointer-events:auto}
+@media (max-width: 760px){
+.stage{height:100dvh!important;min-height:0!important}
+.fin-img{width:100%!important}
+.scene-text{left:12px!important;right:12px!important;top:auto!important;bottom:12px!important;width:auto!important;max-width:none!important;margin:0!important;padding:22px 20px 24px!important;background:#FBF3EE!important;box-shadow:0 18px 40px -12px rgba(58,34,25,.28);justify-content:flex-start!important;text-align:left!important;align-items:flex-start!important;gap:10px!important;color:#4A2A35!important;transition:none}
+.scene-text br{display:none}
+.scene-text h1{font-size:32px!important;line-height:1.04!important;font-weight:300!important}
+.scene-text h2{font-size:28px!important;line-height:1.08!important;letter-spacing:-0.025em!important;font-weight:300!important}
+.scene-text p,.scene-text span{color:#6B4E57!important;font-size:14px!important;line-height:1.45!important;max-width:none!important}
+.scene-text p span span,.scene-text div span span{color:#4A2A35!important}
+.scene-text div{gap:12px!important}
+.scene-text a.cta{height:46px!important;padding:0 22px!important;color:#FBF3EE!important}
+.cue-wrap,.dots,.hdr-kicker,.hdr-chap{display:none!important}
+.hdr{height:60px;box-sizing:border-box;padding:0 16px!important;gap:12px!important}
+.hdr-logo{font-size:24px!important}
+.hdr-prog{display:block!important;position:absolute!important;left:16px;right:16px;bottom:0;width:auto!important}
+.hdr .cta-sm{height:34px!important;padding:0 14px!important;margin-left:0!important}
+.hdr > div:last-child{gap:12px!important}
+}
+</style>
+<style>html,body{height:100%;overflow:hidden;overscroll-behavior:none}</style>
+</head>
+<body>
+<div class="stage" data-ref="rootRef" tabIndex="0" data-keys="1" aria-label="Слои — сайт кондитерской, листайте колесом, свайпом или стрелками" style="position: relative; height: 100vh; min-height: 560px; overflow: hidden; outline: none; touch-action: none; background: #F8E6E0; color: #4A2A35; font-family: 'Geologica', 'Helvetica Neue', sans-serif">
+
+<img class="shot" src="assets/cake-hero.jpg" alt="Белый торт с вырезом на розовой подставке" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; transform-origin: 74% 42%; opacity: {{sh.h.op}}; transform: scale({{sh.h.sc}}); visibility: {{sh.h.vis}}">
+<img class="shot" src="assets/m-layers.jpg" alt="Срез крупно: фисташковый бисквит, малиновый крем, ваниль, лимонный курд" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; opacity: {{sh.ml.op}}; transform: scale({{sh.ml.sc}}); visibility: {{sh.ml.vis}}">
+
+<video class="shot" data-ref="vidR" src="assets/v-raspberry-2k.mp4" muted="muted" loop="loop" playsinline="playsinline" aria-label="Малина крупным планом" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; display: block; object-position: 50% 45%; opacity: {{sh.vr.op}}; transform: scale({{sh.vr.sc}}); clip-path: inset({{sh.vr.ct}}% 0 {{sh.vr.cb}}% 0); visibility: {{sh.vr.vis}}"></video>
+<video class="shot" data-ref="vidV" src="assets/v-vanilla.mp4" muted="muted" loop="loop" playsinline="playsinline" aria-label="Ванильный крем крупным планом" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; display: block; object-position: 50% 50%; opacity: {{sh.vv.op}}; transform: scale({{sh.vv.sc}}); clip-path: inset({{sh.vv.ct}}% 0 {{sh.vv.cb}}% 0); visibility: {{sh.vv.vis}}"></video>
+
+<img class="shot" src="assets/s1-layers.jpg" alt="Восемь слоёв торта парят друг над другом" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; opacity: {{sh.s1.op}}; transform: scale({{sh.s1.sc}}); visibility: {{sh.s1.vis}}">
+<img class="shot" src="assets/s2-fillings.jpg" alt="Тот же торт с другими начинками: шоколад, манго, маракуйя" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; opacity: {{sh.s2.op}}; transform: scale({{sh.s2.sc}}); visibility: {{sh.s2.vis}}">
+<img class="shot" src="assets/m-cream.jpg" alt="Белый крем крупно, лепестки розы и малина" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; opacity: {{sh.mc.op}}; transform: scale({{sh.mc.sc}}); visibility: {{sh.mc.vis}}">
+<img class="shot" src="assets/s3-deco-flowers.jpg" alt="Белый торт с живыми цветами и ягодами" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; opacity: {{sh.s3.op}}; transform: scale({{sh.s3.sc}}); clip-path: {{sh.s3.clip}}; visibility: {{sh.s3.vis}}">
+<img class="shot" src="assets/s4-deco-gold.jpg" alt="Белый торт с сусальным золотом и графичным кремом" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; opacity: {{sh.s4.op}}; transform: scale({{sh.s4.sc}}); clip-path: {{sh.s4.clip}}; visibility: {{sh.s4.vis}}">
+<span class="shot-edge" aria-hidden="true" data-b-style="position: absolute; top: 0; bottom: 0; left: {{sh.s4.edge}}%; width: 2px; margin-left: -1px; background: #FFFDF9; box-shadow: 0 0 18px 4px rgba(255, 250, 244, 0.85); opacity: {{sh.s4.edgeOp}}"></span>
+<img class="shot" src="assets/m-choc-pour.jpg" alt="Молочный шоколад льётся густой волной" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; opacity: {{sh.mch.op}}; transform: scale({{sh.mch.sc}}); visibility: {{sh.mch.vis}}">
+<img class="shot" src="assets/s5-choc-drip.jpg" alt="Шоколадный торт, глазурь стекает по краям" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; opacity: {{sh.s5.op}}; transform: scale({{sh.s5.sc}}); visibility: {{sh.s5.vis}}">
+
+<video class="shot" data-ref="vidC" src="assets/v-chocolate-2k.mp4" muted="muted" loop="loop" playsinline="playsinline" aria-label="Шоколадная глазурь крупным планом" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; display: block; object-position: 50% 40%; opacity: {{sh.vidc.op}}; transform: scale({{sh.vidc.sc}}); clip-path: inset({{sh.vidc.ct}}% 0 {{sh.vidc.cb}}% 0); visibility: {{sh.vidc.vis}}"></video>
+
+<img class="shot" src="assets/s6-choc-cut.jpg" alt="Шоколадный торт с вырезом: бисквит, ганаш, пралине, хрустящий слой" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; transform-origin: 62% 50%; opacity: {{sh.s6.op}}; transform: scale({{sh.s6.sc}}); visibility: {{sh.s6.vis}}">
+<img class="shot" src="assets/m-knife.jpg" alt="Нож проходит сквозь шоколадный торт с фундуком" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; opacity: {{sh.mk.op}}; transform: scale({{sh.mk.sc}}); visibility: {{sh.mk.vis}}">
+<img class="shot" src="assets/m-glaze.jpg" alt="Зеркальная глазурь, шоколадная тюиль, жемчужины и сусальное золото" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; opacity: {{sh.mg.op}}; transform: scale({{sh.mg.sc}}); visibility: {{sh.mg.vis}}">
+<img class="shot" src="assets/s7-vitrine.jpg" alt="Шесть фирменных пирожных на сливочном фоне" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; transform-origin: {{s7org}}; opacity: {{sh.s7.op}}; transform: scale({{sh.s7.sc}}); visibility: {{sh.s7.vis}}">
+<img class="shot" src="assets/m-pistachio.jpg" alt="Фисташковый тарт крупным планом" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 55% 50%; opacity: {{sh.mp.op}}; transform: scale({{sh.mp.sc}}); visibility: {{sh.mp.vis}}">
+<img class="shot" src="assets/s8-pastry-cut.jpg" alt="Малиновый купол, разрезанный пополам" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; opacity: {{sh.s8.op}}; transform: scale({{sh.s8.sc}}); visibility: {{sh.s8.vis}}">
+
+<div class="shot" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #FBF3EC; opacity: {{sh.fin.op}}; visibility: {{sh.fin.vis}}">
+<img class="fin-img" src="assets/s7-vitrine.jpg" alt="" style="position: absolute; right: 0; top: 0; width: 52%; height: 100%; object-fit: cover; object-position: 60% 50%">
+</div>
+
+
+<div class="intro scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); top: 0; bottom: 0; justify-content: center; pointer-events: none; max-width: 640px; opacity: {{tx.h.op}}; transform: translateY({{tx.h.y}}px); visibility: {{tx.h.vis}}; display: flex; flex-direction: column; gap: 30px">
+<h1 style="margin: 0; font-weight: 200; font-size: clamp(44px, min(6vw, 10vh), 90px); line-height: 0.98; letter-spacing: -0.04em">Снаружи тихо. <br>Внутри — восемь <br>слоёв.</h1>
+<p style="margin: 0; max-width: 360px; font-size: 16px; line-height: 1.5; color: #5E3F4A">Гладкий белый снаружи — и восемь слоёв, которые видно только после первого разреза.</p>
+<div style="display: flex; align-items: center; gap: 28px; flex-wrap: wrap">
+<a class="cta" href="#order" style="display: inline-flex; align-items: center; height: 52px; padding: 0 28px; border-radius: 26px; background: #4A2A35; color: #FBF3EE; font-size: 15px; text-decoration: none">Заказать торт</a>
+<a href="#vitrine" style="font-size: 15px; color: #4A2A35; text-underline-offset: 5px">Смотреть витрину</a>
+</div>
+</div>
+
+<div class="cue-wrap" aria-hidden="true" data-b-style="position: absolute; left: 50%; bottom: clamp(18px, 4vh, 36px); transform: translateX(-50%); opacity: {{tx.h.op}}; visibility: {{tx.h.vis}}; display: flex; flex-direction: column; align-items: center; gap: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #7A5662">
+<span>Листайте</span>
+<span style="position: relative; display: block; width: 1px; height: 36px; background: rgba(74, 42, 53, 0.2); overflow: hidden"><span class="cue" style="position: absolute; left: 0; top: 0; width: 1px; height: 14px; background: #4A2A35"></span></span>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); bottom: clamp(24px, 7vh, 72px); max-width: 460px; padding: 32px 36px; background: #FBF3EE; opacity: {{tx.ml.op}}; transform: translateY({{tx.ml.y}}px); visibility: {{tx.ml.vis}}; display: flex; flex-direction: column; gap: 14px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A5662">01 · Начинки</span>
+<h2 style="margin: 0; font-weight: 300; font-size: 40px; line-height: 1.04; letter-spacing: -0.03em">Каждый слой — отдельный рецепт.</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #5E3F4A">Мы знаем, откуда каждый ингредиент. Только сливки 33 %, масло 82,5 % и свежие яйца. Без маргарина и растительных сливок.</p>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); bottom: clamp(32px, 10vh, 96px); max-width: 640px; opacity: {{tx.vr.op}}; transform: translateY({{tx.vr.y}}px); visibility: {{tx.vr.vis}}; display: flex; flex-direction: column; gap: 16px; color: #FBF3EE">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85">Слой 02 и 07 · малина</span>
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(56px, 9vw, 150px); line-height: 0.9; letter-spacing: -0.05em">Малина.</h2>
+<p style="margin: 0; max-width: 380px; font-size: 16px; line-height: 1.5">Целые ягоды, а не пюре из банки.</p>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); bottom: clamp(32px, 10vh, 96px); max-width: 640px; opacity: {{tx.vv.op}}; transform: translateY({{tx.vv.y}}px); visibility: {{tx.vv.vis}}; display: flex; flex-direction: column; gap: 16px; color: #4A2A35">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #6E4E3A">Слой 05 · ванильный крем</span>
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(56px, 9vw, 150px); line-height: 0.9; letter-spacing: -0.05em">Ваниль.</h2>
+<p style="margin: 0; max-width: 380px; font-size: 16px; line-height: 1.5; color: #5E3F4A">Стручки мадагаскарской ванили — видны точки семян.</p>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); top: 0; bottom: 0; justify-content: center; pointer-events: none; max-width: 520px; opacity: {{tx.s1.op}}; transform: translateY({{tx.s1.y}}px); visibility: {{tx.s1.vis}}; display: flex; flex-direction: column; gap: 22px">
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(38px, 4.4vw, 64px); line-height: 1; letter-spacing: -0.035em">Восемь слоёв — <br>восемь рецептов.</h2>
+<p style="margin: 0; max-width: 380px; font-size: 16px; line-height: 1.5; color: #5E3F4A">Фисташка, малина, ваниль, лимон — и всё зеркально. Этот торт читается с обеих сторон.</p>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); top: 0; bottom: 0; justify-content: center; pointer-events: none; max-width: 520px; opacity: {{tx.s2.op}}; transform: translateY({{tx.s2.y}}px); visibility: {{tx.s2.vis}}; display: flex; flex-direction: column; gap: 22px">
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(38px, 4.4vw, 64px); line-height: 1; letter-spacing: -0.035em">Соберите <br>свой разрез.</h2>
+<p style="margin: 0; max-width: 380px; font-size: 16px; line-height: 1.5; color: #5E3F4A">Любые начинки в любом порядке: шоколад, манго, маракуйя, кокос. 14 начинок на выбор — или придумаем вашу.</p>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); top: 0; bottom: 0; justify-content: center; pointer-events: none; max-width: 520px; opacity: {{tx.mc.op}}; transform: translateY({{tx.mc.y}}px); visibility: {{tx.mc.vis}}; display: flex; flex-direction: column; gap: 18px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A5662">02 · Украшение</span>
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(44px, 6vw, 88px); line-height: 0.98; letter-spacing: -0.04em">Белый — <br>это холст.</h2>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); top: 0; bottom: 0; justify-content: center; pointer-events: none; max-width: 520px; opacity: {{tx.s3.op}}; transform: translateY({{tx.s3.y}}px); visibility: {{tx.s3.vis}}; display: flex; flex-direction: column; gap: 22px">
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(38px, 4.4vw, 64px); line-height: 1; letter-spacing: -0.035em">Любое украшение.</h2>
+<p style="margin: 0; max-width: 380px; font-size: 16px; line-height: 1.5; color: #5E3F4A">От одной ягоды до свадебного декора: живые цветы, ягоды, зелень.</p>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); top: 0; bottom: 0; justify-content: center; pointer-events: none; max-width: 520px; opacity: {{tx.s4.op}}; transform: translateY({{tx.s4.y}}px); visibility: {{tx.s4.vis}}; display: flex; flex-direction: column; gap: 22px">
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(38px, 4.4vw, 64px); line-height: 1; letter-spacing: -0.035em">Или золото <br>и графика.</h2>
+<p style="margin: 0; max-width: 380px; font-size: 16px; line-height: 1.5; color: #5E3F4A">Пришлите референс — повторим или предложим своё.</p>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); top: clamp(96px, 16vh, 150px); max-width: 520px; padding: 30px 34px; background: #F6EDE4; opacity: {{tx.mch.op}}; transform: translateY({{tx.mch.y}}px); visibility: {{tx.mch.vis}}; display: flex; flex-direction: column; gap: 14px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #5A3A2A">03 · Шоколад</span>
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(34px, 3.6vw, 52px); line-height: 1; letter-spacing: -0.03em; color: #3A2219">Шоколад, который <br>течёт как надо.</h2>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); top: 0; bottom: 0; justify-content: center; pointer-events: none; max-width: 520px; opacity: {{tx.s5.op}}; transform: translateY({{tx.s5.y}}px); visibility: {{tx.s5.vis}}; display: flex; flex-direction: column; gap: 22px; color: #3A2219">
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(38px, 4.4vw, 64px); line-height: 1; letter-spacing: -0.035em">Молочный <br>шоколад.</h2>
+<p style="margin: 0; max-width: 380px; font-size: 16px; line-height: 1.5; color: #5A3A2A">Бельгийский молочный шоколад, какао 33 %. Глазурь варим и наносим вручную.</p>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); bottom: clamp(32px, 10vh, 96px); max-width: 640px; opacity: {{tx.vidc.op}}; transform: translateY({{tx.vidc.y}}px); visibility: {{tx.vidc.vis}}; display: flex; flex-direction: column; gap: 18px; color: #FBF3EE">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85">Глазурь · крупно</span>
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(48px, 7vw, 120px); line-height: 0.92; letter-spacing: -0.05em">В ней отражается <br>окно.</h2>
+<p style="margin: 0; max-width: 380px; font-size: 16px; line-height: 1.5; color: #EBDCD2">Зеркальный глянец без единой лишней капли.</p>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); top: 0; bottom: 0; justify-content: center; pointer-events: none; max-width: 520px; opacity: {{tx.s6.op}}; transform: translateY({{tx.s6.y}}px); visibility: {{tx.s6.vis}}; display: flex; flex-direction: column; gap: 22px; color: #3A2219">
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(38px, 4.4vw, 64px); line-height: 1; letter-spacing: -0.035em">Четыре текстуры <br>в одном куске.</h2>
+<p style="margin: 0; max-width: 380px; font-size: 16px; line-height: 1.5; color: #5A3A2A">Бисквит, ганаш, пралине на фундуке и хрустящий слой.</p>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); bottom: clamp(24px, 7vh, 72px); max-width: 440px; padding: 30px 34px; background: #F6EDE4; opacity: {{tx.mk.op}}; transform: translateY({{tx.mk.y}}px); visibility: {{tx.mk.vis}}; display: flex; flex-direction: column; gap: 12px; color: #3A2219">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #6E4E3A">Пралине · фундук · вафельная крошка</span>
+<h2 style="margin: 0; font-weight: 300; font-size: clamp(28px, 3vw, 40px); line-height: 1.1; letter-spacing: -0.02em">Мягкое, кремовое, ореховое, хрустящее — в каждой ложке.</h2>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); max-width: 440px; padding: 30px 34px; background: #F6EDE4; display: flex; flex-direction: column; gap: 12px; top: clamp(96px, 16vh, 150px); color: #3A2219; opacity: {{tx.mg.op}}; transform: translateY({{tx.mg.y}}px); visibility: {{tx.mg.vis}}">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #6E4E3A">Тюиль · жемчужины · сусальное золото</span>
+<h2 style="margin: 0; font-weight: 300; font-size: clamp(28px, 3vw, 40px); line-height: 1.1; letter-spacing: -0.02em">Детали, которые видно только вблизи.</h2>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: 0; right: 0; margin: 0 auto; bottom: clamp(14px, 3vh, 28px); width: min(900px, 92vw); text-align: center; opacity: {{tx.s7.op}}; transform: translateY({{tx.s7.y}}px); visibility: {{tx.s7.vis}}; display: flex; flex-direction: column; align-items: center; gap: 8px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A5662">04 · Пирожные</span>
+<h2 style="margin: 0; font-weight: 300; font-size: clamp(22px, 2.2vw, 32px); line-height: 1.15; letter-spacing: -0.02em">6 фирменных пирожных. У каждого — свой разрез.</h2>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); max-width: 440px; padding: 30px 34px; background: #F6EDE4; display: flex; flex-direction: column; gap: 12px; bottom: clamp(24px, 7vh, 72px); color: #4A2A35; opacity: {{tx.mp.op}}; transform: translateY({{tx.mp.y}}px); visibility: {{tx.mp.vis}}">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A5662">№ 01</span>
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(34px, 3.6vw, 52px); line-height: 1; letter-spacing: -0.03em">Фисташковый тарт.</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; color: #5E3F4A">Сицилийская фисташка, песочное тесто на сливочном масле, лепесток золота.</p>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); top: 0; bottom: 0; justify-content: center; pointer-events: none; max-width: 480px; opacity: {{tx.s8.op}}; transform: translateY({{tx.s8.y}}px); visibility: {{tx.s8.vis}}; display: flex; flex-direction: column; gap: 18px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #7A5662">№ 02</span>
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(38px, 4.4vw, 64px); line-height: 1; letter-spacing: -0.035em">Малиновый купол.</h2>
+<p style="margin: 0; max-width: 360px; font-size: 16px; line-height: 1.5; color: #5E3F4A">Ванильный мусс, малиновое сердце, миндальное сабле.</p>
+</div>
+
+<div class="scene-text" data-b-style="position: absolute; left: clamp(20px, 5vw, 72px); top: 0; bottom: 0; justify-content: center; pointer-events: none; max-width: 560px; opacity: {{tx.fin.op}}; transform: translateY({{tx.fin.y}}px); visibility: {{tx.fin.vis}}; display: flex; flex-direction: column; gap: 32px">
+<h2 style="margin: 0; font-weight: 200; font-size: clamp(40px, 5vw, 76px); line-height: 1; letter-spacing: -0.035em">Выберите торт — <br>или придумаем вместе.</h2>
+<div style="display: flex; flex-direction: column; gap: 10px; font-size: 15px; line-height: 1.4; color: #5E3F4A">
+<span><span style="color: #4A2A35; font-weight: 500">Свежее каждый день</span> · печём к 8 утра</span>
+<span><span style="color: #4A2A35; font-weight: 500">Без консервантов</span> · только натуральные ингредиенты</span>
+<span><span style="color: #4A2A35; font-weight: 500">На заказ за 2 дня</span> · доставка по Москве</span>
+</div>
+<div style="display: flex; align-items: center; gap: 28px; flex-wrap: wrap">
+<a class="cta" href="#order" style="display: inline-flex; align-items: center; height: 52px; padding: 0 28px; border-radius: 26px; background: #4A2A35; color: #FBF3EE; font-size: 15px; text-decoration: none">Заказать торт</a>
+<a href="#vitrine" style="font-size: 15px; color: #4A2A35; text-underline-offset: 5px">Смотреть витрину</a>
+</div>
+</div>
+
+<header class="hdr" data-b-style="position: absolute; left: 0; top: 0; right: 0; display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: clamp(20px, 4vh, 36px) clamp(20px, 5vw, 72px); color: {{ink}}">
+<div style="display: flex; align-items: baseline; gap: 14px">
+<span class="hdr-logo" style="font-size: 28px; font-weight: 500; letter-spacing: -0.03em; line-height: 1">слои</span>
+<span class="hdr-kicker" style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.75">кондитерская</span>
+</div>
+<div style="display: flex; align-items: center; gap: 18px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em">
+<span class="hdr-chap" data-b-style="opacity: {{chapOp}}"><span data-t="chapter"></span></span>
+<span style="font-variant-numeric: tabular-nums; opacity: 0.7"><span data-t="counter"></span></span>
+<span class="hdr-prog" data-b-style="position: relative; display: block; width: 120px; height: 1px; background: {{track}}">
+<span class="hdr-prog-fill" data-b-style="position: absolute; left: 0; top: 0; height: 1px; width: {{prog}}%; background: {{ink}}"></span>
+</span>
+<a class="cta-sm" href="#order" data-b-style="display: inline-flex; align-items: center; height: 36px; padding: 0 18px; border-radius: 18px; border: 1px solid {{ink}}; color: {{ink}}; font-family: 'Geologica', 'Helvetica Neue', sans-serif; font-size: 13px; letter-spacing: 0; text-decoration: none; margin-left: 10px">Заказать</a>
+</div>
+</header>
+
+<nav class="dots" aria-label="Сцены" style="position: absolute; right: clamp(14px, 2.4vw, 36px); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 2px">
+
+<button type="button" data-dot="0" aria-label="Первый экран" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.0.w}}px; height: {{dots.0.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.0.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="1" aria-label="Слои крупно" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.1.w}}px; height: {{dots.1.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.1.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="2" aria-label="Малина" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.2.w}}px; height: {{dots.2.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.2.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="3" aria-label="Ваниль" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.3.w}}px; height: {{dots.3.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.3.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="4" aria-label="Восемь слоёв" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.4.w}}px; height: {{dots.4.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.4.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="5" aria-label="Любая начинка" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.5.w}}px; height: {{dots.5.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.5.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="6" aria-label="Белый холст" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.6.w}}px; height: {{dots.6.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.6.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="7" aria-label="Цветы" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.7.w}}px; height: {{dots.7.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.7.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="8" aria-label="Золото" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.8.w}}px; height: {{dots.8.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.8.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="9" aria-label="Шоколад" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.9.w}}px; height: {{dots.9.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.9.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="10" aria-label="Глазурь" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.10.w}}px; height: {{dots.10.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.10.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="11" aria-label="Глянец" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.11.w}}px; height: {{dots.11.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.11.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="12" aria-label="Шоколадный срез" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.12.w}}px; height: {{dots.12.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.12.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="13" aria-label="Текстуры" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.13.w}}px; height: {{dots.13.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.13.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="14" aria-label="Детали" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.14.w}}px; height: {{dots.14.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.14.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="15" aria-label="Пирожные" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.15.w}}px; height: {{dots.15.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.15.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="16" aria-label="Фисташковый тарт" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.16.w}}px; height: {{dots.16.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.16.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="17" aria-label="Малиновый купол" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.17.w}}px; height: {{dots.17.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.17.op}}; transition: all .4s ease"></span>
+</button>
+
+<button type="button" data-dot="18" aria-label="Заказать" style="width: 24px; height: 22px; padding: 0; border: 0; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center">
+<span data-b-style="display: block; width: {{dots.18.w}}px; height: {{dots.18.w}}px; border-radius: 50%; background: {{ink}}; opacity: {{dots.18.op}}; transition: all .4s ease"></span>
+</button>
+
+</nav>
+</div>
+<script>
+
+class DCLogic { constructor(){ this.props = {}; } forceUpdate(){ window.__render && window.__render(); } setState(){ this.forceUpdate(); } }
+class Component extends DCLogic {
+
+  _init() {
+    if (this._ok) return;
+    this._ok = true;
+    this._p = 0;
+    this._from = 0;
+    this._to = 0;
+    this._t0 = 0;
+    this._dur = 1200;
+    this._raf = 0;
+    this._acc = 0;
+    this._lockUntil = 0;
+    this._vids = [];
+    this._ty = null;
+    this._shots = [
+      ['h', 0, 0, [[0, 1], [1, 2.4]]],
+      ['ml', 1, 0.6, [[0.4, 1.3], [1, 1.04], [2, 1.0]]],
+      ['vr', 2, 0.8, [[1.2, 1.25], [2, 1.0], [3, 1.06]], [17, 60]],
+      ['vv', 3, 0.8, [[2.2, 1.25], [3, 1.0], [4, 1.06]], [64, 16]],
+      ['s1', 4, 0.6, [[3.4, 1.08], [4, 1.0]]],
+      ['s2', 5, 0.75, null],
+      ['mc', 6, 0.6, [[5.4, 1.15], [6, 1.0]]],
+      ['s3', 7, 0.85, [[6.15, 1.1], [7, 1.0]], null, ['circle', 66, 30]],
+      ['s4', 8, 0.85, null, null, ['wipe']],
+      ['mch', 9, 0.6, [[8.4, 1.3], [9, 1.0]]],
+      ['s5', 10, 0.6, [[9.4, 1.08], [10, 1.0]]],
+      ['vidc', 11, 0.8, [[10.2, 1.3], [11, 1.0], [12, 1.06]], [22, 58]],
+      ['s6', 12, 0.6, [[11.4, 1.06], [12, 1.0], [13, 1.9]]],
+      ['mk', 13, 0.6, [[12.4, 1.2], [13, 1.0]]],
+      ['mg', 14, 0.6, [[13.4, 1.15], [14, 1.0], [15, 1.08]]],
+      ['s7', 15, 0.7, [[14.3, 1.9], [15, 1.0], [16, 2.4]]],
+      ['mp', 16, 0.55, [[15.45, 1.18], [16, 1.0]]],
+      ['s8', 17, 0.6, [[16.4, 1.1], [17, 1.0]]],
+      ['fin', 18, 0.6, null]
+    ];
+    this._labels = ['Первый экран', 'Слои крупно', 'Малина', 'Ваниль', 'Восемь слоёв', 'Любая начинка', 'Белый холст', 'Цветы', 'Золото', 'Шоколад', 'Глазурь', 'Глянец', 'Шоколадный срез', 'Текстуры', 'Детали', 'Пирожные', 'Фисташковый тарт', 'Малиновый купол', 'Заказать'];
+    this._max = this._shots.length - 1;
+    this._evs = [
+      ['wheel', (e) => this._wheelH(e), { passive: false }],
+      ['touchstart', (e) => this._tStart(e), { passive: true }],
+      ['touchmove', (e) => this._tMove(e), { passive: false }],
+      ['touchend', () => this._tEnd(), { passive: true }],
+      ['touchcancel', () => this._tEnd(), { passive: true }],
+      ['pointerdown', (e) => this._pStart(e), { passive: true }],
+      ['pointermove', (e) => this._pMove(e), { passive: true }],
+      ['pointerup', () => this._pEnd(), { passive: true }],
+      ['pointercancel', () => this._pEnd(), { passive: true }]
+    ];
+    this._setRoot = (el) => {
+      if (this.root === el) return;
+      if (this.root) this._evs.forEach((v) => this.root.removeEventListener(v[0], v[1], v[2]));
+      this.root = el;
+      if (el) this._evs.forEach((v) => el.addEventListener(v[0], v[1], v[2]));
+    };
+    this._sw = null;
+    this._lastTouch = 0;
+    this._swipe = (y) => {
+      const sw = this._sw;
+      if (!sw || sw.done) return;
+      const dy = sw.y - y;
+      if (Math.abs(dy) > 34) { sw.done = true; this._step(dy > 0 ? 1 : -1); }
+    };
+    this._tStart = (e) => {
+      const t = e.touches && e.touches[0];
+      if (!t || e.touches.length > 1) { this._sw = null; return; }
+      this._lastTouch = performance.now();
+      this._sw = { y: t.clientY, done: false };
+    };
+    this._tMove = (e) => {
+      const t = e.touches && e.touches[0];
+      if (!t) return;
+      this._lastTouch = performance.now();
+      if (e.cancelable) e.preventDefault();
+      this._swipe(t.clientY);
+    };
+    this._tEnd = () => { this._sw = null; };
+    this._pStart = (e) => {
+      if (e.pointerType === 'mouse' || performance.now() - this._lastTouch < 800) return;
+      this._sw = { y: e.clientY, done: false, p: true };
+    };
+    this._pMove = (e) => {
+      if (!this._sw || !this._sw.p || performance.now() - this._lastTouch < 800) return;
+      this._swipe(e.clientY);
+    };
+    this._pEnd = () => { if (this._sw && this._sw.p) this._sw = null; };
+    this._vid = {};
+    const mkV = (k) => (el) => { if (el) { el.muted = true; this._vid[k] = el; } };
+    this._vidR = mkV('vr');
+    this._vidV = mkV('vv');
+    this._vidC = mkV('vidc');
+    this._lastWheel = 0;
+    this._used = false;
+    let reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { reduce = false; }
+    this._reduce = reduce;
+    this._wheelH = (e) => {
+      if (e.ctrlKey || e.metaKey) return;
+      e.preventDefault();
+      const now = performance.now();
+      if (now - this._lastWheel > 160) { this._used = false; this._acc = 0; }
+      this._lastWheel = now;
+      if (this._used || now < this._lockUntil) return;
+      this._acc += e.deltaY;
+      if (Math.abs(this._acc) > 24) { const d = this._acc > 0 ? 1 : -1; this._acc = 0; this._used = true; this._step(d); }
+    };
+    this._onKey = (e) => {
+      const k = e.key;
+      if (k === 'ArrowDown' || k === 'PageDown' || k === ' ' || k === 'ArrowRight') { e.preventDefault(); this._step(1); }
+      else if (k === 'ArrowUp' || k === 'PageUp' || k === 'ArrowLeft') { e.preventDefault(); this._step(-1); }
+      else if (k === 'Home') { e.preventDefault(); this._go(0); }
+      else if (k === 'End') { e.preventDefault(); this._go(this._max); }
+    };
+    this._tick = (now) => {
+      this._raf = 0;
+      const k = Math.min(1, (now - this._t0) / this._dur);
+      const e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+      this._p = this._from + (this._to - this._from) * e;
+      this.forceUpdate();
+      this._syncVideo();
+      if (k < 1) this._raf = requestAnimationFrame(this._tick);
+    };
+    this._dots = this._labels.map((l, i) => ({ label: l, go: () => this._go(i) }));
+  }
+
+  _step(d) {
+    const now = performance.now();
+    if (now < this._lockUntil) return;
+    this._go(Math.max(0, Math.min(this._max, Math.round(this._to) + d)));
+  }
+
+  _go(i) {
+    if (i === this._to && !this._raf) return;
+    const now = performance.now();
+    this._from = this._p;
+    this._to = i;
+    this._t0 = now;
+    const dist = Math.abs(i - this._from);
+    this._dur = this._reduce ? 1 : (dist > 1.5 ? 1400 : 1200);
+    this._lockUntil = now + this._dur * 0.8;
+    if (!this._raf) this._raf = requestAnimationFrame(this._tick);
+  }
+
+  _interp(keys, p) {
+    if (!keys) return 1;
+    if (p <= keys[0][0]) return keys[0][1];
+    for (let i = 1; i < keys.length; i++) {
+      if (p <= keys[i][0]) {
+        const a = keys[i - 1], b = keys[i];
+        const t = (p - a[0]) / (b[0] - a[0]);
+        return a[1] + (b[1] - a[1]) * t;
+      }
+    }
+    return keys[keys.length - 1][1];
+  }
+
+  _syncVideo() {
+    const p = this._p;
+    const win = { vr: [1.2, 3], vv: [2.2, 4], vidc: [10.2, 12] };
+    for (const k in this._vid) {
+      const el = this._vid[k];
+      const w = win[k];
+      const on = w && p > w[0] && p < w[1];
+      try {
+        if (on && el.paused) { const pr = el.play(); if (pr && pr.catch) pr.catch(() => {}); }
+        else if (!on && !el.paused) el.pause();
+      } catch (e) { /* noop */ }
+    }
+  }
+
+  componentDidMount() {
+    this._init();
+    try { if (this.root) this.root.focus({ preventScroll: true }); } catch (e) { /* noop */ }
+    this._syncVideo();
+  }
+
+  componentWillUnmount() {
+    if (this._raf) cancelAnimationFrame(this._raf);
+    this._raf = 0;
+    if (this.root) this._evs.forEach((v) => this.root.removeEventListener(v[0], v[1], v[2]));
+  }
+
+  renderVals() {
+    this._init();
+    const p = this._p;
+    const cl = (v) => Math.max(0, Math.min(1, v));
+    const sh = {};
+    const tx = {};
+    const S = this._shots;
+    let mob = false;
+    try { mob = window.innerWidth < 760; } catch (err) { mob = false; }
+    const amp = mob ? 90 : 28;
+    for (let i = 0; i < S.length; i++) {
+      const id = S[i][0], start = S[i][1], fade = S[i][2], keys = S[i][3];
+      const op = start === 0 ? 1 : cl((p - (start - fade)) / fade);
+      const next = i + 1 < S.length ? S[i + 1][1] : 1e9;
+      const band = S[i][4];
+      let ct = 0, cb = 0, sop = op;
+      if (band) {
+        const k = op * op * (3 - 2 * op);
+        ct = band[0] * (1 - k);
+        cb = band[1] * (1 - k);
+        sop = Math.min(1, op * 8);
+      }
+      const mode = S[i][5];
+      let clip = 'none', edge = 0, edgeOp = 0;
+      if (mode) {
+        const k = op * op * (3 - 2 * op);
+        sop = op > 0 ? 1 : 0;
+        if (mode[0] === 'circle') clip = 'circle(' + (k * 120).toFixed(2) + '% at ' + mode[1] + '% ' + mode[2] + '%)';
+        else { edge = (1 - k) * 100; clip = 'inset(0 0 0 ' + edge.toFixed(2) + '%)'; edgeOp = (k > 0.001 && k < 0.999) ? 1 : 0; }
+      }
+      sh[id] = {
+        clip: clip,
+        edge: edge.toFixed(2),
+        edgeOp: edgeOp,
+        op: sop.toFixed(3),
+        ct: ct.toFixed(2),
+        cb: cb.toFixed(2),
+        sc: this._interp(keys, p).toFixed(4),
+        vis: (op > 0 && p < next) ? 'visible' : 'hidden'
+      };
+      const tin = start === 0 ? 1 : cl((p - (start - 0.35)) / 0.3);
+      const tout = id === 'fin' ? 1 : cl(((start + 0.4) - p) / 0.25);
+      const t = Math.min(tin, tout);
+      const e = t * t * (3 - 2 * t);
+      tx[id] = { op: e.toFixed(3), y: ((1 - e) * (p < start ? amp : -amp * 0.6)).toFixed(1), vis: e > 0.001 ? 'visible' : 'hidden' };
+    }
+    let chapter = '01 · Начинки';
+    const chapOp = p < 0.6 ? 0 : 1;
+    if (p >= 5.6) chapter = '02 · Украшение';
+    if (p >= 8.6) chapter = '03 · Шоколад';
+    if (p >= 13.6) chapter = '04 · Пирожные';
+    const choc = p >= 8.6 && p < 13.6;
+    const cur = Math.round(p);
+    const dots = this._dots.map((d, i) => ({ label: d.label, go: d.go, w: i === cur ? 8 : 5, op: i === cur ? 1 : 0.35 }));
+    return {
+      rootRef: this._setRoot,
+      vidR: this._vidR,
+      vidV: this._vidV,
+      vidC: this._vidC,
+      chapOp: chapOp,
+      s7org: p < 15 ? '22% 70%' : '49% 26%',
+      counter: String(Math.round(p) + 1).padStart(2, '0') + ' / ' + String(this._max + 1).padStart(2, '0'),
+      track: (p >= 1.6 && p < 2.6) || (p >= 10.6 && p < 11.6) ? 'rgba(251, 243, 238, 0.3)' : 'rgba(74, 42, 53, 0.22)',
+      onKey: this._onKey,
+      sh: sh,
+      tx: tx,
+      dots: dots,
+      chapter: chapter,
+      prog: (cl(p / this._max) * 100).toFixed(2),
+      ink: (p >= 1.6 && p < 2.6) || (p >= 10.6 && p < 11.6) ? '#FBF3EE' : (choc ? '#3A2219' : '#4A2A35')
+    };
+  }
+}
+
+(function(){
+  const comp = new Component();
+  const binds = [];
+  document.querySelectorAll('*').forEach(el => {
+    for (const a of Array.from(el.attributes)) {
+      if (a.name.indexOf('data-b-') === 0) binds.push([el, a.name.slice(7), a.value]);
+    }
+  });
+  const texts = Array.from(document.querySelectorAll('[data-t]'));
+  const get = (v, path) => { let c = v; for (const p of path.split('.')) { if (c == null) return ''; c = c[p]; } return c == null ? '' : c; };
+  const fill = (v, t) => t.replace(/\{\{\s*([\w.]+)\s*\}\}/g, (m, p) => String(get(v, p)));
+  let vals = null;
+  window.__render = () => {
+    vals = comp.renderVals();
+    for (const b of binds) {
+      const val = fill(vals, b[2]);
+      const name = b[1] === 'class' ? 'class' : b[1];
+      if (b[0].getAttribute(name) !== val) b[0].setAttribute(name, val);
+    }
+    for (const t of texts) { const val = String(get(vals, t.getAttribute('data-t'))); if (t.textContent !== val) t.textContent = val; }
+  };
+  window.__render();
+  document.querySelectorAll('[data-ref]').forEach(el => { const f = vals[el.getAttribute('data-ref')]; if (typeof f === 'function') f(el); });
+  const root = document.querySelector('[data-keys]');
+  root.addEventListener('keydown', e => vals.onKey && vals.onKey(e));
+  document.querySelectorAll('[data-dot]').forEach(btn => btn.addEventListener('click', () => { const i = +btn.getAttribute('data-dot'); vals.dots[i] && comp._go(i); }));
+  if (comp.componentDidMount) comp.componentDidMount();
+})();
+
+</script>
+</body>
+</html>
