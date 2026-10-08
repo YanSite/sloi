@@ -416,7 +416,14 @@ class Component extends DCLogic {
       if (e.ctrlKey || e.metaKey) return;
       e.preventDefault();
       const now = performance.now();
-      if (now - this._lastWheel > 160) { this._used = false; this._acc = 0; }
+      const ad = Math.abs(e.deltaY);
+      const h = this._wHist || (this._wHist = []);
+      const avg = h.length ? h.reduce((x, y) => x + y, 0) / h.length : 0;
+      // trackpad inertia only decays; a sharp rise means the user started a new gesture
+      const fresh = h.length >= 3 && ad > 6 && ad > avg * 1.6;
+      if (now - this._lastWheel > 160) { this._used = false; this._acc = 0; h.length = 0; }
+      else if (fresh && now >= this._lockUntil) { this._used = false; this._acc = 0; }
+      h.push(ad); if (h.length > 5) h.shift();
       this._lastWheel = now;
       if (this._used || now < this._lockUntil) return;
       this._acc += e.deltaY;
