@@ -28,6 +28,8 @@ a{color:#4A2A35}a:hover{color:#8E4F63}
 @media (max-width: 760px){
 .stage{height:100dvh!important;min-height:0!important}
 .fin-img{width:100%!important}
+.deco-img{top:0!important;height:calc(100% + 20px)!important}
+.dome-img{top:-20px!important;height:calc(100% + 20px)!important}
 .hero-img{top:40px!important;height:calc(100% - var(--intro-h, 320px) - 24px)!important;object-position:88% 60%!important;-webkit-mask-image:linear-gradient(transparent,#000 40px,#000 80%,transparent);mask-image:linear-gradient(transparent,#000 40px,#000 80%,transparent)}
 .scene-text{left:12px!important;right:12px!important;top:auto!important;bottom:12px!important;width:auto!important;max-width:none!important;margin:0!important;padding:22px 20px 24px!important;background:#FBF3EE!important;box-shadow:0 18px 40px -12px rgba(58,34,25,.28);justify-content:flex-start!important;text-align:left!important;align-items:flex-start!important;gap:10px!important;color:#4A2A35!important;transition:none}
 .scene-text br{display:none}
@@ -59,8 +61,8 @@ a{color:#4A2A35}a:hover{color:#8E4F63}
 <img class="shot" src="assets/s1-layers.jpg" alt="Восемь слоёв торта парят друг над другом" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; opacity: {{sh.s1.op}}; transform: scale({{sh.s1.sc}}); visibility: {{sh.s1.vis}}">
 <img class="shot" src="assets/s2-fillings.jpg" alt="Тот же торт с другими начинками: шоколад, манго, маракуйя" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; opacity: {{sh.s2.op}}; transform: scale({{sh.s2.sc}}); visibility: {{sh.s2.vis}}">
 <img class="shot" src="assets/m-cream.jpg" alt="Белый крем крупно, лепестки розы и малина" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; opacity: {{sh.mc.op}}; transform: scale({{sh.mc.sc}}); visibility: {{sh.mc.vis}}">
-<img class="shot" src="assets/s3-deco-flowers.jpg" alt="Белый торт с живыми цветами и ягодами" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; opacity: {{sh.s3.op}}; transform: scale({{sh.s3.sc}}); clip-path: {{sh.s3.clip}}; visibility: {{sh.s3.vis}}">
-<img class="shot" src="assets/s4-deco-gold.jpg" alt="Белый торт с сусальным золотом и графичным кремом" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; opacity: {{sh.s4.op}}; transform: scale({{sh.s4.sc}}); clip-path: {{sh.s4.clip}}; visibility: {{sh.s4.vis}}">
+<img class="shot deco-img" src="assets/s3-deco-flowers.jpg" alt="Белый торт с живыми цветами и ягодами" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; opacity: {{sh.s3.op}}; transform: scale({{sh.s3.sc}}); clip-path: {{sh.s3.clip}}; visibility: {{sh.s3.vis}}">
+<img class="shot deco-img" src="assets/s4-deco-gold.jpg" alt="Белый торт с сусальным золотом и графичным кремом" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; opacity: {{sh.s4.op}}; transform: scale({{sh.s4.sc}}); clip-path: {{sh.s4.clip}}; visibility: {{sh.s4.vis}}">
 <span class="shot-edge" aria-hidden="true" data-b-style="position: absolute; top: 0; bottom: 0; left: {{sh.s4.edge}}%; width: 2px; margin-left: -1px; background: #FFFDF9; box-shadow: 0 0 18px 4px rgba(255, 250, 244, 0.85); opacity: {{sh.s4.edgeOp}}"></span>
 <img class="shot" src="assets/m-choc-pour.jpg" alt="Молочный шоколад льётся густой волной" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; opacity: {{sh.mch.op}}; transform: scale({{sh.mch.sc}}); visibility: {{sh.mch.vis}}">
 <img class="shot" src="assets/s5-choc-drip.jpg" alt="Шоколадный торт, глазурь стекает по краям" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; opacity: {{sh.s5.op}}; transform: scale({{sh.s5.sc}}); visibility: {{sh.s5.vis}}">
@@ -72,7 +74,7 @@ a{color:#4A2A35}a:hover{color:#8E4F63}
 <img class="shot" src="assets/m-glaze.jpg" alt="Зеркальная глазурь, шоколадная тюиль, жемчужины и сусальное золото" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; opacity: {{sh.mg.op}}; transform: scale({{sh.mg.sc}}); visibility: {{sh.mg.vis}}">
 <img class="shot" src="assets/s7-vitrine.jpg" alt="Шесть фирменных пирожных на сливочном фоне" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; transform-origin: {{s7org}}; opacity: {{sh.s7.op}}; transform: scale({{sh.s7.sc}}); visibility: {{sh.s7.vis}}">
 <img class="shot" src="assets/m-pistachio.jpg" alt="Фисташковый тарт крупным планом" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 55% 50%; opacity: {{sh.mp.op}}; transform: scale({{sh.mp.sc}}); visibility: {{sh.mp.vis}}">
-<img class="shot" src="assets/s8-pastry-cut.jpg" alt="Малиновый купол, разрезанный пополам" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; opacity: {{sh.s8.op}}; transform: scale({{sh.s8.sc}}); visibility: {{sh.s8.vis}}">
+<img class="shot dome-img" src="assets/s8-pastry-cut.jpg" alt="Малиновый купол, разрезанный пополам" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; opacity: {{sh.s8.op}}; transform: scale({{sh.s8.sc}}); visibility: {{sh.s8.vis}}">
 
 <div class="shot" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: #FBF3EC; opacity: {{sh.fin.op}}; visibility: {{sh.fin.vis}}">
 <img class="fin-img" src="assets/s7-vitrine.jpg" alt="" style="position: absolute; right: 0; top: 0; width: 52%; height: 100%; object-fit: cover; object-position: 60% 50%">
@@ -337,7 +339,7 @@ class Component extends DCLogic {
       ['wheel', (e) => this._wheelH(e), { passive: false }],
       ['touchstart', (e) => this._tStart(e), { passive: true }],
       ['touchmove', (e) => this._tMove(e), { passive: false }],
-      ['touchend', () => this._tEnd(), { passive: true }],
+      ['touchend', (e) => this._tEnd(e), { passive: true }],
       ['touchcancel', () => this._tEnd(), { passive: true }],
       ['pointerdown', (e) => this._pStart(e), { passive: true }],
       ['pointermove', (e) => this._pMove(e), { passive: true }],
@@ -356,7 +358,13 @@ class Component extends DCLogic {
       const sw = this._sw;
       if (!sw || sw.done) return;
       const dy = sw.y - y;
-      if (Math.abs(dy) > 34) { sw.done = true; this._step(dy > 0 ? 1 : -1); }
+      if (Math.abs(dy) > 34) { sw.done = true; this._swipeStep(dy > 0 ? 1 : -1); }
+    };
+    this._swipeStep = (d) => {
+      const wait = this._lockUntil - performance.now();
+      clearTimeout(this._swipeT);
+      if (wait > 0) this._swipeT = setTimeout(() => this._step(d), wait + 10);
+      else this._step(d);
     };
     this._tStart = (e) => {
       const t = e.touches && e.touches[0];
@@ -371,7 +379,11 @@ class Component extends DCLogic {
       if (e.cancelable) e.preventDefault();
       this._swipe(t.clientY);
     };
-    this._tEnd = () => { this._sw = null; };
+    this._tEnd = (e) => {
+      const t = e && e.changedTouches && e.changedTouches[0];
+      if (t) this._swipe(t.clientY);
+      this._sw = null;
+    };
     this._pStart = (e) => {
       if (e.pointerType === 'mouse' || performance.now() - this._lastTouch < 800) return;
       this._sw = { y: e.clientY, done: false, p: true };
