@@ -576,6 +576,8 @@ class Component extends DCLogic {
   document.querySelectorAll('[data-ref]').forEach(el => { const f = vals[el.getAttribute('data-ref')]; if (typeof f === 'function') f(el); });
   const root = document.querySelector('[data-keys]');
   root.addEventListener('keydown', e => vals.onKey && vals.onKey(e));
+  const jumps = { '#order': () => comp._max, '#vitrine': () => 15 };
+  document.querySelectorAll('a[href="#order"], a[href="#vitrine"]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); comp._go(jumps[a.getAttribute('href')]()); }));
   document.querySelectorAll('[data-dot]').forEach(btn => btn.addEventListener('click', () => { const i = +btn.getAttribute('data-dot'); vals.dots[i] && comp._go(i); }));
   if (comp.componentDidMount) comp.componentDidMount();
 })();
