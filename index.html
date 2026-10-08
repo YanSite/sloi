@@ -28,6 +28,7 @@ a{color:#4A2A35}a:hover{color:#8E4F63}
 @media (max-width: 760px){
 .stage{height:100dvh!important;min-height:0!important}
 .fin-img{width:100%!important}
+.hero-img{height:calc(100% - var(--intro-h, 320px) - 24px)!important;object-position:88% 60%!important;-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
 .scene-text{left:12px!important;right:12px!important;top:auto!important;bottom:12px!important;width:auto!important;max-width:none!important;margin:0!important;padding:22px 20px 24px!important;background:#FBF3EE!important;box-shadow:0 18px 40px -12px rgba(58,34,25,.28);justify-content:flex-start!important;text-align:left!important;align-items:flex-start!important;gap:10px!important;color:#4A2A35!important;transition:none}
 .scene-text br{display:none}
 .scene-text h1{font-size:32px!important;line-height:1.04!important;font-weight:300!important}
@@ -49,7 +50,7 @@ a{color:#4A2A35}a:hover{color:#8E4F63}
 <body>
 <div class="stage" data-ref="rootRef" tabIndex="0" data-keys="1" aria-label="Слои — сайт кондитерской, листайте колесом, свайпом или стрелками" style="position: relative; height: 100vh; min-height: 560px; overflow: hidden; outline: none; touch-action: none; background: #F8E6E0; color: #4A2A35; font-family: 'Geologica', 'Helvetica Neue', sans-serif">
 
-<img class="shot" src="assets/cake-hero.jpg" alt="Белый торт с вырезом на розовой подставке" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; transform-origin: 74% 42%; opacity: {{sh.h.op}}; transform: scale({{sh.h.sc}}); visibility: {{sh.h.vis}}">
+<img class="shot hero-img" src="assets/cake-hero.jpg" alt="Белый торт с вырезом на розовой подставке" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; transform-origin: 74% 42%; opacity: {{sh.h.op}}; transform: scale({{sh.h.sc}}); visibility: {{sh.h.vis}}">
 <img class="shot" src="assets/m-layers.jpg" alt="Срез крупно: фисташковый бисквит, малиновый крем, ваниль, лимонный курд" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; opacity: {{sh.ml.op}}; transform: scale({{sh.ml.sc}}); visibility: {{sh.ml.vis}}">
 
 <video class="shot" data-ref="vidR" poster="assets/v-raspberry-poster.jpg" preload="auto" muted="muted" loop="loop" playsinline="playsinline" aria-label="Малина крупным планом" data-b-style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; display: block; object-position: 50% 45%; opacity: {{sh.vr.op}}; transform: scale({{sh.vr.sc}}); clip-path: inset({{sh.vr.ct}}% 0 {{sh.vr.cb}}% 0); visibility: {{sh.vr.vis}}"><source src="assets/v-raspberry-m.mp4" type="video/mp4" media="(max-width: 760px)"><source src="assets/v-raspberry-2k.mp4" type="video/mp4"></video>
@@ -577,6 +578,15 @@ class Component extends DCLogic {
   root.addEventListener('keydown', e => vals.onKey && vals.onKey(e));
   document.querySelectorAll('[data-dot]').forEach(btn => btn.addEventListener('click', () => { const i = +btn.getAttribute('data-dot'); vals.dots[i] && comp._go(i); }));
   if (comp.componentDidMount) comp.componentDidMount();
+})();
+
+(function(){
+  const intro = document.querySelector('.intro');
+  if (!intro) return;
+  const fit = () => { document.documentElement.style.setProperty('--intro-h', intro.offsetHeight + 'px'); };
+  fit();
+  window.addEventListener('resize', fit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
 })();
 
 </script>
