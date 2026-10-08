@@ -357,43 +357,49 @@ class Component extends DCLogic {
     };
     this._sw = null;
     this._lastTouch = 0;
-    this._swipe = (y) => {
+    this._swipe = (x, y) => {
       const sw = this._sw;
       if (!sw || sw.done) return;
-      const dy = sw.y - y;
-      if (Math.abs(dy) > 34) { sw.done = true; this._swipeStep(dy > 0 ? 1 : -1); }
+      const dx = sw.x - x, dy = sw.y - y;
+      const d = Math.abs(dy) >= Math.abs(dx) ? dy : dx;
+      if (Math.abs(d) > 24) { sw.done = true; this._swipeStep(d > 0 ? 1 : -1); }
     };
+    this._lastSwipe = -1e9;
     this._swipeStep = (d) => {
-      const wait = this._lockUntil - performance.now();
+      const run = () => {
+        this._lastSwipe = performance.now();
+        this._go(Math.max(0, Math.min(this._max, Math.round(this._to) + d)));
+      };
+      const wait = this._lastSwipe + 300 - performance.now();
       clearTimeout(this._swipeT);
-      if (wait > 0) this._swipeT = setTimeout(() => this._step(d), wait + 10);
-      else this._step(d);
+      if (wait > 0) this._swipeT = setTimeout(run, wait);
+      else run();
     };
     this._tStart = (e) => {
       const t = e.touches && e.touches[0];
       if (!t || e.touches.length > 1) { this._sw = null; return; }
       this._lastTouch = performance.now();
-      this._sw = { y: t.clientY, done: false };
+      this._sw = { x: t.clientX, y: t.clientY, done: false };
     };
     this._tMove = (e) => {
       const t = e.touches && e.touches[0];
       if (!t) return;
       this._lastTouch = performance.now();
       if (e.cancelable) e.preventDefault();
-      this._swipe(t.clientY);
+      this._swipe(t.clientX, t.clientY);
     };
     this._tEnd = (e) => {
       const t = e && e.changedTouches && e.changedTouches[0];
-      if (t) this._swipe(t.clientY);
+      if (t) this._swipe(t.clientX, t.clientY);
       this._sw = null;
     };
     this._pStart = (e) => {
       if (e.pointerType === 'mouse' || performance.now() - this._lastTouch < 800) return;
-      this._sw = { y: e.clientY, done: false, p: true };
+      this._sw = { x: e.clientX, y: e.clientY, done: false, p: true };
     };
     this._pMove = (e) => {
       if (!this._sw || !this._sw.p || performance.now() - this._lastTouch < 800) return;
-      this._swipe(e.clientY);
+      this._swipe(e.clientX, e.clientY);
     };
     this._pEnd = () => { if (this._sw && this._sw.p) this._sw = null; };
     this._vid = {};
