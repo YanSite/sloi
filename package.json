@@ -1,0 +1,10 @@
+{
+  "name": "@demo/sloi",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Демо-проект: статический сайт, публикуется GitHub Pages из зеркала YanSite/sloi. Управляется из монорепозитория Engine — см. projects/demo/README.md.",
+  "scripts": {
+    "dev": "serve -l 4101 --no-clipboard .",
+    "build": "node ../../../tools/demo/check-static.mjs ."
+  }
+}
