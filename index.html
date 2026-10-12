@@ -61,8 +61,11 @@ a{color:#4A2A35}a:hover{color:#8E4F63}
 .hdr .cta-sm{height:34px!important;padding:0 14px!important;margin-left:0!important}
 .hdr > div:last-child{gap:12px!important}
 }
-concept-card{--cc-font:'Geologica','Helvetica Neue',sans-serif;--cc-top:60px;--cc-left:clamp(20px,5vw,72px)}
-@media (max-width: 760px){concept-card{--cc-left:16px}}
+concept-card{--cc-font:'Geologica','Helvetica Neue',sans-serif;--cc-top:calc(clamp(20px,4vh,36px) + 34px);--cc-left:clamp(20px,5vw,72px)}
+@media (max-width: 760px){concept-card{--cc-top:60px;--cc-left:16px}}
+/* Низкий экран (телефон горизонтально): сцена по высоте окна, а не 560px с обрезкой снизу. */
+@media (max-height: 560px){.stage{height:100dvh!important;min-height:0!important}}
+@media (max-height: 560px) and (min-width: 761px){concept-card{--cc-top:auto;--cc-left:auto;--cc-bottom:8px;--cc-right:44px}}
 </style>
 <style>html,body{height:100%;overflow:hidden;overscroll-behavior:none}
 img.shot,.fin-img{transition:filter .45s ease}
