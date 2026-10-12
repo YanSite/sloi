@@ -618,16 +618,19 @@ class Component extends DCLogic {
   const root = document.querySelector('[data-keys]');
   root.addEventListener('keydown', e => vals.onKey && vals.onKey(e));
   (function(){
-    // load media in screen order, nearest to the current screen first; show each image only once fully decoded
+    // Медиа грузится по мере листания: кадры не дальше двух от текущего, ближайший первым;
+    // картинка показывается только полностью декодированной.
     const items = [];
     Array.from(root.querySelectorAll('.shot')).forEach((el, i) => {
       if (el.matches('img[data-src]')) items.push({ el, i });
       el.querySelectorAll('img[data-src]').forEach(c => items.push({ el: c, i }));
     });
-    const videos = () => root.querySelectorAll('video').forEach(v => {
-      if (v.readyState > 0 || !v.paused) return;
+    const AHEAD = 2;
+    const shots = Array.from(root.querySelectorAll('.shot'));
+    const videos = (c) => root.querySelectorAll('video').forEach(v => {
+      if (v.dataset.on || v.readyState > 0 || !v.paused || Math.abs(shots.indexOf(v) - c) > 1) return;
+      v.dataset.on = '1';
       v.preload = 'auto';
-      v.load();
     });
     const load = (el) => new Promise(res => {
       let done = false;
@@ -646,18 +649,19 @@ class Component extends DCLogic {
     const pick = () => {
       const c = Math.round(comp._to || 0);
       let best = -1, bs = Infinity;
-      items.forEach((it, k) => { const sc = it.i >= c ? it.i - c : (c - it.i) * 2 + 1; if (sc < bs) { bs = sc; best = k; } });
+      items.forEach((it, k) => { if (it.i > c + AHEAD) return; const sc = it.i >= c ? it.i - c : (c - it.i) * 2 + 1; if (sc < bs) { bs = sc; best = k; } });
       return best < 0 ? null : items.splice(best, 1)[0];
     };
     const pump = () => {
       while (active < 3) {
         const it = pick();
-        if (!it) { if (!active) videos(); return; }
+        if (!it) { videos(Math.round(comp._to || 0)); return; }
         active++;
         load(it.el).then(() => { active--; pump(); });
       }
     };
     pump();
+    window.addEventListener('concept:final', pump);
   })();
   document.querySelectorAll('[data-dot]').forEach(btn => btn.addEventListener('click', () => { const i = +btn.getAttribute('data-dot'); vals.dots[i] && comp._go(i); }));
   if (comp.componentDidMount) comp.componentDidMount();
