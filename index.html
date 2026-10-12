@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Слои — кондитерская (концепт)</title>
+<title>Слои — Концепт сайта кондитерской · Есть что показать</title>
 <meta name="description" content="Концепт сайта кондитерской: снаружи тихо, внутри — восемь слоёв.">
 <meta name="theme-color" content="#F8E6E0">
 <link rel="preload" as="image" href="assets/cake-hero.webp">
@@ -49,6 +49,8 @@ a{color:#4A2A35}a:hover{color:#8E4F63}
 .hdr .cta-sm{height:34px!important;padding:0 14px!important;margin-left:0!important}
 .hdr > div:last-child{gap:12px!important}
 }
+concept-card{--cc-font:'Geologica','Helvetica Neue',sans-serif;--cc-top:60px;--cc-left:clamp(20px,5vw,72px)}
+@media (max-width: 760px){concept-card{--cc-left:16px}}
 </style>
 <style>html,body{height:100%;overflow:hidden;overscroll-behavior:none}
 img.shot,.fin-img{transition:filter .45s ease}
@@ -459,6 +461,7 @@ class Component extends DCLogic {
     const now = performance.now();
     this._from = this._p;
     this._to = i;
+    window.dispatchEvent(new CustomEvent('concept:final', { detail: i === this._max }));
     this._t0 = now;
     const dist = Math.abs(i - this._from);
     this._dur = this._reduce ? 1 : (dist > 1.5 ? 1400 : 1200);
@@ -604,7 +607,6 @@ class Component extends DCLogic {
   document.querySelectorAll('[data-ref]').forEach(el => { const f = vals[el.getAttribute('data-ref')]; if (typeof f === 'function') f(el); });
   const root = document.querySelector('[data-keys]');
   root.addEventListener('keydown', e => vals.onKey && vals.onKey(e));
-  document.querySelectorAll('a[href="#order"]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); comp._go(comp._max); }));
   (function(){
     // load media in screen order, nearest to the current screen first; show each image only once fully decoded
     const items = [];
@@ -665,5 +667,6 @@ class Component extends DCLogic {
 })();
 
 </script>
+<script src="concept-card.js" defer data-category="кондитерская" data-tone="light" data-position="tl" data-order='a[href="#order"]'></script>
 </body>
 </html>
