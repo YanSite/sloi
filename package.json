@@ -1,0 +1,10 @@
+{
+  "name": "@demo/sloi",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Концепт «Слои»: статический сайт, публикуется из зеркала YanSite/sloi.",
+  "scripts": {
+    "dev": "serve -l 4101 --no-clipboard .",
+    "build": "node ../../../tools/demo/check-static.mjs ."
+  }
+}
